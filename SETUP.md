@@ -25,6 +25,10 @@ features stay hidden.
 3. Firebase shows a `firebaseConfig` block. Copy each value into `firebase-config.js`.
    Make sure `databaseURL` is filled in. If it is missing, copy it from the top of the Realtime Database page.
 4. In the same file, change `ADMIN_EMAILS` to your own email.
+5. If Google Analytics is on for the project, the block also has a `measurementId` (it starts with `G-`).
+   Copy it into `measurementId`. Visitors then see a short notice; once they tap **OK**, visits and game
+   activity (dishes picked, rides started and finished, sign-ups, races, shares) appear in
+   **Firebase → Analytics**. Reports can take up to a day to fill in; **Analytics → Realtime** shows the last 30 minutes.
 
 ## 5. Put the site online
 Pick one:

@@ -7,7 +7,8 @@ export const firebaseConfig = {
   projectId: "",
   storageBucket: "",
   messagingSenderId: "",
-  appId: ""
+  appId: "",
+  measurementId: ""   // starts with G- (shown when Google Analytics is on)
 };
 
 // The email address(es) that can see the private sign-up list in the leaderboard.

@@ -466,6 +466,7 @@ a{color:inherit}
 <script>window.__meuroReady=new Promise(function(r){window.__meuroResolve=r;setTimeout(function(){r(null);},15000);});
 window.__platform=window.claude;window.claude={use:function(n){return window.__meuroReady.then(function(b){if(b)return b.use(n);var P=window.__platform;return (P&&typeof P.use==='function')?P.use(n):null;});}};</script>
 <script type="module" src="backend.js"></script>
+<script type="module" src="analytics.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function(){
@@ -884,7 +885,7 @@ function renderTabs(){var keys=['all'].concat(Object.keys(REGIONS));tabsEl.inner
 function visibleKeys(){return Object.keys(DISHES).filter(function(k){return curRegion==='all'||DISHES[k].r===curRegion;});}
 function renderDishes(){dishesEl.innerHTML='';visibleKeys().forEach(function(k,i){var d=DISHES[k];var b=document.createElement('button');b.type='button';b.className='dish';b.dataset.k=k;b.style.animationDelay=(i*40)+'ms';b.setAttribute('aria-pressed',k===state.dish?'true':'false');
   b.innerHTML='<img src="'+dishImg(k)+'" alt="" loading="lazy"><span><em>'+REGIONS[d.r]+'</em><b>'+d.n+'</b><small class="tnum">'+fmt(d.budget)+' · '+d.items.length+' items</small></span>';
-  b.addEventListener('click',function(){stopAuto();selectDish(k,true);});dishesEl.appendChild(b);});}
+  b.addEventListener('click',function(){stopAuto();selectDish(k,true);track('select_dish',{dish:k,region:d.r});});dishesEl.appendChild(b);});}
 function selectDish(k,scroll){state.dish=k;dishesEl.querySelectorAll('.dish').forEach(function(o){o.setAttribute('aria-pressed',o.dataset.k===k?'true':'false');});
   var d=DISHES[k];selEl.innerHTML='<div class="stop"><div><small>'+REGIONS[d.r]+'</small><b>'+d.n+'</b></div><span class="tnum">'+fmt(d.budget)+' budget</span></div><div class="ing">'+d.items.map(function(it,i){return '<span style="animation-delay:'+(i*80)+'ms"><i style="background:'+hex(ITEMS[it].c)+'"></i>'+ITEMS[it].n+'</span>';}).join('')+'</div>';
   if(scroll){var card=dishesEl.querySelector('[data-k="'+k+'"]');if(card){var l=card.offsetLeft-(dishesEl.clientWidth-card.offsetWidth)/2;dishesEl.scrollTo({left:Math.max(0,l),behavior:reduce?'auto':'smooth'});}}}
@@ -910,7 +911,9 @@ var horn=function(){beep(420,.18,'square',.06);setTimeout(function(){beep(420,.2
 function setThrottle(t){state.throttle=t;$('#bGo').setAttribute('aria-pressed',t===1?'true':'false');$('#bStop').setAttribute('aria-pressed',t===0?'true':'false');$('#bRev').setAttribute('aria-pressed',t===-1?'true':'false');}
 function laneShift(dir){if(state.mode!=='ride')return;var n=Math.max(0,Math.min(2,state.lane+dir));if(n!==state.lane){state.lane=n;beep(660,.06,'triangle',.05);}}
 
+function track(n,p){try{(window.__mq=window.__mq||[]).push([n,p||{}]);if(window.meuroFlush)window.meuroFlush();}catch(e){}}
 function startRide(opts){
+  track('ride_start',{dish:state.dish,race:!!(opts&&opts.race)});
   opts=(opts&&opts.seed)?opts:{};
   if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}
   var d=DISHES[state.dish];
@@ -990,6 +993,7 @@ function finish(){
   var r=$('#result'); r.hidden=false;
   requestAnimationFrame(function(){$('#rArc').style.strokeDashoffset=String(276.5*(1-score/100));var s0=performance.now();(function tick(t){var p=Math.min(1,(t-s0)/1200);$('#rScore').textContent=Math.round(score*p);if(p<1)requestAnimationFrame(tick);})(s0);});
   beep(523,.15,'sine',.1);setTimeout(function(){beep(659,.15,'sine',.1);},160);setTimeout(function(){beep(784,.25,'sine',.1);},320);
+  track('ride_finish',{dish:state.dish,score:score,stars:stars,race:!!state.race,items:gotN});
   prepareSave({score:score,stars:stars,dish:state.dish,dishName:d.n,spent:state.spent});
   if(LIVE&&LIVE.onFinish)LIVE.onFinish(score,stars);
 }
@@ -1085,6 +1089,7 @@ async function doSave(){var r=LB.last,btn=$('#sbSave');btn.disabled=true;btn.tex
     }catch(err){if(err&&(err.code==='invalid_argument'||err.code==='not_granted'||err.code==='revoked'))LB.writable=false;}
   }
   LB.savedThis=true;btn.textContent='Saved';showFields(false);
+  track('score_saved',{score:r.score,shared:shared});
   if(shared){msg('Score saved to the leaderboard.','ok');setTimeout(showRank,700);}
   else{msg('Score saved on this device. Your best plates show in the leaderboard.','ok');renderBoard();}
 }
@@ -1180,6 +1185,7 @@ $('#joinForm').addEventListener('submit',async function(e){e.preventDefault();va
   else r=await b.auth.logIn(email,pw);
   btn.disabled=false;btn.textContent=label;
   if(!r.ok){msg.textContent=authMsg(r.code);return;}
+  track(jmode==='signup'?'sign_up':'login',{method:'email'});
   $('#jPass').value='';msg.className='sb-msg ok';msg.textContent=jmode==='signup'?'Account created. Welcome to the market!':'Logged in.';});
 $('#jForgot').addEventListener('click',async function(){var b=backend();var email=String($('#jEmail').value||'').trim().toLowerCase();var msg=$('#jMsg');
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){msg.className='err';msg.textContent='Enter your email above, then tap Forgot password again.';$('#jEmail').focus();return;}
@@ -1251,7 +1257,7 @@ function renderOnline(){var others=LIVE.lobby.filter(function(p){return !p.isMe;
   if(!LIVE.lobby.length){list.innerHTML='<p class="bd-empty">Nobody else is online right now. Share Market Run with friends to ride together.</p>';}}
 
 /* -------- shouts */
-function shout(text){if(!LIVE.room)return;needProfile(function(){var target=LIVE.race||LIVE.room;target.emit('shout',{t:SHOUTS.indexOf(text),n:nick(),c:myColor}).catch(function(){});$('#shoutBar').hidden=true;});}
+function shout(text){if(!LIVE.room)return;needProfile(function(){track('shout',{in_race:!!LIVE.race});var target=LIVE.race||LIVE.room;target.emit('shout',{t:SHOUTS.indexOf(text),n:nick(),c:myColor}).catch(function(){});$('#shoutBar').hidden=true;});}
 function onShout(m){var d=m.data||{};var text=SHOUTS[d.t];if(!text)return;var name=safeName(d.n);
   if(m.isMe&&m.sameTab){bubble(keke,text);toast('You: '+text,'');return;}
   var g=LIVE.ghosts[m.peer];if(g)bubble(g,text);toast(name+': '+text,'bonus');beep(560,.08,'triangle',.05);}
@@ -1273,6 +1279,7 @@ async function joinRace(code,host){
   $('#rcErr').textContent='';$('#rcCreate').disabled=true;
   try{var r=await LIVE.room.join('race-'+code);}catch(err){$('#rcCreate').disabled=false;$('#rcErr').textContent=err&&err.code==='limit_reached'?'Too many races open on this device. Leave one and try again.':'Could not open that race. Check the code and try again.';return;}
   $('#rcCreate').disabled=false;
+  track(host?'race_create':'race_join',{});
   LIVE.race=r;LIVE.code=code;LIVE.host=!!host;LIVE.racers=r.peers();
   r.presence({nick:nick(),color:myColor,host:!!host,mode:'lobby',dish:state.dish,done:false,score:null}).catch(function(){});
   r.onPeers(function(ch){LIVE.racers=ch.peers;renderRaceLobby();renderRaceMini();renderRaceResults();syncGhosts();
@@ -1288,8 +1295,8 @@ var ARTIFACT_URL='';
 function raceLink(){if(platformMode()&&ARTIFACT_URL)return ARTIFACT_URL+'#race-'+LIVE.code;return location.href.split(/[?#]/)[0]+'?race='+LIVE.code;}
 function inviteText(){return 'Race me on Meuro Market Run! Tap to join my race (code '+LIVE.code.toUpperCase()+'): '+raceLink();}
 function updateInvite(){var a=$('#rcWa');a.href='https://wa.me/?text='+encodeURIComponent(inviteText());}
-$('#rcWa').addEventListener('click',function(e){if(navigator.share){e.preventDefault();navigator.share({title:'Meuro Market Run',text:'Race me on Meuro Market Run! Code '+LIVE.code.toUpperCase(),url:raceLink()}).catch(function(){window.open($('#rcWa').href,'_blank','noopener');});}});
-$('#rcCopy').addEventListener('click',function(){var t=raceLink();var b=$('#rcCopy');
+$('#rcWa').addEventListener('click',function(e){track('share',{method:'whatsapp',content_type:'race_invite'});if(navigator.share){e.preventDefault();navigator.share({title:'Meuro Market Run',text:'Race me on Meuro Market Run! Code '+LIVE.code.toUpperCase(),url:raceLink()}).catch(function(){window.open($('#rcWa').href,'_blank','noopener');});}});
+$('#rcCopy').addEventListener('click',function(){track('share',{method:'copy_link',content_type:'race_invite'});var t=raceLink();var b=$('#rcCopy');
   var ok=function(){b.textContent='Link copied';setTimeout(function(){b.textContent='Copy link';},1800);};var fb=function(){$('#rcInvite').hidden=false;$('#rcInvite').value=inviteText();$('#rcInvite').select();};
   try{navigator.clipboard.writeText(t).then(ok,fb);}catch(e){fb();}});
 function hostPeer(){var h=LIVE.racers.filter(function(p){return p.presence&&p.presence.host;});return h[0]||null;}
@@ -1343,11 +1350,11 @@ function renderCrews(){var l=$('#bdCrews');l.innerHTML='';var mine=myCrewId();
 async function setCrew(id){needProfile(async function(){if(!LB.db||!LB.uid||!LB.writable){toast('Crews need you to be signed in to Meuro.','bad');return;}
   try{var ref=LB.db.doc('scores/'+LB.uid);var cur=await ref.get();var now=new Date().toISOString();
     if(cur.exists)await ref.update({crew:id,name:nick(),updatedAt:now});else await ref.set({name:nick(),best:0,stars:0,dish:'',rides:0,crew:id,updatedAt:now});
-    toast(id?'You joined '+((LIVE.crews.filter(function(c){return c.id===id;})[0]||{}).name||'the crew'):'You left your crew.','good');lobbyPresence();
+    track(id?'crew_join':'crew_leave',{});toast(id?'You joined '+((LIVE.crews.filter(function(c){return c.id===id;})[0]||{}).name||'the crew'):'You left your crew.','good');lobbyPresence();
   }catch(err){toast('Could not update your crew. Try again.','bad');}});}
 $('#crewForm').addEventListener('submit',function(e){e.preventDefault();var n=cleanName($('#crewName').value).slice(0,24);if(!n||n.length<3){$('#crewErr').textContent='Give your crew a name of at least 3 letters.';return;}$('#crewErr').textContent='';
   needProfile(async function(){if(!LB.db||!LB.uid||!LB.writable){$('#crewErr').textContent='Crews need you to be signed in to Meuro.';return;}
-    try{await LB.db.doc('crews/'+LB.uid).set({name:n,createdAt:new Date().toISOString()});$('#crewName').value='';await setCrew(LB.uid);}catch(err){$('#crewErr').textContent='Could not create the crew. Try again.';}});});
+    try{track('crew_create',{});await LB.db.doc('crews/'+LB.uid).set({name:n,createdAt:new Date().toISOString()});$('#crewName').value='';await setCrew(LB.uid);}catch(err){$('#crewErr').textContent='Could not create the crew. Try again.';}});});
 $('#bCrew').addEventListener('click',function(){openBoard();boardTab('crews');});
 
 /* -------- board tabs */
