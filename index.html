@@ -1,4 +1,11 @@
+<!doctype html>
+<html lang="en">
+<head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B120D">
+<link rel="icon" href="img/logo.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Meuro Market Run</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -280,6 +287,8 @@ a{color:inherit}
 
 .intro-top a.glass,.intro-top button.glass{white-space:nowrap}
 @media (max-width:420px){.intro-top .tops{gap:6px}.intro-top a.glass,.intro-top button.glass{padding:9px 12px;font-size:14px}.intro-top .brand{height:20px}}
+@media (max-width:760px){#hud .exit{top:calc(max(12px,env(safe-area-inset-top,0px)) + 96px)!important;bottom:auto!important;left:auto!important;right:max(12px,env(safe-area-inset-right,0px))!important}#hud .toasts{top:calc(max(12px,env(safe-area-inset-top,0px)) + 142px)}#hRiders{top:calc(max(12px,env(safe-area-inset-top,0px)) + 88px)}}
+@media (max-width:760px){#intro{background:linear-gradient(0deg,rgba(6,10,7,.94) 0%,rgba(6,10,7,.82) 52%,rgba(6,10,7,.35) 78%,rgba(6,10,7,.1) 100%)}}
 #rotate{display:none}
 @media (max-width:760px){
   .dish{flex-basis:108px}
@@ -308,6 +317,9 @@ a{color:inherit}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
+</head>
+<body>
+
 
 <canvas id="c" aria-label="3D market ride"></canvas>
 
@@ -1018,8 +1030,7 @@ function loop(){
   for(var i=0;i<traders.length;i++){var tr=traders[i];if(Math.abs(tr.position.z-state.z)<60)tr.rotation.x=Math.sin(state.t*1.5+tr.userData.ph)*.04;}
   // camera
   if(state.mode==='intro'){
-    var a=state.orbit+.9; vTmp.set(state.x+Math.sin(a)*9,3.2+Math.sin(state.orbit*.7)*.6,state.z+Math.cos(a)*9); lTmp.set(state.x,1.3,state.z-1);
-    if(innerWidth>760){lTmp.x-=Math.cos(a)*2.4; lTmp.z+=Math.sin(a)*2.4;}
+    var sw=Math.sin(state.orbit*.5), wide=innerWidth>760; vTmp.set(state.x+(wide?-1.6:1.4)+sw*1.2,3.3+Math.sin(state.orbit*.35)*.3,state.z+(wide?7.5:9.5)); lTmp.set(state.x+(wide?-3.2:0),1.7,state.z-16);
   } else {
     var tall=innerHeight>innerWidth; var back=state.v<-.5?-7.5:(tall?9.5:8.5); vTmp.set(state.x*.7,tall?4.8:4.0,state.z+back); lTmp.set(state.x*.85,1.4,state.z-(state.v<-.5?-6:7));
     if(state.mode==='result'){vTmp.set(state.x+5,3.4,state.z+6);lTmp.set(state.x,1.2,state.z-2);}
@@ -1364,3 +1375,6 @@ $('#meEdit').addEventListener('click',function(){if(platformMode()){openJoin('pr
 setVia('whatsapp');
 })();
 </script>
+
+</body>
+</html>
