@@ -1,55 +1,72 @@
-# Switch on Meuro Market Run live features
+# Switch on Meuro Market Run live features (Supabase)
 
-Everything runs on Firebase's free Spark plan. You do not need a bank card.
-Until you finish these steps, the site and solo game still work, and the live
-features stay hidden.
+Until these steps are done, the website and the solo game work for everyone.
+Accounts, races with friends, crews, the leaderboard and streak saving switch on
+as soon as `meuro-config.js` has your Supabase details.
 
-## 1. Create the Firebase project
-1. Go to https://console.firebase.google.com and sign in with a Google account.
-2. Tap **Create a project**, name it `meuro`, and finish the steps. You can turn Google Analytics off.
+Everything below fits Supabase's free plan. No bank card needed to start.
 
-## 2. Turn on email login
-1. In the left menu, open **Build → Authentication → Get started**.
-2. Under **Sign-in method**, choose **Email/Password**, switch it **on**, and save.
+## 1. Create the Supabase project (3 min)
+1. Go to **supabase.com**, tap **Start your project**, and sign in with GitHub.
+2. Tap **New project**. Name it `meuro`, set a strong database password (save it somewhere safe),
+   and choose the region **West EU (Ireland)**. Tap **Create new project** and wait about a minute.
 
-## 3. Create the database
-1. Open **Build → Realtime Database → Create database**.
-2. Pick the location closest to your players (for Nigeria, **Belgium (europe-west1)**).
-3. Choose **Start in locked mode**.
-4. Open the **Rules** tab, delete what is there, and paste in everything from `database.rules.json`.
-5. In the pasted rules, change `you@example.com` to **your own email**. Tap **Publish**.
+## 2. Create the tables and security rules (2 min)
+1. In the left menu open **SQL Editor**, then **New query**.
+2. Open `supabase/schema.sql` from this repository, copy **all** of it, paste it in, and tap **Run**.
+   You should see "Success". It is safe to run again later.
 
-## 4. Connect the website to Firebase
-1. Open **Project settings** (gear icon) → **Your apps** → tap the **web icon `</>`**.
-2. Name it `meuro-web`, then **Register app**.
-3. Firebase shows a `firebaseConfig` block. Copy each value into `firebase-config.js`.
-   Make sure `databaseURL` is filled in. If it is missing, copy it from the top of the Realtime Database page.
-4. In the same file, change `ADMIN_EMAILS` to your own email.
-5. If Google Analytics is on for the project, the block also has a `measurementId` (it starts with `G-`).
-   Copy it into `measurementId`. Visitors then see a short notice; once they tap **OK**, visits and game
-   activity (dishes picked, rides started and finished, sign-ups, races, shares) appear in
-   **Firebase → Analytics**. Reports can take up to a day to fill in; **Analytics → Realtime** shows the last 30 minutes.
+## 3. Login settings (3 min)
+1. **Authentication > Sign In / Providers > Email**: keep Email on, keep **Confirm email** on,
+   and set **Minimum password length** to 8. Save.
+2. **Authentication > URL Configuration**:
+   - **Site URL**: `https://treshposh.github.io/meurowebsite2/`
+   - **Redirect URLs**: add `https://treshposh.github.io/meurowebsite2/**`
+3. If **Realtime > Settings** shows **Allow public access**, switch it **off**. Only signed-in
+   players can then join live markets and races (the rules from step 2 allow exactly that).
 
-## 5. Put the site online
-Pick one:
-- **GitHub Pages:** upload all the files in this folder to a GitHub repository, then in the repository open
-  **Settings → Pages**, set the source to the `main` branch and the `/ (root)` folder, and save.
-  Your site appears at `https://<your-username>.github.io/<repository>/`.
-- **Firebase Hosting** (needs a computer): install Node.js, run `npm install -g firebase-tools`,
-  `firebase login`, `firebase use --add` (choose your project), then `firebase deploy` in this folder.
+## 4. Email delivery (needed before real users sign up, 10 min)
+Supabase's built-in email only reaches your own team and sends about 2 emails an hour, so
+confirmation emails would not reach your players. Connect a free email service:
+1. Create a free account at **brevo.com** (300 emails a day on the free plan).
+2. In Brevo, open **SMTP & API** and copy the SMTP login and key.
+3. In Supabase open **Authentication > Emails > SMTP Settings**, switch on **Custom SMTP**, and enter:
+   host `smtp-relay.brevo.com`, port `587`, your Brevo login and SMTP key, and a sender such as
+   `Meuro <hello@your-domain>`.
+4. In **Authentication > Rate Limits**, raise "emails per hour" to suit (for example 100).
+Guide: https://developers.brevo.com/docs/supabase-smtp-integration
 
-## 6. Allow your site address to log in
-1. In Firebase, open **Authentication → Settings → Authorized domains**.
-2. Tap **Add domain** and add your site's address (for example `your-username.github.io`).
+## 5. Connect the website (2 min)
+1. In Supabase open **Project Settings > API** (or the **Connect** button).
+2. Copy the **Project URL** and the **anon / publishable** key.
+3. In GitHub, open `meuro-config.js`, tap the pencil icon, paste them in, and **Commit changes**.
+   Never paste the `service_role` / secret key anywhere in the website.
 
-## 7. Claim the owner account
-1. Open your live site, tap **Log in → Create account**, and sign up with the email you put in the rules.
-2. Open the verification email Firebase sends you and tap the link.
-3. Log out and log in again. Open the **Leaderboard**: the private **Sign-ups** list now appears under the players.
+## 6. Make yourself the owner (1 min)
+1. Open your site, tap **Log in > Create account**, sign up with your own email and confirm it.
+2. Back in Supabase **SQL Editor**, run (with your email):
+   ```sql
+   insert into public.admins (user_id) select id from auth.users where email = 'you@example.com';
+   ```
+3. Log in again. The leaderboard now shows your private **Sign-ups** list (with CSV export) and
+   **Price reports to check**.
 
-## Good to know
-- Race links look like `https://your-site/index.html?race=jollof-482`. Anyone who opens one is asked to log in,
-  then lands straight in that race.
-- The free plan allows 100 people connected at the same time and plenty of data for a launch.
-  Firebase emails you before you get near a limit.
-- To remove someone's details, delete their entry under `signups` in the Realtime Database page.
+## Optional
+- **Google Analytics**: create a free GA4 property at analytics.google.com and paste the
+  measurement ID (starts with `G-`) into `GA_MEASUREMENT_ID` in `meuro-config.js`.
+- **Robot check on sign-up**: create a free Cloudflare Turnstile widget for your site address,
+  put the site key in `TURNSTILE_SITE_KEY`, and the secret key in Supabase
+  **Authentication > Attack Protection > Enable CAPTCHA protection** (provider: Turnstile).
+
+## Growing to 100,000 players
+- Free plan limits that matter first: 50,000 monthly active users, 500 MB database, and caps on live
+  connections and messages. The game splits busy markets into rooms of 40 riders and only sends
+  positions a few times a second to stay efficient, but at tens of thousands of daily players you
+  will need the **Pro plan**.
+- Free projects pause after a week with no activity. Regular players prevent this; if the site
+  goes quiet, open the Supabase dashboard and tap **Restore**.
+- Brevo's free plan sends 300 emails a day; move to a paid email plan when daily sign-ups grow past that.
+
+## Undo Version 8
+The previous live site is saved on the `v7-backup` branch. To go back, ask Claude to
+"restore v7-backup to main", or in GitHub open a pull request from `v7-backup` into `main`.

@@ -1,35 +1,36 @@
-// Meuro visitor analytics (Google Analytics for Firebase).
-// Runs only when firebase-config.js has a measurementId AND the visitor tapped "OK"
+// Meuro visitor analytics (Google Analytics 4).
+// Runs only when meuro-config.js has a measurement ID AND the visitor tapped "OK"
 // on the notice. Pages call window.meuroTrack(name, params) to record game events.
-import { firebaseConfig } from './firebase-config.js';
+// Names and emails are never sent.
+import { GA_MEASUREMENT_ID } from './meuro-config.js';
 
-const V = '10.12.2';
-const CDN = 'https://www.gstatic.com/firebasejs/' + V + '/';
 const KEY = 'meuro.analytics';
-
 window.__mq = window.__mq || [];
 let send = null;
 
 function flush() {
   if (!send) return;
-  const q = window.__mq.splice(0);
-  q.forEach(([n, p]) => { try { send(n, p || {}); } catch (e) {} });
+  window.__mq.splice(0).forEach(([n, p]) => { try { send(n, p || {}); } catch (e) {} });
 }
 window.meuroFlush = flush;
 window.meuroTrack = (n, p) => { window.__mq.push([n, p]); flush(); };
 
-function choice() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
-function remember(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
+const choice = () => { try { return localStorage.getItem(KEY); } catch (e) { return null; } };
+const remember = v => { try { localStorage.setItem(KEY, v); } catch (e) {} };
+const validId = id => typeof id === 'string' && /^G-[A-Z0-9]{4,16}$/.test(id);
 
-async function start() {
-  try {
-    const [appMod, an] = await Promise.all([import(CDN + 'firebase-app.js'), import(CDN + 'firebase-analytics.js')]);
-    if (!(await an.isSupported())) return;
-    const app = appMod.initializeApp(firebaseConfig, 'meuro-analytics');
-    const analytics = an.getAnalytics(app);
-    send = (n, p) => an.logEvent(analytics, n, p);
-    flush();
-  } catch (e) { console.warn('Analytics did not start:', e && e.message); }
+function start() {
+  if (!validId(GA_MEASUREMENT_ID) || send) return;
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () { window.dataLayer.push(arguments); };
+  window.gtag('js', new Date());
+  window.gtag('config', GA_MEASUREMENT_ID, { allow_google_signals: false, allow_ad_personalization_signals: false });
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA_MEASUREMENT_ID);
+  document.head.appendChild(s);
+  send = (n, p) => window.gtag('event', n, p);
+  flush();
 }
 
 function banner() {
@@ -55,11 +56,8 @@ function banner() {
   document.body.appendChild(box);
 }
 
-const ready = firebaseConfig && firebaseConfig.measurementId && firebaseConfig.apiKey && firebaseConfig.appId;
-if (ready) {
+if (validId(GA_MEASUREMENT_ID)) {
   const c = choice();
   if (c === 'yes') start();
-  else if (c !== 'no') {
-    if (document.body) banner(); else document.addEventListener('DOMContentLoaded', banner);
-  }
+  else if (c !== 'no') { if (document.body) banner(); else document.addEventListener('DOMContentLoaded', banner); }
 }

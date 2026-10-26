@@ -1,207 +1,262 @@
-// Meuro Market Run live backend: Firebase Authentication (email + password)
-// and Firebase Realtime Database for scores, crews, sign-ups, live riders,
-// races and shouts. It exposes the small `use()` interface the game expects.
-import { firebaseConfig, ADMIN_EMAILS } from './firebase-config.js';
+// Meuro Market Run live backend on Supabase.
+//  * Accounts: Supabase Auth (email + password, email confirmation).
+//  * Data: Postgres tables protected by row level security; every write goes
+//    through checked database functions (see supabase/schema.sql).
+//  * Live play: private Realtime channels (signed-in players only), sharded so
+//    a busy market splits into rooms of up to 40 riders.
+import { SUPABASE_URL, SUPABASE_ANON_KEY, TURNSTILE_SITE_KEY } from './meuro-config.js';
 
-const V = '10.12.2';
-const CDN = 'https://www.gstatic.com/firebasejs/' + V + '/';
+const SDK = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm';
 const TAB = Math.random().toString(36).slice(2, 8);
+const SHARD_SIZE = 40, MAX_SHARDS = 50;
 
 function configured() {
-  return firebaseConfig && typeof firebaseConfig.apiKey === 'string' && firebaseConfig.apiKey.length > 20 &&
-    typeof firebaseConfig.databaseURL === 'string' && firebaseConfig.databaseURL.indexOf('https://') === 0;
+  return /^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(String(SUPABASE_URL || '').replace(/\/+$/, '')) &&
+    typeof SUPABASE_ANON_KEY === 'string' && SUPABASE_ANON_KEY.length > 30;
 }
+
+const ERR = {
+  'User already registered': 'auth/email-already-in-use',
+  'Invalid login credentials': 'auth/invalid-credential',
+  'Email not confirmed': 'auth/email-not-confirmed',
+  'Password should be at least 6 characters': 'auth/weak-password',
+  'Unable to validate email address: invalid format': 'auth/invalid-email',
+  'captcha protection: request disallowed': 'auth/captcha'
+};
+function authCode(e) {
+  const m = (e && e.message) || '';
+  if (ERR[m]) return ERR[m];
+  if (/rate limit|too many/i.test(m) || (e && e.status === 429)) return 'auth/too-many-requests';
+  if (/password/i.test(m)) return 'auth/weak-password';
+  if (/captcha/i.test(m)) return 'auth/captcha';
+  if (/fetch|network/i.test(m)) return 'auth/network-request-failed';
+  return 'unknown';
+}
+const rpcErr = e => {
+  const m = String((e && e.message) || e || '');
+  const known = ['too_fast', 'bad_name', 'bad_colour', 'already_has_crew', 'name_taken', 'no_such_crew', 'too_many_reports', 'not_signed_in', 'not_admin'];
+  return known.find(k => m.indexOf(k) > -1) || 'unavailable';
+};
 
 async function boot() {
   if (!configured()) throw new Error('not-configured');
-  const [appMod, A, D] = await Promise.all([
-    import(CDN + 'firebase-app.js'), import(CDN + 'firebase-auth.js'), import(CDN + 'firebase-database.js')
-  ]);
-  const app = appMod.initializeApp(firebaseConfig);
-  const auth = A.getAuth(app);
-  const db = D.getDatabase(app);
-  const admins = (ADMIN_EMAILS || []).map(e => String(e).toLowerCase());
+  const { createClient } = await import(SDK);
+  const sb = createClient(SUPABASE_URL.replace(/\/+$/, ''), SUPABASE_ANON_KEY, {
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'pkce' },
+    realtime: { params: { eventsPerSecond: 8 } }
+  });
 
-  let current = null;          // {uid,email,name,verified,isAdmin}
-  let offset = 0;              // server clock offset
-  D.onValue(D.ref(db, '.info/serverTimeOffset'), s => { offset = s.val() || 0; });
-  const now = () => Date.now() + offset;
-
-  const clean = v => JSON.parse(JSON.stringify(v, (k, x) => (x === undefined ? null : x)));
-  const err = e => ({ code: (e && e.code) || 'unavailable', message: String((e && e.message) || e) });
-
-  /* ---------------- documents (scores/<id>, crews/<id>, signups/<id>) */
-  const snapDoc = (id, val) => ({ id, exists: val !== null && val !== undefined, data: () => (val == null ? undefined : val), metadata: {} });
-  function docRef(path) {
-    const r = D.ref(db, path);
-    return {
-      id: path.split('/').pop(), path,
-      get: async () => { try { const s = await D.get(r); return snapDoc(s.key, s.val()); } catch (e) { throw err(e); } },
-      set: async v => { try { await D.set(r, clean(v)); } catch (e) { throw err(e); } },
-      update: async v => { try { await D.update(r, clean(v)); } catch (e) { throw err(e); } },
-      delete: async () => { try { await D.remove(r); } catch (e) { throw err(e); } },
-      onSnapshot: (cb, onErr) => D.onValue(r, s => cb(snapDoc(s.key, s.val())), e => onErr && onErr(err(e)))
-    };
-  }
-  function collection(path, o) {
-    o = o || {};
-    const build = () => {
-      const c = [];
-      if (o.f) { c.push(D.orderByChild(o.f)); if (o.n) c.push(o.dir === 'desc' ? D.limitToLast(o.n) : D.limitToFirst(o.n)); }
-      else if (o.n) c.push(D.limitToFirst(o.n));
-      return c.length ? D.query(D.ref(db, path), ...c) : D.ref(db, path);
-    };
-    const toSnap = s => {
-      const docs = []; s.forEach(ch => { docs.push(snapDoc(ch.key, ch.val())); });
-      if (o.f && o.dir === 'desc') docs.reverse();
-      return { docs, size: docs.length, empty: !docs.length, docChanges: () => [], metadata: {} };
-    };
-    return {
-      path,
-      doc: id => docRef(path + '/' + id),
-      orderBy: (f, dir) => collection(path, Object.assign({}, o, { f, dir })),
-      limit: n => collection(path, Object.assign({}, o, { n })),
-      where: () => collection(path, o),
-      get: async () => { try { return toSnap(await D.get(build())); } catch (e) { throw err(e); } },
-      onSnapshot: (cb, onErr) => D.onValue(build(), s => cb(toSnap(s)), e => onErr && onErr(err(e)))
-    };
-  }
-  const dbApi = { doc: docRef, collection };
-
-  /* ---------------- rooms: the market (lobby) and named race rooms */
+  let current = null;
   const rooms = {};
-  function makeRoom(name) {
-    if (rooms[name]) return rooms[name];
-    const base = name === 'lobby' ? 'market' : 'rooms/' + name;
-    let key = null, pres = {}, snap = Object.freeze([]), prev = {}, left = false;
-    const peerHandlers = [], topicHandlers = {}, unsubs = [];
+
+  async function refreshUser(session) {
+    const u = session && session.user;
+    if (!u) { current = null; return; }
+    let isAdmin = false;
+    try { const r = await sb.rpc('is_admin'); isAdmin = r.data === true; } catch (e) {}
+    current = { uid: u.id, email: u.email, name: (u.user_metadata && u.user_metadata.name) || '', verified: !!u.email_confirmed_at, isAdmin };
+    try { await sb.realtime.setAuth(session.access_token); } catch (e) {}
+  }
+  function publish() {
+    window.dispatchEvent(new CustomEvent('meuro-auth', { detail: current ? Object.assign({}, current) : { uid: null } }));
+  }
+
+  /* ------------------------------------------------ live rooms */
+  function makeRoom(topicBase, opts) {
+    opts = opts || {};
+    let ch = null, topic = null, pres = {}, snap = Object.freeze([]), prev = {}, left = false, shard = 0;
+    const peerHandlers = [], topicHandlers = {};
+    let lastTrack = 0, trackTimer = null;
     const myKey = () => (current ? current.uid + '_' + TAB : null);
 
-    function rekey() {
-      const k = myKey();
-      if (k === key) return;
-      if (key) D.remove(D.ref(db, base + '/peers/' + key)).catch(() => {});
-      key = k;
-      if (key && !left) {
-        const r = D.ref(db, base + '/peers/' + key);
-        D.onDisconnect(r).remove().catch(() => {});
-        D.set(r, { p: clean(pres), t: D.serverTimestamp() }).catch(() => {});
-      }
-      rebuild(lastVal);
-    }
-    let lastVal = null;
-    function rebuild(val) {
-      lastVal = val;
+    function build() {
+      const st = ch ? ch.presenceState() : {};
       const cur = {}, list = [];
-      Object.keys(val || {}).forEach(k => {
-        const v = val[k] || {}; const by = k.split('_')[0];
-        const peer = { peer: k, by, isMe: !!current && by === current.uid, sameTab: k === key, kind: 'viewer', guest: false, presence: Object.freeze(Object.assign({}, v.p || {})), updatedAt: Date.now() };
+      Object.keys(st).forEach(k => {
+        const metas = st[k] || []; const m = metas[metas.length - 1] || {};
+        const by = k.split('_')[0];
+        const peer = { peer: k, by, isMe: !!current && by === current.uid, sameTab: k === myKey(), kind: 'viewer', guest: false,
+          presence: Object.freeze(Object.assign({}, m.p || {})), updatedAt: Date.now() };
         cur[k] = peer; list.push(peer);
       });
-      if (!key) { // signed-out viewer: still show yourself so counts read naturally
+      if (!ch || !myKey()) {
         const me = { peer: 'local_' + TAB, by: null, isMe: true, sameTab: true, kind: 'viewer', guest: false, presence: Object.freeze(Object.assign({}, pres)), updatedAt: Date.now() };
-        cur[me.peer] = me; list.push(me);
+        if (!cur[me.peer]) { cur[me.peer] = me; list.push(me); }
       }
       const joined = [], gone = [], updated = [];
       Object.keys(cur).forEach(k => { if (!prev[k]) joined.push(cur[k]); else if (JSON.stringify(prev[k].presence) !== JSON.stringify(cur[k].presence)) updated.push(cur[k]); });
       Object.keys(prev).forEach(k => { if (!cur[k]) gone.push(prev[k]); });
       prev = cur; snap = Object.freeze(list);
-      const ch = { peers: snap, joined, left: gone, updated };
-      peerHandlers.forEach(h => { try { h(ch); } catch (e) { console.error(e); } });
+      const change = { peers: snap, joined, left: gone, updated };
+      peerHandlers.forEach(h => { try { h(change); } catch (e) { console.error(e); } });
+      return list.length;
     }
-    unsubs.push(D.onValue(D.ref(db, base + '/peers'), s => rebuild(s.val()), () => {}));
-    const since = now() - 1500;
-    unsubs.push(D.onChildAdded(D.query(D.ref(db, base + '/events'), D.orderByChild('t'), D.startAt(since)), s => {
-      const v = s.val() || {}; const hs = topicHandlers[v.topic]; if (!hs) return;
-      const msg = { topic: v.topic, data: v.d, peer: v.k, by: v.by, isMe: !!current && v.by === current.uid, sameTab: v.k === key, kind: 'viewer', guest: false };
-      hs.forEach(h => { try { h(msg); } catch (e) { console.error(e); } });
-    }, () => {}));
-
+    function track() {
+      if (!ch || !myKey()) return;
+      const now = Date.now(), wait = 300 - (now - lastTrack);
+      if (wait > 0) { clearTimeout(trackTimer); trackTimer = setTimeout(track, wait); return; }
+      lastTrack = now;
+      ch.track({ p: pres }).catch(() => {});
+    }
+    async function connect() {
+      if (left || !current) return;
+      if (ch) { try { await sb.removeChannel(ch); } catch (e) {} ch = null; }
+      topic = opts.sharded ? topicBase + ':' + shard : topicBase;
+      const c = sb.channel(topic, { config: { private: true, presence: { key: myKey() }, broadcast: { self: true, ack: false } } });
+      ch = c;
+      c.on('presence', { event: 'sync' }, () => {
+        if (c !== ch) return;
+        const n = build();
+        if (opts.sharded && !c._meuroChecked) {
+          c._meuroChecked = true;
+          if (n > SHARD_SIZE && shard < MAX_SHARDS - 1) { shard++; connect(); }
+        }
+      });
+      c.on('broadcast', { event: 'ev' }, msg => {
+        if (c !== ch) return;
+        const p = msg && msg.payload; if (!p || typeof p.t !== 'string') return;
+        const hs = topicHandlers[p.t]; if (!hs) return;
+        const k = String(p.k || ''), by = k.split('_')[0];
+        const m = { topic: p.t, data: p.d, peer: k, by, isMe: !!current && by === current.uid, sameTab: k === myKey(), kind: 'viewer', guest: false };
+        hs.forEach(h => { try { h(m); } catch (e) { console.error(e); } });
+      });
+      c.subscribe(status => {
+        if (status === 'SUBSCRIBED') { lastTrack = 0; track(); setTimeout(() => { if (c === ch && !c._meuroChecked) { c._meuroChecked = true; build(); } }, 2500); }
+        if ((status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') && opts.onError) opts.onError(status);
+      });
+    }
     const room = {
-      name,
-      presence: patch => {
+      name: topicBase,
+      presence(patch) {
         Object.keys(patch || {}).forEach(k => { if (patch[k] === null) delete pres[k]; else pres[k] = patch[k]; });
-        if (!key || left) { rebuild(lastVal); return Promise.resolve(); }
-        return D.set(D.ref(db, base + '/peers/' + key), { p: clean(pres), t: D.serverTimestamp() }).catch(() => {});
+        if (!ch) { build(); return Promise.resolve(); }
+        track(); return Promise.resolve();
       },
-      emit: (topic, data) => {
-        if (!key || left) return Promise.reject({ code: 'not_permitted', message: 'Log in to take part.' });
-        return D.push(D.ref(db, base + '/events'), { topic, d: clean(data === undefined ? null : data), k: key, by: current.uid, t: D.serverTimestamp() }).then(() => {}, e => { throw err(e); });
+      emit(t, data) {
+        if (!ch || !myKey()) return Promise.reject({ code: 'not_permitted', message: 'Log in to take part.' });
+        return ch.send({ type: 'broadcast', event: 'ev', payload: { t, d: data === undefined ? null : data, k: myKey() } }).then(() => {});
       },
-      on: (topic, h) => { (topicHandlers[topic] = topicHandlers[topic] || []).push(h); return () => { const a = topicHandlers[topic]; a.splice(a.indexOf(h), 1); }; },
-      onPeers: (h) => { peerHandlers.push(h); setTimeout(() => h({ peers: snap, joined: snap.slice(), left: [], updated: [] }), 0); return () => peerHandlers.splice(peerHandlers.indexOf(h), 1); },
+      on(t, h) { (topicHandlers[t] = topicHandlers[t] || []).push(h); return () => { const a = topicHandlers[t]; a.splice(a.indexOf(h), 1); }; },
+      onPeers(h, onErr) { peerHandlers.push(h); if (onErr) opts.onError = onErr; setTimeout(() => h({ peers: snap, joined: snap.slice(), left: [], updated: [] }), 0); return () => peerHandlers.splice(peerHandlers.indexOf(h), 1); },
       peers: () => snap,
-      connected: () => true,
-      onConnection: h => { setTimeout(() => h(true), 0); return () => {}; },
-      join: async n => { if (!/^[a-z0-9][a-z0-9_.-]{0,47}$/.test(n)) throw { code: 'invalid_argument', message: 'Bad room name' }; if (!current) throw { code: 'not_permitted', message: 'Log in first' }; return makeRoom(n); },
-      leave: async () => { left = true; if (key) await D.remove(D.ref(db, base + '/peers/' + key)).catch(() => {}); unsubs.forEach(u => u()); delete rooms[name]; },
-      _rekey: rekey
+      connected: () => !!ch,
+      onConnection(h) { setTimeout(() => h(!!ch), 0); return () => {}; },
+      async join(name) {
+        if (!/^[a-z0-9][a-z0-9-]{2,30}$/.test(name)) throw { code: 'invalid_argument', message: 'Bad race code' };
+        if (!current) throw { code: 'not_permitted', message: 'Log in first' };
+        const key = 'race:' + name;
+        if (!rooms[key]) { rooms[key] = makeRoom(key, {}); await rooms[key]._connect(); }
+        return rooms[key];
+      },
+      async leave() { left = true; delete rooms[topicBase]; if (ch) { try { await ch.untrack(); } catch (e) {} try { await sb.removeChannel(ch); } catch (e) {} ch = null; } },
+      _connect: connect,
+      _reset: async () => { if (ch) { try { await sb.removeChannel(ch); } catch (e) {} ch = null; } prev = {}; build(); }
     };
-    rooms[name] = room;
-    if (current) rekey();
     return room;
   }
+  const lobby = makeRoom('market', { sharded: true });
+  rooms.market = lobby;
 
-  /* ---------------- auth */
-  function publish() {
-    window.dispatchEvent(new CustomEvent('meuro-auth', { detail: current ? Object.assign({}, current) : { uid: null } }));
-  }
-  await new Promise(res => {
-    let first = true;
-    A.onAuthStateChanged(auth, async u => {
-      if (u && !u.emailVerified && typeof A.reload === 'function') {
-        try { await A.reload(u); if (u.emailVerified) await u.getIdToken(true); } catch (e) {}
+  async function onAuthChanged(session) {
+    const before = current && current.uid;
+    await refreshUser(session);
+    const after = current && current.uid;
+    if (before !== after) {
+      for (const k of Object.keys(rooms)) {
+        if (k === 'market') { await lobby._reset(); if (after) await lobby._connect(); }
+        else { try { await rooms[k].leave(); } catch (e) {} }
       }
-      current = u ? { uid: u.uid, email: u.email, name: u.displayName || '', verified: !!u.emailVerified, isAdmin: admins.indexOf(String(u.email || '').toLowerCase()) > -1 && !!u.emailVerified } : null;
-      Object.keys(rooms).forEach(n => rooms[n]._rekey());
-      publish();
-      if (first) { first = false; res(); }
-    });
+    }
+    publish();
+  }
+  const { data: s0 } = await sb.auth.getSession();
+  await refreshUser(s0 && s0.session);
+  if (current) lobby._connect();
+  sb.auth.onAuthStateChange((event, session) => {
+    if (event === 'PASSWORD_RECOVERY') window.dispatchEvent(new CustomEvent('meuro-recovery'));
+    if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'USER_UPDATED') setTimeout(() => onAuthChanged(session), 0);
+    if (event === 'TOKEN_REFRESHED' && session) { try { sb.realtime.setAuth(session.access_token); } catch (e) {} }
   });
+  setTimeout(publish, 0);
 
-  const userApi = {
-    id: async () => (current ? current.uid : null),
-    isOwner: async () => !!(current && current.isAdmin),
-    canEdit: async () => !!(current && current.isAdmin),
-    can: async () => (current ? true : false),
-    me: async () => ({ id: current ? current.uid : null, name: current ? current.name : '', email: current ? current.email : null, isOwner: !!(current && current.isAdmin), canEdit: false, avatarUrl: '', color: '#888' })
-  };
+  /* ------------------------------------------------ captcha (optional) */
+  let captchaToken = null;
+  function needCaptcha() { return typeof TURNSTILE_SITE_KEY === 'string' && TURNSTILE_SITE_KEY.length > 10; }
+  async function renderCaptcha(el) {
+    if (!needCaptcha() || !el) return;
+    if (!window.turnstile) {
+      await new Promise((res, rej) => { const s = document.createElement('script'); s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'; s.async = true; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
+    }
+    if (el.dataset.ready) return;
+    el.dataset.ready = '1';
+    window.turnstile.render(el, { sitekey: TURNSTILE_SITE_KEY, theme: 'dark', callback: t => { captchaToken = t; }, 'expired-callback': () => { captchaToken = null; } });
+  }
+  function resetCaptcha() { captchaToken = null; try { if (window.turnstile) window.turnstile.reset(); } catch (e) {} }
 
-  const authApi = {
+  const here = () => location.href.split('#')[0];
+
+  const auth = {
     current: () => (current ? Object.assign({}, current) : null),
+    needCaptcha, renderCaptcha,
     async signUp(name, email, password, consent) {
-      try {
-        const cred = await A.createUserWithEmailAndPassword(auth, email, password);
-        await A.updateProfile(cred.user, { displayName: name });
-        const t = new Date().toISOString();
-        await D.set(D.ref(db, 'signups/' + cred.user.uid), { name, via: 'email', contact: email, consent: !!consent, createdAt: t, updatedAt: t });
-        try { await A.sendEmailVerification(cred.user); } catch (e) {}
-        current = Object.assign({}, current || {}, { uid: cred.user.uid, email, name });
-        publish();
-        return { ok: true };
-      } catch (e) { return { ok: false, code: e.code || 'unknown' }; }
+      if (needCaptcha() && !captchaToken) return { ok: false, code: 'auth/captcha-needed' };
+      const { data, error } = await sb.auth.signUp({ email, password, options: { data: { name, consent: !!consent }, emailRedirectTo: here(), captchaToken: captchaToken || undefined } });
+      resetCaptcha();
+      if (error) return { ok: false, code: authCode(error) };
+      if (data && data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) return { ok: false, code: 'auth/email-already-in-use' };
+      return { ok: true, confirm: !(data && data.session) };
     },
     async logIn(email, password) {
-      try { await A.signInWithEmailAndPassword(auth, email, password); return { ok: true }; }
-      catch (e) { return { ok: false, code: e.code || 'unknown' }; }
+      if (needCaptcha() && !captchaToken) return { ok: false, code: 'auth/captcha-needed' };
+      const { error } = await sb.auth.signInWithPassword({ email, password, options: { captchaToken: captchaToken || undefined } });
+      resetCaptcha();
+      return error ? { ok: false, code: authCode(error) } : { ok: true };
     },
     async reset(email) {
-      try { await A.sendPasswordResetEmail(auth, email); return { ok: true }; }
-      catch (e) { return { ok: false, code: e.code || 'unknown' }; }
+      if (needCaptcha() && !captchaToken) return { ok: false, code: 'auth/captcha-needed' };
+      const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: here(), captchaToken: captchaToken || undefined });
+      resetCaptcha();
+      return error ? { ok: false, code: authCode(error) } : { ok: true };
     },
-    async logOut() {
-      Object.keys(rooms).forEach(n => { if (n !== 'lobby') rooms[n].leave(); });
-      try { await A.signOut(auth); } catch (e) {}
-      return { ok: true };
+    async newPassword(password) {
+      const { error } = await sb.auth.updateUser({ password });
+      return error ? { ok: false, code: authCode(error) } : { ok: true };
     },
-    async resendVerification() { try { if (auth.currentUser) await A.sendEmailVerification(auth.currentUser); return { ok: true }; } catch (e) { return { ok: false, code: e.code }; } }
+    async resendConfirmation(email) {
+      const { error } = await sb.auth.resend({ type: 'signup', email, options: { emailRedirectTo: here() } });
+      return error ? { ok: false, code: authCode(error) } : { ok: true };
+    },
+    async logOut() { try { await sb.auth.signOut(); } catch (e) {} return { ok: true }; }
+  };
+
+  /* ------------------------------------------------ data API */
+  const ok = r => { if (r.error) throw { code: rpcErr(r.error), message: r.error.message }; return r.data; };
+  const api = {
+    async leaderboard(n) { return ok(await sb.from('scores').select('user_id,name,best,stars,dish,country,crew_id').gt('best', 0).order('best', { ascending: false }).order('updated_at', { ascending: true }).limit(n || 50)); },
+    async today(day, n) { return ok(await sb.from('daily_scores').select('user_id,name,score,stars,dish').eq('day', day).order('score', { ascending: false }).order('updated_at', { ascending: true }).limit(n || 50)); },
+    async crews() { return ok(await sb.rpc('crew_board')); },
+    async myScore() { if (!current) return null; const r = ok(await sb.from('scores').select('best,crew_id').eq('user_id', current.uid).maybeSingle()); return r; },
+    async myProfile() { if (!current) return null; return ok(await sb.from('profiles').select('name,consent,keke_color,rides,streak,best_streak,last_day,badges,countries,challenges_done').eq('id', current.uid).maybeSingle()); },
+    async updateProfile(name, consent, keke) { return ok(await sb.rpc('update_profile', { p_name: name, p_consent: consent, p_keke: keke || null })); },
+    async recordRide(r) { return ok(await sb.rpc('record_ride', { p_dish: r.dish, p_country: r.country, p_score: r.score, p_stars: r.stars, p_daily: !!r.daily, p_all_items: !!r.allItems, p_budget_left: Math.max(-10, Math.min(1, Math.round(r.budgetLeft * 1000) / 1000)), p_veg: r.veg, p_junk: r.junk, p_challenge: !!r.challenge })); },
+    async createCrew(name) { return ok(await sb.rpc('create_crew', { p_name: name })); },
+    async setCrew(id) { return ok(await sb.rpc('set_crew', { p_crew: id })); },
+    async reportPrice(cc, item, amount, currency, place) { return ok(await sb.rpc('report_price', { p_country: cc, p_item: item, p_amount: amount, p_currency: currency, p_place: place || null })); },
+    async approvedPrices() { return ok(await sb.rpc('approved_prices')); },
+    async deleteAccount() { ok(await sb.rpc('delete_my_account')); await sb.auth.signOut(); },
+    admin: {
+      async signups(n) { return ok(await sb.rpc('admin_signups', { p_limit: n || 1000 })); },
+      async hideScore(uid) { return ok(await sb.rpc('admin_hide_score', { p_user: uid })); },
+      async pendingPrices() { return ok(await sb.rpc('admin_pending_prices')); },
+      async moderate(id, approve) { return ok(await sb.rpc('admin_moderate_price', { p_id: id, p_approve: !!approve })); }
+    }
   };
 
   return {
-    use: async name => (name === 'db' ? dbApi : name === 'user' ? userApi : name === 'room' ? makeRoom('lobby') : null),
-    auth: authApi
+    use: async name => (name === 'room' ? lobby : null),
+    auth, api
   };
 }
 
 boot().then(api => { window.__meuroBackend = api; window.__meuroResolve(api); },
-  e => { console.warn('Meuro live features are off:', e && e.message); window.__meuroResolve(null); });
+  e => { if (!(e && e.message === 'not-configured')) console.warn('Meuro live features are off:', e && e.message); window.__meuroResolve(null); });

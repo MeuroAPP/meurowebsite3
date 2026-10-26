@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://www.googletagmanager.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://*.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://cdn.jsdelivr.net https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0B120D">
 <link rel="icon" href="img/logo.png">
@@ -289,6 +292,55 @@ a{color:inherit}
 @media (max-width:420px){.intro-top .tops{gap:6px}.intro-top a.glass,.intro-top button.glass{padding:9px 12px;font-size:14px}.intro-top .brand{height:20px}}
 @media (max-width:760px){#hud .exit{top:calc(max(12px,env(safe-area-inset-top,0px)) + 96px)!important;bottom:auto!important;left:auto!important;right:max(12px,env(safe-area-inset-right,0px))!important}#hud .toasts{top:calc(max(12px,env(safe-area-inset-top,0px)) + 142px)}#hRiders{top:calc(max(12px,env(safe-area-inset-top,0px)) + 88px)}}
 @media (max-width:760px){#intro{background:linear-gradient(0deg,rgba(6,10,7,.94) 0%,rgba(6,10,7,.82) 52%,rgba(6,10,7,.35) 78%,rgba(6,10,7,.1) 100%)}}
+
+/* v8: daily market, portions, profile, reports */
+.daily{border-radius:20px;padding:14px 16px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 14px;align-items:center;border:1px solid rgba(246,196,69,.35);background:linear-gradient(135deg,rgba(242,123,43,.22),rgba(14,22,17,.72))}
+.dl-main{display:grid;gap:2px;min-width:0}
+.dl-main b{font-family:var(--f-display);font-size:22px;letter-spacing:-.02em;line-height:1.1}
+.dl-main small{color:var(--muted);font-size:13.5px}
+.dl-play{height:46px;padding:0 18px}
+.dl-meta{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:13.5px;color:var(--muted)}
+.streak{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--gold)}
+.streak{gap:0!important}.streak svg{width:16px;height:16px;color:var(--orange);margin-right:6px}
+.streak b{font-size:15px}
+.chal{display:inline-flex;align-items:center;gap:6px}
+.chal::before{content:"";width:8px;height:8px;border-radius:50%;background:#7CF09A}
+.chal.done::before{background:var(--gold)}
+.portions{display:flex;gap:6px;flex-wrap:wrap}
+.portions button{height:34px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);font-size:13px;font-weight:600;cursor:pointer}
+.portions button[aria-pressed="true"]{background:var(--fg);color:#111;border-color:var(--fg)}
+.ing span em{font-style:normal;font-weight:500;color:var(--muted);font-size:12px;margin-left:2px}
+.src{margin:0;font-size:12px;color:var(--muted);line-height:1.4}
+.li .lin{display:grid;line-height:1.15}
+.li .lin small{font-size:11px;color:var(--muted);font-weight:500}
+.lite{justify-self:start;font-size:13px}
+.me-name{font-weight:700;color:var(--fg);text-decoration:underline;text-underline-offset:3px;font-size:14px}
+.ractions{display:flex;flex-wrap:wrap;gap:8px}
+.ractions .btn{height:46px;padding:0 16px;font-size:14.5px}
+.ractions .ic{width:16px;height:16px}
+.rprog{display:grid;gap:8px;padding:12px 14px;border-radius:16px;border:1px solid rgba(246,196,69,.35);background:rgba(246,196,69,.07);font-size:14.5px}
+.rprog .row{gap:8px}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;background:rgba(255,255,255,.08);font-size:13px;font-weight:600}
+.pill.new{background:rgba(246,196,69,.2);color:var(--gold)}
+.pf-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.pf-stats div{border:1px solid var(--line);border-radius:14px;padding:10px;display:grid;gap:2px}
+.pf-stats b{font-family:var(--f-display);font-size:22px}
+.pf-stats span{font-size:12px;color:var(--muted)}
+.swatches{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.swatches button{width:38px;height:38px;border-radius:50%;border:3px solid transparent;cursor:pointer;position:relative}
+.swatches button[aria-pressed="true"]{border-color:#fff}
+.swatches button:disabled{opacity:.3;cursor:not-allowed}
+.badges{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px}
+.badge{border:1px solid var(--line);border-radius:14px;padding:10px;display:grid;gap:2px;font-size:12px;color:var(--muted)}
+.badge b{font-size:13.5px;color:var(--fg)}
+.badge.on{border-color:rgba(246,196,69,.55);background:rgba(246,196,69,.08)}
+.badge:not(.on) b{color:var(--muted)}
+.danger{color:#FF8A73!important}
+.captcha:empty{display:none}
+.pr-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:6px;align-items:center;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.04);font-size:13px}
+.pr-row button{height:30px;padding:0 10px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);font-weight:700;font-size:12px;cursor:pointer}
+#profile .mcard,#reportModal .mcard{width:min(520px,100%)}
+@media (max-width:760px){.pf-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.badges{grid-template-columns:repeat(2,minmax(0,1fr))}.dl-main b{font-size:19px}.daily{padding:12px}}
 #rotate{display:none}
 @media (max-width:760px){
   .dish{flex-basis:108px}
@@ -332,8 +384,13 @@ a{color:inherit}
     <span class="eyebrow">Meuro Market Run</span>
     <h1 id="t">Ride the <em>market.</em></h1>
     <p>Scroll through dishes from across Africa, pick one, then ride the keke and grab every ingredient within your budget. Meuro AI scans your plate at the end.</p>
+    <div class="daily glass" id="daily">
+      <div class="dl-main"><span class="eyebrow">Market of the Day</span><b id="dlDish">Loading…</b><small id="dlInfo"></small></div>
+      <button class="btn btn-orange dl-play" id="dlPlay" type="button">Play today</button>
+      <div class="dl-meta"><span class="streak" id="dlStreak"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 3.5-1.5 5-1.5 7.5 0 1.4 1 2.5 2.3 2.5 1.6 0 2.4-1.4 2.2-3.2C17.6 10.6 19 13 19 15.5 19 19.1 15.9 22 12 22s-7-2.9-7-6.5C5 10.7 9.8 8.6 12 2z" fill="currentColor"/></svg><b class="tnum">0</b>-day streak</span><span class="chal" id="dlChallenge"></span></div>
+    </div>
     <div class="picker">
-      <div class="phead"><div class="tabs" id="tabs" role="group" aria-label="Filter by region"></div>
+      <div class="phead"><div class="tabs" id="tabs" role="group" aria-label="Filter by country"></div>
         <div class="parrows"><button type="button" id="pPrev" aria-label="Previous dishes"><svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" id="pNext" aria-label="More dishes"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></div>
       <div class="dishes" id="dishes" role="group" aria-label="Choose a dish"></div>
       <div class="sel glass" id="sel" aria-live="polite"></div>
@@ -348,8 +405,9 @@ a{color:inherit}
       <button class="cbtn2 glass" id="bCrew" type="button"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="3.2" stroke="currentColor" stroke-width="1.8"/><path d="M3 19c.6-3.3 3-5 6-5s5.4 1.7 6 5M17 6.5a2.6 2.6 0 010 5M17.5 14c2 .4 3.2 2 3.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Crews</button>
       <button class="online glass" id="onlinePill" type="button"><span class="av" id="onlineAv"></span><span id="onlineN">Connecting to the market…</span></button>
     </div>
-    <div class="me" id="meChip" hidden><i id="meDot"></i>Riding as <b id="meName"></b><span id="meCrew"></span><button class="linkbtn" type="button" id="meEdit">Log out</button></div>
+    <div class="me" id="meChip" hidden><i id="meDot"></i>Riding as <button class="linkbtn me-name" type="button" id="meName" aria-label="Open your profile"></button><span id="meCrew"></span><button class="linkbtn" type="button" id="meEdit">Log out</button></div>
     <div class="keys"><kbd>↑</kbd> go &nbsp; <kbd>Space</kbd> stop &nbsp; <kbd>↓</kbd> reverse &nbsp; <kbd>←</kbd> <kbd>→</kbd> change lane &nbsp;·&nbsp; swipe on phones</div>
+    <button class="linkbtn lite" id="liteBtn" type="button" aria-pressed="false">Lite mode: off</button>
   </div>
 </section>
 
@@ -379,10 +437,11 @@ a{color:inherit}
 
 <aside id="board" class="glass" hidden aria-label="Leaderboard">
   <div class="bd-head"><div><b>Leaderboard</b><small id="bdSub">Top Market Run plates</small></div><button class="bd-close" type="button" id="bdClose" aria-label="Close leaderboard">×</button></div>
-  <div class="bd-tabs" id="bdTabs" role="group" aria-label="Leaderboard view"><button type="button" data-t="players" aria-pressed="true">Players</button><button type="button" data-t="crews" aria-pressed="false">Crews</button><button type="button" data-t="online" aria-pressed="false">Online</button></div>
+  <div class="bd-tabs" id="bdTabs" role="group" aria-label="Leaderboard view"><button type="button" data-t="players" aria-pressed="true">Players</button><button type="button" data-t="today" aria-pressed="false">Today</button><button type="button" data-t="crews" aria-pressed="false">Crews</button><button type="button" data-t="online" aria-pressed="false">Online</button></div>
   <div class="bd-body"><div id="tabPlayers" style="display:grid;gap:6px"><div id="bdList" style="display:grid;gap:6px"></div><p class="bd-empty" id="bdEmpty">No scores yet. Finish a ride and be the first on the board.</p><p class="bd-note" id="bdNote" hidden></p>
-    <div class="owner" id="bdOwner" hidden><h5>Sign-ups · only you can see this</h5><div id="suList" style="display:grid;gap:6px"></div><button class="btn btn-ghost" type="button" id="suCopy" style="height:42px">Copy as CSV</button><textarea id="suCsv" readonly hidden aria-label="Sign-ups CSV"></textarea></div></div>
+    <div class="owner" id="bdOwner" hidden><h5>Sign-ups · only you can see this</h5><div id="suList" style="display:grid;gap:6px"></div><button class="btn btn-ghost" type="button" id="suCopy" style="height:42px">Copy as CSV</button><textarea id="suCsv" readonly hidden aria-label="Sign-ups CSV"></textarea><h5 style="margin-top:12px">Price reports to check</h5><div id="prList" style="display:grid;gap:6px"></div></div></div>
     <div id="tabCrews" hidden style="display:grid;gap:8px"><p class="bd-note" id="crewMine"></p><form class="crewform" id="crewForm"><input id="crewName" maxlength="24" placeholder="Crew name, e.g. Yaba Foodies" aria-label="New crew name"><button class="btn btn-orange" type="submit">Start crew</button></form><p class="err" id="crewErr"></p><div id="bdCrews" style="display:grid;gap:6px"></div></div>
+    <div id="tabToday" hidden style="display:grid;gap:6px"><p class="bd-note" id="todayHead"></p><div id="bdToday" style="display:grid;gap:6px"></div></div>
     <div id="tabOnline" hidden><div id="bdOnline" style="display:grid;gap:6px"></div></div>
   </div>
 </aside>
@@ -417,13 +476,40 @@ a{color:inherit}
     <form id="joinForm" novalidate style="display:grid;gap:14px">
       <label class="fl" id="jNameRow"><span>Rider name</span><input id="jName" maxlength="20" autocomplete="nickname"></label>
       <label class="fl"><span>Email address</span><input id="jEmail" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com"></label>
-      <label class="fl"><span>Password</span><input id="jPass" type="password" autocomplete="new-password" placeholder="At least 6 characters"></label>
+      <label class="fl"><span>Password</span><input id="jPass" type="password" autocomplete="new-password" placeholder="At least 8 characters"></label>
       <label class="consent" id="jConsentRow"><input type="checkbox" id="jConsent" checked><span>Email me weekly meal plans, tips and offers from Meuro. I can opt out anytime. <a href="faq.html#privacy">How we use your data</a></span></label>
+      <div id="jCaptcha" class="captcha"></div>
       <button class="btn btn-orange" type="submit" id="jSave">Create account</button>
+      <button class="linkbtn" type="button" id="jResend" hidden style="justify-self:center">Resend confirmation email</button>
       <button class="linkbtn" type="button" id="jForgot" hidden style="justify-self:center">Forgot password?</button>
       <p class="err" id="jMsg" role="status"></p>
     </form>
   </div>
+</div>
+<div class="modal" id="profile" hidden>
+  <div class="mcard glass" role="dialog" aria-labelledby="pfTitle">
+    <div class="mhead"><div><span class="eyebrow">Your rider</span><h3 id="pfTitle">Profile</h3><p id="pfSub"></p></div><button class="bd-close" type="button" id="pfClose" aria-label="Close">×</button></div>
+    <div class="pf-stats" id="pfStats"></div>
+    <div><span class="eyebrow">Keke colour</span><div class="swatches" id="pfColors" role="group" aria-label="Keke colour"></div><p class="bd-note" id="pfColorNote"></p></div>
+    <div><span class="eyebrow">Badges</span><div class="badges" id="pfBadges"></div></div>
+    <form id="pfForm" novalidate style="display:grid;gap:12px">
+      <label class="fl"><span>Rider name</span><input id="pfName" maxlength="20" autocomplete="nickname"></label>
+      <label class="consent"><input type="checkbox" id="pfConsent"><span>Email me weekly meal plans, tips and offers from Meuro.</span></label>
+      <button class="btn btn-orange" type="submit" id="pfSave">Save changes</button>
+      <p class="err" id="pfMsg" role="status"></p>
+    </form>
+    <div class="row" style="justify-content:space-between"><button class="btn btn-ghost" type="button" id="pfLogout">Log out</button><button class="linkbtn danger" type="button" id="pfDelete">Delete my account</button></div>
+  </div>
+</div>
+<div class="modal" id="reportModal" hidden>
+  <form class="mcard glass" id="reportForm" novalidate role="dialog" aria-labelledby="rpTitle">
+    <div class="mhead"><div><span class="eyebrow">Help fix prices</span><h3 id="rpTitle">Report a real price</h3><p id="rpSub">Tell us what you paid at the market. Approved reports replace our estimates for everyone.</p></div><button class="bd-close" type="button" id="rpClose" aria-label="Close">×</button></div>
+    <label class="fl"><span>Ingredient</span><select class="rc-select" id="rpItem"></select></label>
+    <label class="fl"><span id="rpAmountL">What you paid</span><input id="rpAmount" inputmode="decimal" autocomplete="off" placeholder="e.g. 500"></label>
+    <label class="fl"><span>Market or area (optional)</span><input id="rpPlace" maxlength="40" placeholder="e.g. Mile 12, Lagos"></label>
+    <button class="btn btn-orange" type="submit" id="rpSave">Send report</button>
+    <p class="err" id="rpMsg" role="status"></p>
+  </form>
 </div>
 <section id="result" hidden aria-live="polite">
   <div class="rcard">
@@ -439,6 +525,12 @@ a{color:inherit}
         <div><b class="tnum" id="rProt">0 g</b><span>protein / serving</span></div>
       </div>
       <ul class="rnotes" id="rNotes"></ul>
+      <div class="rprog" id="rProg" hidden></div>
+      <div class="ractions">
+        <button class="btn btn-orange" type="button" id="shareBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5M5 13v6a2 2 0 002 2h10a2 2 0 002-2v-6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>Share to status</button>
+        <button class="btn btn-ghost" type="button" id="listBtn">Send shopping list</button>
+        <button class="btn btn-ghost" type="button" id="reportBtn">Report a real price</button>
+      </div>
       <div class="raceres" id="raceRes" hidden><h4>Race results</h4><div id="raceResList" style="display:grid;gap:6px"></div><button class="btn btn-orange" type="button" id="raceAgain">Start a rematch</button></div>
       <form class="savebox" id="saveBox" novalidate>
         <div class="sb-head"><b id="sbTitle">Save your score</b><span id="sbSub">Join the Meuro leaderboard and get free weekly meal plans from Meuro AI.</span></div>
@@ -463,925 +555,12 @@ a{color:inherit}
   </div>
 </section>
 
-<script>window.__meuroReady=new Promise(function(r){window.__meuroResolve=r;setTimeout(function(){r(null);},15000);});
-window.__platform=window.claude;window.claude={use:function(n){return window.__meuroReady.then(function(b){if(b)return b.use(n);var P=window.__platform;return (P&&typeof P.use==='function')?P.use(n):null;});}};</script>
+<script src="boot.js"></script>
 <script type="module" src="backend.js"></script>
 <script type="module" src="analytics.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-(function(){
-'use strict';
-var $=function(s){return document.querySelector(s)};
-var fmt=function(n){return '₦'+Math.round(n).toLocaleString('en-NG')};
-
-/* ------------------------------------------------ data */
-var ITEMS={
-  rice:{n:'Rice',p:1200,a:'sack',c:0xF4F1EA,c2:0x3B8C50},
-  beans:{n:'Beans',p:800,a:'basin',c:0x8A5A3A},
-  tomatoes:{n:'Tomatoes',p:600,a:'cluster',c:0xD7261E,veg:1},
-  pepper:{n:'Pepper',p:400,a:'chili',c:0xE02A12,veg:1},
-  onions:{n:'Onions',p:300,a:'cluster',c:0x8E3A63,veg:1},
-  chicken:{n:'Chicken',p:2000,a:'chicken',c:0xC9874A},
-  beef:{n:'Beef',p:1800,a:'meat',c:0x9E2A22},
-  goat:{n:'Goat meat',p:2200,a:'meat',c:0x7A2A20},
-  fish:{n:'Fresh fish',p:1500,a:'fish',c:0xAEB8C0},
-  dryfish:{n:'Dried fish',p:900,a:'fish',c:0x8A5A32},
-  palmoil:{n:'Palm oil',p:700,a:'bottle',c:0xD9461B},
-  egusi:{n:'Egusi',p:900,a:'basin',c:0xF0DFA8},
-  ugu:{n:'Ugu leaves',p:300,a:'leaves',c:0x3F8A35,veg:1},
-  efo:{n:'Efo (spinach)',p:300,a:'leaves',c:0x2E6B2A,veg:1},
-  bitterleaf:{n:'Bitterleaf',p:300,a:'leaves',c:0x55703A,veg:1},
-  waterleaf:{n:'Waterleaf',p:300,a:'leaves',c:0x6FBF4A,veg:1},
-  afang:{n:'Afang leaves',p:400,a:'leaves',c:0x3A5A24,veg:1},
-  ewedu:{n:'Ewedu leaves',p:300,a:'leaves',c:0x2F6A2A,veg:1},
-  kale:{n:'Sukuma (kale)',p:300,a:'leaves',c:0x2A5A3A,veg:1},
-  okra:{n:'Okra',p:400,a:'pods',c:0x5E9E3A,veg:1},
-  peas:{n:'Green peas',p:400,a:'cluster',c:0x6BB04A,s:.12,veg:1},
-  carrots:{n:'Carrots',p:400,a:'cones',c:0xF07A1A,veg:1},
-  cabbage:{n:'Cabbage',p:500,a:'cabbage',c:0x9CCB6A,veg:1},
-  ogbono:{n:'Ogbono',p:700,a:'basin',c:0xB89A6A},
-  crayfish:{n:'Crayfish',p:500,a:'basin',c:0xE07A4A},
-  iru:{n:'Iru',p:300,a:'iru',c:0x3A2618},
-  pspice:{n:'Pepper soup spice',p:300,a:'basin',c:0x7A4A2A},
-  yaji:{n:'Suya spice',p:300,a:'basin',c:0xA0522D},
-  berbere:{n:'Berbere',p:400,a:'basin',c:0xB8321F},
-  periwinkle:{n:'Periwinkle',p:900,a:'shells',c:0x3A3430},
-  yam:{n:'Yam',p:1200,a:'tuber',c:0x6B4A2E},
-  cocoyam:{n:'Cocoyam',p:500,a:'cluster',c:0x6B4A2E,s:.3},
-  plantain:{n:'Plantain',p:600,a:'bunch',c:0xD9C23A},
-  elubo:{n:'Yam flour',p:700,a:'sack',c:0x8A6A52,c2:0xC23B2B},
-  garri:{n:'Garri',p:500,a:'basin',c:0xF2EEE3},
-  maize:{n:'Maize',p:500,a:'cobs',c:0xF2C230},
-  maizeflour:{n:'Maize flour',p:800,a:'sack',c:0xFFFFFF,c2:0xF6C445},
-  attieke:{n:'Attiéké',p:700,a:'basin',c:0xF6F1DF},
-  injera:{n:'Teff flour',p:900,a:'sack',c:0xD9C8A8,c2:0x2F6E8F},
-  lentils:{n:'Red lentils',p:700,a:'basin',c:0xD9541F},
-  groundnuts:{n:'Groundnuts',p:400,a:'basin',c:0xD9B07A},
-  eggs:{n:'Eggs',p:600,a:'eggs',c:0xF1E3C8},
-  lime:{n:'Limes',p:200,a:'cluster',c:0x7FB53A,s:.17,veg:1},
-  softdrink:{n:'Soft drink',p:500,a:'can',c:0x3A1A10,junk:1},
-  cubes:{n:'Seasoning cubes',p:200,a:'box',c:0xF6C445,junk:1},
-  sugar:{n:'Sugar',p:400,a:'sack',c:0xFFFFFF,c2:0xE5533D,junk:1}
-};
-var REGIONS={ng:'Nigeria',gh:'Ghana',bj:'Benin'};
-var DISHES={
-  jollof:{n:'Jollof rice',r:'ng',img:'jollof',kcal:680,prot:36,items:['rice','tomatoes','pepper','onions','chicken']},
-  egusi:{n:'Egusi soup',r:'ng',img:'egusi',kcal:560,prot:32,items:['egusi','palmoil','ugu','crayfish','beef']},
-  okra:{n:'Okra soup',r:'ng',img:'okra',kcal:420,prot:38,items:['okra','fish','palmoil','pepper','ugu']},
-  efo:{n:'Efo riro',r:'ng',img:'efo-riro',kcal:640,prot:30,items:['efo','palmoil','pepper','iru','beef']},
-  amala:{n:'Amala, ewedu & gbegiri',r:'ng',img:'amala',kcal:610,prot:34,items:['elubo','ewedu','beans','palmoil','beef']},
-  amalastew:{n:'Amala, ewedu & stew',r:'ng',img:'amala-stew',kcal:640,prot:33,items:['elubo','ewedu','beef','tomatoes','pepper']},
-  peppersoup:{n:'Goat pepper soup',r:'ng',img:'peppersoup',kcal:380,prot:42,items:['goat','pspice','pepper','onions']},
-  friedrice:{n:'Fried rice',r:'ng',img:'fried-rice',kcal:720,prot:34,items:['rice','carrots','peas','onions','chicken']},
-  ricestew:{n:'Rice & stew',r:'ng',img:'stew-rice',kcal:650,prot:32,items:['rice','tomatoes','pepper','onions','beef']},
-  suya:{n:'Chicken suya',r:'ng',img:'suya',kcal:520,prot:44,items:['chicken','yaji','onions','tomatoes','cabbage']},
-  waakye:{n:'Waakye',r:'gh',img:'waakye',kcal:720,prot:32,items:['rice','beans','eggs','fish','spaghetti']},
-  waakyespecial:{n:'Waakye special',r:'gh',img:'waakye-special',kcal:880,prot:40,items:['rice','beans','chicken','eggs','garri','spaghetti']},
-  redred:{n:'Red red',r:'gh',img:'red-red',kcal:610,prot:21,items:['beans','plantain','palmoil','tomatoes','onions']},
-  banku:{n:'Banku & tilapia',r:'gh',img:'banku',kcal:640,prot:42,items:['maize','cassava','fish','pepper','onions']},
-  lightsoup:{n:'Fufu & light soup',r:'gh',img:'light-soup',kcal:690,prot:36,items:['cassava','plantain','goat','tomatoes','pepper']},
-  kontomire:{n:'Kontomire stew & rice',r:'gh',img:'kontomire',kcal:600,prot:24,items:['kontomire','egusi','palmoil','eggs','rice']},
-  sardinerice:{n:'Rice, sardines & dodo',r:'gh',img:'sardine-rice',kcal:780,prot:30,items:['rice','sardines','plantain','avocado','onions']},
-  telibogombo:{n:'Télibo & sauce gombo',r:'bj',img:'telibo-gombo',kcal:620,prot:33,items:['elubo','okra','beef','tomatoes','pepper']},
-  amiwo:{n:'Amiwo & fried fish',r:'bj',img:'amiwo',kcal:650,prot:34,items:['maizeflour','tomatoes','fish','onions','pepper']},
-  teliboarachide:{n:'Télibo & peanut sauce',r:'bj',img:'telibo-arachide',kcal:690,prot:35,items:['elubo','groundnuts','chicken','tomatoes','ugu']},
-  salade:{n:'Street salad & bread',r:'bj',img:'salade',kcal:540,prot:18,items:['lettuce','avocado','eggs','spaghetti','bread']}
-};
-Object.assign(ITEMS,{
-  lettuce:{n:'Lettuce',p:300,a:'leaves',c:0x9CD67A,veg:1},
-  avocado:{n:'Avocado',p:500,a:'cluster',c:0x5E7F2A,s:.28,veg:1},
-  kontomire:{n:'Kontomire',p:300,a:'leaves',c:0x2F5A24,veg:1},
-  spaghetti:{n:'Spaghetti',p:600,a:'basin',c:0xEED9A0},
-  bread:{n:'Bread',p:700,a:'tuber',c:0xD9A35A},
-  sardines:{n:'Sardines',p:800,a:'fish',c:0x9AA6B0},
-  cassava:{n:'Cassava',p:600,a:'tuber',c:0x9C7A55}
-});
-Object.keys(DISHES).forEach(function(k){var d=DISHES[k];var sum=d.items.reduce(function(a,i){return a+ITEMS[i].p;},0);d.budget=Math.ceil(sum*1.6/500)*500;});
-function hex(c){return '#'+('000000'+c.toString(16)).slice(-6);}
-var ART={};
-function dishImg(k){var d=DISHES[k];if(d.img)return 'img/'+d.img+'.webp';if(ART[k])return ART[k];
-  var c=document.createElement('canvas'),W=300,H=360;c.width=W;c.height=H;var x=c.getContext('2d');
-  var bg=x.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#3A2618');bg.addColorStop(1,'#1E130C');x.fillStyle=bg;x.fillRect(0,0,W,H);
-  // table weave
-  x.globalAlpha=.08;x.strokeStyle='#F6C445';for(var i=-H;i<W;i+=14){x.beginPath();x.moveTo(i,0);x.lineTo(i+H,H);x.stroke();}x.globalAlpha=1;
-  var cx=W/2,cy=H*0.47,R=124;
-  x.fillStyle='rgba(0,0,0,.45)';x.beginPath();x.ellipse(cx+6,cy+12,R,R*.96,0,0,7);x.fill();
-  x.fillStyle='#F7F4EC';x.beginPath();x.arc(cx,cy,R,0,7);x.fill();
-  x.strokeStyle='rgba(0,0,0,.08)';x.lineWidth=3;x.beginPath();x.arc(cx,cy,R-16,0,7);x.stroke();
-  var seed=k.length*97+k.charCodeAt(0);var rnd=function(){seed=(seed*16807)%2147483647;return seed/2147483647;};
-  // sauce
-  var g=x.createRadialGradient(cx-20,cy-20,10,cx,cy,R-22);g.addColorStop(0,d.base);g.addColorStop(1,shade(d.base,-30));
-  x.fillStyle=g;x.beginPath();for(var a=0;a<=6.3;a+=.3){var rr=(R-26)*(0.9+rnd()*.1);x.lineTo(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr);}x.fill();
-  // side (swallow mound)
-  if(d.side){var sg=x.createRadialGradient(cx-34,cy-30,6,cx-20,cy-10,62);sg.addColorStop(0,'#fff');sg.addColorStop(1,d.side);x.fillStyle='rgba(0,0,0,.18)';x.beginPath();x.ellipse(cx-16,cy-4,62,52,0,0,7);x.fill();x.fillStyle=sg;x.beginPath();x.ellipse(cx-20,cy-12,60,50,0,0,7);x.fill();}
-  // ingredient bits
-  d.items.forEach(function(it,ii){var col=hex(ITEMS[it].c);for(var j=0;j<9;j++){var a=rnd()*6.28,r=30+rnd()*(R-60);var px=cx+Math.cos(a)*r,py=cy+Math.sin(a)*r;if(d.side&&Math.hypot(px-(cx-20),py-(cy-12))<58)continue;
-    x.fillStyle=col;x.beginPath();var s=ITEMS[it].a==='leaves'?7+rnd()*7:4+rnd()*6;x.ellipse(px,py,s,s*(.6+rnd()*.4),rnd()*3,0,7);x.fill();x.fillStyle='rgba(255,255,255,.25)';x.beginPath();x.arc(px-s*.3,py-s*.3,s*.3,0,7);x.fill();}});
-  // gloss
-  x.fillStyle='rgba(255,255,255,.12)';x.beginPath();x.ellipse(cx-50,cy-60,40,14,-.6,0,7);x.fill();
-  ART[k]=c.toDataURL('image/jpeg',.85);return ART[k];
-}
-function shade(h,amt){var n=parseInt(h.slice(1),16);var r=Math.max(0,Math.min(255,(n>>16)+amt)),g=Math.max(0,Math.min(255,((n>>8)&255)+amt)),b=Math.max(0,Math.min(255,(n&255)+amt));return 'rgb('+r+','+g+','+b+')';}
-
-var LANES=[-3.2,0,3.2], ROUTE=500;
-var STOPS=[
-  {z:-120,eye:'Tour stop 1',t:'Meuro AI',d:'Snap any plate for a nutrition estimate and plan meals around your budget.',href:'ai.html',sign:['MEURO AI','Scan any plate']},
-  {z:-235,eye:'Tour stop 2',t:'Nutritionist corner',d:'Verified dietitians for PCOS, diabetes, sports and weight goals.',href:'nutritionists.html',sign:['NUTRITIONISTS','Verified experts']},
-  {z:-350,eye:'Tour stop 3',t:'Meuro Foods',d:'Nutrient-dense, African-made foods. In development.',href:'foods.html',sign:['MEURO FOODS','Coming soon']},
-  {z:-480,eye:'Finish',t:'Meuro Kitchen',d:'Park up. Meuro AI is scanning your plate.',href:'kitchen.html',sign:['MEURO KITCHEN','Finish']}
-];
-
-/* ------------------------------------------------ renderer */
-var canvas=$('#c');
-var isSmall=Math.min(innerWidth,innerHeight)<700 || matchMedia('(pointer:coarse)').matches;
-var renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:!isSmall||devicePixelRatio<2,powerPreference:'high-performance'});
-renderer.setPixelRatio(Math.min(devicePixelRatio, isSmall?1.6:2));
-renderer.outputEncoding=THREE.sRGBEncoding;
-renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.05;
-renderer.shadowMap.enabled=!isSmall; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-var scene=new THREE.Scene();
-var FOG=new THREE.Color(0xE9A46A);
-scene.fog=new THREE.Fog(FOG, 55, isSmall?155:195);
-var FAR=isSmall?165:205, SKYR=FAR-22;
-var camera=new THREE.PerspectiveCamera(58,1,0.1,FAR);
-
-/* sky dome */
-(function(){
-  var g=new THREE.SphereGeometry(SKYR,32,16);
-  var m=new THREE.ShaderMaterial({side:THREE.BackSide,depthWrite:false,fog:false,uniforms:{top:{value:new THREE.Color(0x2B3F6B)},mid:{value:new THREE.Color(0xF0A262)},low:{value:new THREE.Color(0xF7C98E)}},
-    vertexShader:'varying vec3 v;void main(){v=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
-    fragmentShader:'uniform vec3 top,mid,low;varying vec3 v;void main(){float h=v.y;vec3 c=mix(low,mid,smoothstep(-.05,.12,h));c=mix(c,top,smoothstep(.12,.6,h));gl_FragColor=vec4(c,1.);}'});
-  var sky=new THREE.Mesh(g,m); sky.name='sky'; scene.add(sky);
-  // sun disc
-  var sun=new THREE.Mesh(new THREE.CircleGeometry(14,40),new THREE.MeshBasicMaterial({color:0xFFE2A8,fog:false}));
-  sun.scale.setScalar(SKYR/300); sun.position.set(-60,28,-300).normalize().multiplyScalar(SKYR-6); sun.lookAt(0,0,0); scene.add(sun); scene.userData.sky=sky; scene.userData.sun=sun;
-})();
-
-var hemi=new THREE.HemisphereLight(0xFFE2C0,0x8A6A4E,1.05); scene.add(hemi);
-var sunL=new THREE.DirectionalLight(0xFFC27A,1.55); sunL.position.set(-30,40,-40); scene.add(sunL); scene.add(sunL.target);
-if(renderer.shadowMap.enabled){sunL.castShadow=true; sunL.shadow.mapSize.set(2048,2048); var sc=sunL.shadow.camera; sc.left=-40;sc.right=40;sc.top=40;sc.bottom=-40;sc.near=1;sc.far=140; sunL.shadow.bias=-0.0006;}
-scene.add(new THREE.AmbientLight(0xffffff,0.32));
-
-/* ------------------------------------------------ canvas textures */
-function ctex(w,h,draw,rep){var c=document.createElement('canvas');c.width=w;c.height=h;var x=c.getContext('2d');draw(x,w,h);var t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;t.anisotropy=renderer.capabilities.getMaxAnisotropy();if(rep){t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(rep[0],rep[1]);}t.userData={canvas:c,ctx:x};return t;}
-function noise(x,w,h,base,vars,n,sz){x.fillStyle=base;x.fillRect(0,0,w,h);for(var i=0;i<n;i++){x.fillStyle=vars[i%vars.length];x.globalAlpha=Math.random()*.5+.1;var s=Math.random()*sz+1;x.fillRect(Math.random()*w,Math.random()*h,s,s);}x.globalAlpha=1;}
-var texLaterite=ctex(256,256,function(x,w,h){noise(x,w,h,'#A85A35',['#8E4527','#BD6B42','#7A3B22','#C98057'],2600,4);},[60,140]);
-var texRoad=ctex(256,512,function(x,w,h){noise(x,w,h,'#3B3836',['#2E2C2B','#4A4644','#55504B','#2A2725'],5000,3);
-  x.fillStyle='rgba(235,225,200,.85)';for(var y=0;y<h;y+=128){x.fillRect(w*0.355-3,y,6,64);x.fillRect(w*0.645-3,y,6,64);}
-  x.fillStyle='rgba(240,210,120,.9)';x.fillRect(6,0,5,h);x.fillRect(w-11,0,5,h);
-  x.globalAlpha=.25;x.fillStyle='#1d1b1a';for(var i=0;i<6;i++){x.beginPath();x.ellipse(Math.random()*w,Math.random()*h,20+Math.random()*30,10+Math.random()*20,Math.random()*3,0,7);x.fill();}x.globalAlpha=1;},[1,ROUTE/22]);
-function stripeTex(a,b){return ctex(128,32,function(x,w,h){for(var i=0;i<8;i++){x.fillStyle=i%2?a:b;x.fillRect(i*w/8,0,w/8,h);}});}
-function ankaraTex(seed){var pals=[['#F27B2B','#1E4A2A','#F6C445','#2F6E8F'],['#7A3FB5','#F6C445','#E5533D','#0F6B5C'],['#3B8C50','#F27B2B','#FFF3DC','#1C2A6B'],['#C2185B','#FFC107','#00796B','#212121']];var p=pals[seed%pals.length];
-  return ctex(128,128,function(x,w,h){x.fillStyle=p[0];x.fillRect(0,0,w,h);for(var i=0;i<4;i++)for(var j=0;j<4;j++){var cx=i*32+16,cy=j*32+16;x.fillStyle=p[1];x.beginPath();x.arc(cx,cy,12,0,7);x.fill();x.fillStyle=p[2];x.beginPath();x.arc(cx,cy,7,0,7);x.fill();x.fillStyle=p[3];x.beginPath();x.arc(cx,cy,3,0,7);x.fill();}},[1,1]);}
-function facadeTex(base){return ctex(256,256,function(x,w,h){noise(x,w,h,base,['rgba(0,0,0,.08)','rgba(255,255,255,.08)'],900,6);
-  for(var r=0;r<3;r++)for(var c=0;c<3;c++){var X=20+c*80,Y=24+r*78;x.fillStyle='#2A2522';x.fillRect(X,Y,52,50);x.fillStyle='rgba(255,200,120,'+(Math.random()<.45?.85:.15)+')';x.fillRect(X+4,Y+4,44,42);x.fillStyle='rgba(60,40,30,.7)';x.fillRect(X+24,Y+4,4,42);x.fillRect(X-4,Y+50,60,5);}},[1,1]);}
-var texLoader=new THREE.TextureLoader();
-var photo={};['jollof','egusi','okra','efo-riro','suya','amala','peppersoup','fried-rice','stew-rice'].forEach(function(k){var t=texLoader.load('img/'+k+'.webp');t.encoding=THREE.sRGBEncoding;photo[k]=t;});
-var logoImg=new Image(); logoImg.src='img/logo.png'; var whiteLogo=null;
-function makeWhite(){var c=document.createElement('canvas');c.width=logoImg.naturalWidth;c.height=logoImg.naturalHeight;var x=c.getContext('2d');x.drawImage(logoImg,0,0);x.globalCompositeOperation='source-in';x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);whiteLogo=c;}
-var signTextures=[];
-function signTex(title,sub,bg,photoKey,withLogo){
-  var t=ctex(1024,320,function(){});
-  t.userData.draw=function(){var x=t.userData.ctx,w=1024,h=320;x.clearRect(0,0,w,h);
-    x.fillStyle=bg;x.fillRect(0,0,w,h);
-    var left=40;
-    var im=photoKey&&photo[photoKey]&&photo[photoKey].image;if(im instanceof HTMLImageElement && im.complete && im.naturalWidth){var s=Math.max(300/im.width,240/im.height);x.save();x.beginPath();x.roundRect?x.roundRect(40,40,300,240,24):x.rect(40,40,300,240);x.clip();x.drawImage(im,40+(300-im.width*s)/2,40+(240-im.height*s)/2,im.width*s,im.height*s);x.restore();left=380;}
-    if(withLogo && whiteLogo){var lh=54,lw=whiteLogo.width*lh/whiteLogo.height;x.drawImage(whiteLogo,left,52,lw,lh);}
-    x.fillStyle='#fff';x.font='700 '+(title.length>12?88:104)+'px "Bricolage Grotesque", "Avenir Next", sans-serif';x.textBaseline='alphabetic';x.fillText(title,left,withLogo?205:180);
-    x.fillStyle='rgba(255,255,255,.8)';x.font='600 46px Figtree, Arial, sans-serif';x.fillText(sub,left,withLogo?268:250);
-    t.needsUpdate=true;};
-  t.userData.draw(); signTextures.push(t); return t;
-}
-function redrawSigns(){signTextures.forEach(function(t){t.userData.draw();});}
-logoImg.addEventListener('load',function(){makeWhite();redrawSigns();}); if(logoImg.complete&&logoImg.naturalWidth)makeWhite(); Object.keys(photo).forEach(function(k){var n=0,chk=setInterval(function(){var im=photo[k].image;if((im instanceof HTMLImageElement&&im.complete)||++n>80){clearInterval(chk);redrawSigns();}},150);});
-if(document.fonts&&document.fonts.ready)document.fonts.ready.then(redrawSigns);
-
-/* ------------------------------------------------ materials */
-function std(c,o){return new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.8,metalness:0},o||{}));}
-var M={wood:std(0x7A4E2D),woodDark:std(0x4E3220),metal:std(0x9AA3A8,{metalness:.6,roughness:.4}),pole:std(0x55524E,{metalness:.4,roughness:.5}),roof:std(0x7B4B30,{metalness:.3,roughness:.6}),
-  skin:std(0x5A3A26,{roughness:.6}),keke:std(0xF2C230,{roughness:.45,metalness:.15}),kekeGreen:std(0x2F7A46,{roughness:.45}),canvas:std(0x1E2A22,{roughness:.9}),
-  black:std(0x161616,{roughness:.7}),chrome:std(0xD9DDE0,{metalness:.9,roughness:.25}),glass:new THREE.MeshStandardMaterial({color:0xBFE3FF,transparent:true,opacity:.28,roughness:.05,metalness:.2})};
-
-/* ------------------------------------------------ world: ground + road */
-var ground=new THREE.Mesh(new THREE.PlaneGeometry(220,ROUTE+300),std(0xffffff,{map:texLaterite,roughness:1}));
-ground.rotation.x=-Math.PI/2; ground.position.set(0,0,-ROUTE/2+60); ground.receiveShadow=true; scene.add(ground);
-var road=new THREE.Mesh(new THREE.PlaneGeometry(11,ROUTE+140),std(0xffffff,{map:texRoad,roughness:.92}));
-road.rotation.x=-Math.PI/2; road.position.set(0,0.02,-ROUTE/2+30); road.receiveShadow=true; scene.add(road);
-// kerbs
-[-5.8,5.8].forEach(function(x){var k=new THREE.Mesh(new THREE.BoxGeometry(0.5,0.18,ROUTE+140),new THREE.MeshStandardMaterial({map:stripeTex('#E8E2D2','#2B2B2B'),roughness:.8}));k.material.map.wrapS=k.material.map.wrapT=THREE.RepeatWrapping;k.material.map.repeat.set(1,1);k.position.set(x,0.09,-ROUTE/2+30);k.receiveShadow=true;scene.add(k);});
-
-/* ------------------------------------------------ instanced produce */
-var MAXS=9000,MAXC=3200,MAXB=900,MAXL=900;var CAP={s:MAXS,c:MAXC,b:MAXB,l:MAXL};
-var sphG=new THREE.SphereGeometry(1,10,8), cylG=new THREE.CylinderGeometry(1,1,1,10), basG=new THREE.CylinderGeometry(1,.78,1,18,1,true);
-var spheres=new THREE.InstancedMesh(sphG,std(0xffffff,{roughness:.45}),MAXS), cyls=new THREE.InstancedMesh(cylG,std(0xffffff,{roughness:.7}),MAXC), basins=new THREE.InstancedMesh(basG,std(0xffffff,{roughness:.35,metalness:.25,side:THREE.DoubleSide}),MAXB);
-var bulbs=new THREE.InstancedMesh(new THREE.SphereGeometry(.13,8,6),new THREE.MeshBasicMaterial({color:0xFFD27A}),MAXL);
-var cnt={s:0,c:0,b:0,l:0}; var tmpO=new THREE.Object3D(), tmpC=new THREE.Color();
-function put(mesh,key,x,y,z,sx,sy,sz,col,rx,ry,rz){if(cnt[key]>=CAP[key])return;var i=cnt[key]++;tmpO.position.set(x,y,z);tmpO.rotation.set(rx||0,ry||0,rz||0);tmpO.scale.set(sx,sy,sz);tmpO.updateMatrix();mesh.setMatrixAt(i,tmpO.matrix);if(col!=null&&mesh.setColorAt){mesh.setColorAt(i,tmpC.set(col));}}
-var R=function(a,b){return a+Math.random()*(b-a)};
-var PRODUCE={
-  tomatoes:function(x,y,z){for(var i=0;i<26;i++){var a=R(0,6.28),r=Math.sqrt(Math.random())*.5,h=(.5-r)*.45;put(spheres,'s',x+Math.cos(a)*r,y+.12+h,z+Math.sin(a)*r,.12,.11,.12,[0xD7261E,0xC81E16,0xE33B22][i%3]);}},
-  pepper:function(x,y,z){for(var i=0;i<30;i++){var a=R(0,6.28),r=Math.sqrt(Math.random())*.48,h=(.48-r)*.4;put(spheres,'s',x+Math.cos(a)*r,y+.08+h,z+Math.sin(a)*r,.06,.06,.11,[0xE02A12,0xF0581A,0xB81408][i%3],0,R(0,3),0);}},
-  onions:function(x,y,z){for(var i=0;i<18;i++){var a=R(0,6.28),r=Math.sqrt(Math.random())*.45,h=(.45-r)*.4;put(spheres,'s',x+Math.cos(a)*r,y+.12+h,z+Math.sin(a)*r,.12,.13,.12,[0x8E3A63,0xA24A6E,0x7C2F55][i%3]);}},
-  oranges:function(x,y,z){for(var i=0;i<20;i++){var a=R(0,6.28),r=Math.sqrt(Math.random())*.48,h=(.48-r)*.42;put(spheres,'s',x+Math.cos(a)*r,y+.13+h,z+Math.sin(a)*r,.13,.13,.13,[0x7FA83A,0x9DB848,0xE6A12A][i%3]);}},
-  yam:function(x,y,z){for(var i=0;i<6;i++)put(cyls,'c',x+R(-.5,.5),y+.12+(i>3?.2:0),z+R(-.35,.35),.11,R(.8,1.1),.13,[0x6B4A2E,0x5A3D25][i%2],Math.PI/2,R(0,3),R(-.2,.2));},
-  plantain:function(x,y,z){for(var i=0;i<10;i++)put(cyls,'c',x+R(-.5,.5),y+.08+(i>6?.14:0),z+R(-.35,.35),.06,R(.45,.6),.07,[0xD9C23A,0xB5B83A,0xC9A12C][i%3],Math.PI/2+R(-.2,.2),R(0,3),R(-.3,.3));},
-  fish:function(x,y,z){for(var i=0;i<6;i++)put(spheres,'s',x+R(-.45,.45),y+.08,z+R(-.3,.3),.38,.07,.1,[0xB9C2C8,0x8F9AA2][i%2],0,R(0,3),0);},
-  basin:function(x,y,z,fill){put(basins,'b',x,y+.16,z,.42,.32,.42,[0x2F6E8F,0xE9E4D8,0xC23B2B,0x3B8C50][Math.floor(Math.random()*4)]);put(cyls,'c',x,y+.28,z,.38,.06,.38,fill);for(var i=0;i<8;i++){var a=R(0,6.28),r=R(0,.3);put(spheres,'s',x+Math.cos(a)*r,y+.32,z+Math.sin(a)*r,.06,.04,.06,fill);}},
-  greens:function(x,y,z){for(var i=0;i<16;i++)put(spheres,'s',x+R(-.45,.45),y+R(.1,.28),z+R(-.35,.35),R(.12,.2),R(.04,.08),R(.16,.24),[0x2E6B2A,0x3F8A35,0x24561F][i%3],R(-.5,.5),R(0,3),R(-.5,.5));}
-};
-var PKEYS=Object.keys(PRODUCE), FILLS=[0xF2EEE3,0xE8D7A1,0x8A5A3A,0xF0C27B,0xD9A35A];
-
-/* ------------------------------------------------ stalls, traders, buildings */
-var UMB=['#D63A2F','#F2B632','#2F7FD6','#3B8C50','#F27B2B','#7A3FB5','#E9E4D8'];
-var umbTex=UMB.map(function(c,i){return stripeTex(c, i===6?'#3B8C50':'#F4F1EA');});
-var ankara=[0,1,2,3].map(ankaraTex);
-var tableG=new THREE.BoxGeometry(3.2,.12,2), legG=new THREE.BoxGeometry(.1,.9,.1), umbG=new THREE.ConeGeometry(2.3,.9,8,1,true), poleG=new THREE.CylinderGeometry(.05,.05,2.8,6);
-var bodyG=new THREE.CylinderGeometry(.28,.42,1.2,10), headG=new THREE.SphereGeometry(.2,12,10), tieG=new THREE.SphereGeometry(.27,10,8,0,6.29,0,1.6);
-function stall(x,z,side){
-  var g=new THREE.Group(); g.position.set(x,0,z); scene.add(g);
-  var t=new THREE.Mesh(tableG,M.wood); t.position.y=.9; t.castShadow=true; t.receiveShadow=true; g.add(t);
-  [[-1.5,-.9],[1.5,-.9],[-1.5,.9],[1.5,.9]].forEach(function(p){var l=new THREE.Mesh(legG,M.woodDark);l.position.set(p[0],.45,p[1]);g.add(l);});
-  var ui=Math.floor(Math.random()*UMB.length);
-  var u=new THREE.Mesh(umbG,new THREE.MeshStandardMaterial({map:umbTex[ui],side:THREE.DoubleSide,roughness:.85})); u.position.set(-side*.3,3.35,0); u.castShadow=true; g.add(u);
-  var p=new THREE.Mesh(poleG,M.pole); p.position.set(-side*.3,1.6,0); g.add(p);
-  // produce
-  var a=PKEYS[Math.floor(Math.random()*PKEYS.length)], b=PKEYS[Math.floor(Math.random()*PKEYS.length)];
-  PRODUCE[a](x-.8,.96,z, FILLS[Math.floor(Math.random()*FILLS.length)]);
-  PRODUCE[b](x+.8,.96,z, FILLS[Math.floor(Math.random()*FILLS.length)]);
-  // trader
-  if(Math.random()<.72){var tg=new THREE.Group();tg.position.set(x+side*1.6,0,z+R(-.5,.5));
-    var bd=new THREE.Mesh(bodyG,new THREE.MeshStandardMaterial({map:ankara[Math.floor(Math.random()*4)],roughness:.8}));bd.position.y=.9;bd.castShadow=true;tg.add(bd);
-    var hd=new THREE.Mesh(headG,M.skin);hd.position.y=1.72;tg.add(hd);
-    if(Math.random()<.7){var tie=new THREE.Mesh(tieG,new THREE.MeshStandardMaterial({map:ankara[Math.floor(Math.random()*4)],roughness:.8}));tie.position.y=1.78;tie.scale.set(1,1.15,1);tg.add(tie);}
-    tg.rotation.y=side>0?-Math.PI/2:Math.PI/2; tg.userData.ph=Math.random()*6; traders.push(tg); scene.add(tg);}
-}
-var traders=[];
-var facades=['#E9D9B8','#D9B48C','#C9D6C2','#E4C3A8','#B8C9D9','#E6E0CF'].map(facadeTex);
-var facadeMats=facades.map(function(t){t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(1,2);return new THREE.MeshStandardMaterial({map:t,roughness:.9});});
-var signs=[['JOLLOF SPOT','Party rice daily','jollof','#B8321F'],['MAMA T BUKA','Amala · Ewedu','amala','#1E4A2A'],['SUYA CORNER','Hot from 6pm','suya','#5A2A14'],['PEPPER SOUP','Goat · Catfish','peppersoup','#3A1F3D'],['SOUP KITCHEN','Egusi · Okra','egusi','#2F4F6E'],['RICE & STEW','Lunch till 4pm','stew-rice','#7A3B22'],['EFO HOUSE','Efo riro & swallow','efo-riro','#244D2B'],['FRIED RICE','Small chops too','fried-rice','#6E4A12']];
-var bSignIdx=0;
-function building(x,z,side,w){
-  var h=R(6,12), d=7;
-  var b=new THREE.Mesh(new THREE.BoxGeometry(d,h,w),facadeMats[Math.floor(Math.random()*facadeMats.length)]);
-  b.position.set(x+side*d/2,h/2,z); b.castShadow=true; b.receiveShadow=true; scene.add(b);
-  var rf=new THREE.Mesh(new THREE.BoxGeometry(d+.6,.25,w+.4),M.roof); rf.position.set(x+side*d/2,h+.1,z); scene.add(rf);
-  // awning
-  var aw=new THREE.Mesh(new THREE.BoxGeometry(1.6,.08,w-.6),new THREE.MeshStandardMaterial({map:umbTex[Math.floor(Math.random()*6)],roughness:.8})); aw.position.set(x-side*.6,3.1,z); aw.rotation.z=side*.25; scene.add(aw);
-  if(Math.random()<.75){var s=signs[bSignIdx++%signs.length];
-    var sp=new THREE.Mesh(new THREE.PlaneGeometry(Math.min(w-1,6.4),2),new THREE.MeshBasicMaterial({map:signTex(s[0],s[1],s[3],s[2],false),toneMapped:false}));
-    sp.position.set(x-side*.05,4.6,z); sp.rotation.y=side>0?-Math.PI/2:Math.PI/2; scene.add(sp);}
-}
-function palm(x,z){var g=new THREE.Group();g.position.set(x,0,z);var h=R(7,10);
-  for(var i=0;i<6;i++){var s=new THREE.Mesh(new THREE.CylinderGeometry(.2-i*.012,.24-i*.012,h/6,8),std(0x6E5640));s.position.set(i*.08,h/12+i*h/6,0);s.rotation.z=-.03*i;g.add(s);}
-  var leafG=new THREE.PlaneGeometry(4.2,.9,6,1); var lp=leafG.attributes.position; for(var j=0;j<lp.count;j++){var X=lp.getX(j);lp.setZ(j,-Math.pow((X+2.1)/4.2,2)*1.6);} leafG.computeVertexNormals(); leafG.translate(2.1,0,0);
-  for(var k=0;k<9;k++){var lf=new THREE.Mesh(leafG,std(0x3F7A2E,{side:THREE.DoubleSide}));lf.position.set(.5,h,0);lf.rotation.set(-Math.PI/2+R(-.2,.2),k*.7,R(-.5,.1));lf.castShadow=true;g.add(lf);}
-  scene.add(g);}
-(function buildMarket(){
-  for(var z=10; z>-ROUTE-40; z-=7.5){
-    var nearStop=STOPS.some(function(s){return Math.abs(z-s.z)<6;});
-    [-1,1].forEach(function(side){ if(!nearStop || side>0) stall(side*8.3, z+R(-.6,.6), side); });
-  }
-  [-1,1].forEach(function(side){for(var z=12; z>-ROUTE-60;){var w=R(7,11);building(side*12.2,z-w/2,side,w);z-=w+R(.2,1.2);if(Math.random()<.25){palm(side*R(11.5,12),z-1.2);z-=2.5;}}});
-  // string lights + poles
-  for(var z2=-6; z2>-ROUTE-20; z2-=18){
-    [-6.4,6.4].forEach(function(x){var p=new THREE.Mesh(new THREE.CylinderGeometry(.08,.1,6,8),M.pole);p.position.set(x,3,z2);scene.add(p);});
-    for(var i=0;i<=16;i++){var t=i/16,x=-6.4+12.8*t,y=5.7-Math.sin(Math.PI*t)*1.2;put(bulbs,'l',x,y,z2,1,1,1,[0xFFD27A,0xFF9F5A,0xFFF1C2,0x9BE07A][i%4]);}
-    var wire=new THREE.Mesh(new THREE.TubeGeometry(new THREE.QuadraticBezierCurve3(new THREE.Vector3(-6.4,5.8,z2),new THREE.Vector3(0,3.4,z2),new THREE.Vector3(6.4,5.8,z2)),12,.02,4),M.black);scene.add(wire);
-  }
-  [[spheres,'s'],[cyls,'c'],[basins,'b'],[bulbs,'l']].forEach(function(pair){var m=pair[0];m.count=cnt[pair[1]];m.instanceMatrix.needsUpdate=true;if(m.instanceColor)m.instanceColor.needsUpdate=true;m.castShadow=(m!==bulbs);m.receiveShadow=true;scene.add(m);});
-  // tour arches
-  STOPS.forEach(function(s,i){var g=new THREE.Group();g.position.z=s.z;scene.add(g);
-    var col=i===3?M.kekeGreen:std(0x15231A,{roughness:.5});
-    [-6,6].forEach(function(x){var p=new THREE.Mesh(new THREE.BoxGeometry(.6,7.2,.6),col);p.position.set(x,3.6,0);p.castShadow=true;g.add(p);});
-    var beam=new THREE.Mesh(new THREE.BoxGeometry(12.6,.5,.6),col);beam.position.y=7.2;g.add(beam);
-    var sg=new THREE.Mesh(new THREE.PlaneGeometry(9,2.8),new THREE.MeshBasicMaterial({map:signTex(s.sign[0],s.sign[1],i===3?'#F27B2B':(i%2?'#3B8C50':'#1E4A2A'),null,true),toneMapped:false,side:THREE.DoubleSide}));
-    sg.position.set(0,5.5,.32);g.add(sg);
-    if(i===3){for(var k=0;k<14;k++){var f=new THREE.Mesh(new THREE.BoxGeometry(.8,.04,.8),k%2?M.black:std(0xffffff));f.position.set(-5.2+k*.8,.05,0);g.add(f);}}
-    s.group=g;});
-})();
-
-/* ------------------------------------------------ keke */
-function makeKeke(){
-  var g=new THREE.Group();
-  var body=new THREE.Mesh(new THREE.BoxGeometry(1.5,.75,2.3),M.keke);body.position.set(0,.85,.25);g.add(body);
-  var nose=new THREE.Mesh(new THREE.CylinderGeometry(.35,.7,1.1,12,1,false,0,Math.PI),M.keke);nose.rotation.set(Math.PI/2,0,Math.PI/2);nose.scale.set(1,1,.9);nose.position.set(0,1.05,-1.05);g.add(nose);
-  var front=new THREE.Mesh(new THREE.BoxGeometry(1.2,1.2,.5),M.keke);front.position.set(0,1.0,-1.05);g.add(front);
-  var stripe=new THREE.Mesh(new THREE.BoxGeometry(1.53,.16,2.32),M.kekeGreen);stripe.position.set(0,.98,.25);g.add(stripe);
-  var stripe2=new THREE.Mesh(new THREE.BoxGeometry(1.22,.14,.52),M.kekeGreen);stripe2.position.set(0,1.18,-1.05);g.add(stripe2);
-  var roof=new THREE.Mesh(new THREE.BoxGeometry(1.62,.1,2.9),M.canvas);roof.position.set(0,2.35,-.05);g.add(roof);
-  var roofEdge=new THREE.Mesh(new THREE.BoxGeometry(1.64,.22,.08),M.kekeGreen);roofEdge.position.set(0,2.28,-1.48);g.add(roofEdge);
-  [[-.76,-1.3],[.76,-1.3],[-.76,1.3],[.76,1.3]].forEach(function(p){var pl=new THREE.Mesh(new THREE.CylinderGeometry(.03,.03,1.2,6),M.chrome);pl.position.set(p[0],1.78,p[1]);g.add(pl);});
-  var ws=new THREE.Mesh(new THREE.PlaneGeometry(1.2,.85),M.glass);ws.position.set(0,1.95,-1.28);ws.rotation.x=-.12;g.add(ws);
-  var bar=new THREE.Mesh(new THREE.CylinderGeometry(.03,.03,.9,6),M.chrome);bar.rotation.z=Math.PI/2;bar.position.set(0,1.62,-.95);g.add(bar);
-  var seat=new THREE.Mesh(new THREE.BoxGeometry(1.4,.18,.7),M.black);seat.position.set(0,1.3,.75);g.add(seat);
-  var back=new THREE.Mesh(new THREE.BoxGeometry(1.5,.95,.1),M.canvas);back.position.set(0,1.75,1.37);g.add(back);
-  var logoT=ctex(512,160,function(x,w,h){x.fillStyle='#F4F1EA';x.fillRect(0,0,w,h);});
-  var drawLogo=function(){var x=logoT.userData.ctx;x.fillStyle='#F4F1EA';x.fillRect(0,0,512,160);if(logoImg.naturalWidth){var lh=100,lw=logoImg.naturalWidth*lh/logoImg.naturalHeight;x.drawImage(logoImg,(512-lw)/2,30,lw,lh);}logoT.needsUpdate=true;};
-  drawLogo(); logoImg.addEventListener('load',drawLogo);
-  var lp=new THREE.Mesh(new THREE.PlaneGeometry(1.15,.36),new THREE.MeshBasicMaterial({map:logoT,toneMapped:false}));lp.position.set(0,1.78,1.44);g.add(lp);
-  var plate=new THREE.Mesh(new THREE.PlaneGeometry(.6,.2),new THREE.MeshBasicMaterial({toneMapped:false,map:ctex(256,86,function(x,w,h){x.fillStyle='#fff';x.fillRect(0,0,w,h);x.fillStyle='#1E4A2A';x.font='700 44px Arial';x.textAlign='center';x.fillText('LAG 233 KE',w/2,58);})}));plate.position.set(0,.62,1.43);g.add(plate);
-  var wG=new THREE.CylinderGeometry(.33,.33,.22,18);wG.rotateZ(Math.PI/2);
-  var wheels=[];[[0,-1.5],[-.72,1.0],[.72,1.0]].forEach(function(p){var w=new THREE.Mesh(wG,M.black);w.position.set(p[0],.33,p[1]);w.castShadow=true;g.add(w);wheels.push(w);var hub=new THREE.Mesh(new THREE.CylinderGeometry(.14,.14,.24,10).rotateZ(Math.PI/2),M.chrome);hub.position.copy(w.position);g.add(hub);});
-  var hl=new THREE.Mesh(new THREE.SphereGeometry(.13,12,8),new THREE.MeshBasicMaterial({color:0xFFF4CC}));hl.position.set(0,1.35,-1.36);g.add(hl);
-  [-.6,.6].forEach(function(x){var tl=new THREE.Mesh(new THREE.BoxGeometry(.18,.1,.04),new THREE.MeshBasicMaterial({color:0xFF3B2B}));tl.position.set(x,1.0,1.42);g.add(tl);});
-  // driver
-  var drv=new THREE.Mesh(new THREE.CylinderGeometry(.24,.3,.75,10),std(0x2F6E8F));drv.position.set(0,1.75,-.55);g.add(drv);
-  var dh=new THREE.Mesh(new THREE.SphereGeometry(.19,12,10),M.skin);dh.position.set(0,2.27,-.55);g.add(dh);
-  var cap=new THREE.Mesh(new THREE.SphereGeometry(.2,12,8,0,6.29,0,1.3),std(0xF27B2B));cap.position.set(0,2.3,-.55);g.add(cap);
-  g.traverse(function(o){if(o.isMesh)o.castShadow=true;});
-  g.userData.wheels=wheels; return g;
-}
-var keke=makeKeke(); scene.add(keke);
-var headLight=new THREE.PointLight(0xFFE2A8,0.9,18,2); headLight.position.set(0,1.6,-3); keke.add(headLight);
-
-/* ------------------------------------------------ pickups */
-var ringG=new THREE.TorusGeometry(1.3,.1,8,48), discG=new THREE.CircleGeometry(1.3,36);
-var MESH_CACHE={};
-function itemMesh(k){
-  var it=ITEMS[k], c=it.c, g=new THREE.Group();
-  var add=function(geo,mat,x,y,z,sx,sy,sz,rx,ry,rz){var m=new THREE.Mesh(geo,mat);m.position.set(x||0,y||0,z||0);if(sx)m.scale.set(sx,sy,sz);m.rotation.set(rx||0,ry||0,rz||0);g.add(m);return m;};
-  var S=new THREE.SphereGeometry(1,16,12), C=new THREE.CylinderGeometry(1,1,1,16);
-  var shine=function(col,o){return std(col,Object.assign({roughness:.35,emissive:col,emissiveIntensity:.18},o||{}));};
-  switch(it.a){
-    case 'cluster':var s=it.s||.24;[[0,0,0],[.32,0,.1],[-.3,0,.12],[.05,.26,0],[0,0,-.3],[-.18,.22,.15]].forEach(function(p){add(S,shine(c),p[0]*(s/.24),p[1]*(s/.24),p[2]*(s/.24),s,s*.95,s);});if(k==='tomatoes')add(C,std(0x2E6B2A),0,.5,0,.05,.1,.05);break;
-    case 'chili':for(var i=0;i<6;i++)add(S,shine([c,0xF0581A,0xC81A0A][i%3],{roughness:.25}),Math.cos(i*1.05)*.26,i===5?.2:0,Math.sin(i*1.05)*.26,.12,.12,.3,0,i,0);break;
-    case 'leaves':for(var j=0;j<12;j++)add(S,shine(j%3?c:new THREE.Color(c).multiplyScalar(.8).getHex(),{side:THREE.DoubleSide,roughness:.6}),Math.sin(j)*.25,-.05+j*.035,Math.cos(j*1.7)*.15,.34,.05,.18,R(-.8,.8),j*.55,R(-.6,.6));add(C,std(0xC9A06A),0,-.25,0,.13,.14,.13);break;
-    case 'basin':add(new THREE.CylinderGeometry(.62,.44,.38,22,1,true),std([0x2F6E8F,0xC23B2B,0x3B8C50][k.length%3],{side:THREE.DoubleSide,metalness:.3,roughness:.3}));add(new THREE.TorusGeometry(.62,.04,6,28),M.chrome,0,.19,0,1,1,1,Math.PI/2,0,0);add(C,shine(c),0,.13,0,.58,.05,.58);for(var e=0;e<16;e++)add(S,shine(c),R(-.36,.36),.18,R(-.36,.36),.08,.04,.07);break;
-    case 'sack':add(new THREE.BoxGeometry(.9,1.15,.55),std(c,{roughness:.9}));add(new THREE.BoxGeometry(.92,.3,.57),shine(it.c2),0,.05,0);add(S,std(c,{roughness:.9}),0,.62,0,.38,.12,.22);break;
-    case 'bottle':add(C,shine(c,{roughness:.12,transparent:true,opacity:.92}),0,0,0,.3,.95,.3);add(C,shine(c),0,.58,0,.13,.25,.13);add(C,std(0xF6C445),0,.75,0,.14,.1,.14);add(new THREE.BoxGeometry(.6,.3,.02),std(0xF4F1EA),0,0,.3);break;
-    case 'chicken':add(S,shine(c,{roughness:.5}),0,0,0,.55,.38,.42);[-1,1].forEach(function(s2){add(S,shine(0xB97A40),s2*.4,-.05,.22,.17,.15,.32,0,s2*.4,0);add(C,std(0xF1E8D8),s2*.5,-.05,.48,.045,.2,.045,Math.PI/2,0,0);});break;
-    case 'meat':add(new THREE.BoxGeometry(.95,.45,.65),shine(c,{roughness:.55}));add(new THREE.BoxGeometry(.97,.09,.67),std(0xF2E6D6),0,.09,0);add(C,std(0xF1E8D8),.5,0,0,.08,.3,.08,0,0,Math.PI/2);break;
-    case 'fish':add(S,shine(c,{metalness:.4,roughness:.3}),0,0,0,.66,.24,.17);add(new THREE.ConeGeometry(.24,.38,4),shine(c,{metalness:.4,roughness:.3}),.8,0,0,1,1,.4,0,0,Math.PI/2);add(S,M.black,-.46,.07,.14,.045,.045,.03);break;
-    case 'pods':for(var o=0;o<7;o++)add(new THREE.ConeGeometry(.1,.7,6),shine(c),Math.cos(o)*.22,0,Math.sin(o)*.22,1,1,1,R(-.5,.5)+Math.PI/2,o,0);break;
-    case 'cones':for(var r2=0;r2<4;r2++){add(new THREE.ConeGeometry(.11,.8,8),shine(c),(r2-1.5)*.2,0,0,1,1,1,Math.PI,0,0);add(S,std(0x3F8A35),(r2-1.5)*.2,.45,0,.07,.14,.07);}break;
-    case 'cabbage':add(S,shine(c),0,0,0,.5,.45,.5);add(S,shine(0x7FB04A,{side:THREE.DoubleSide}),0,.05,0,.56,.4,.56);break;
-    case 'iru':add(S,shine(0x3F6E2B,{roughness:.8}),0,0,0,.4,.28,.36);for(var q=0;q<8;q++)add(S,std(c),R(-.18,.18),.24,R(-.14,.14),.07,.06,.07);break;
-    case 'shells':for(var sh=0;sh<10;sh++)add(new THREE.ConeGeometry(.09,.24,7),shine(c,{roughness:.4}),R(-.35,.35),R(-.05,.2),R(-.25,.25),1,1,1,R(-1,1),R(0,3),R(-1,1));add(new THREE.CylinderGeometry(.5,.36,.22,18,1,true),std(0xE9E4D8,{side:THREE.DoubleSide}),0,-.15,0);break;
-    case 'tuber':add(C,shine(c,{roughness:.95}),0,0,0,.24,1.25,.28,0,0,Math.PI/2.3);add(C,shine(c,{roughness:.95}),.15,-.1,.25,.2,.9,.22,0,.5,Math.PI/2.1);break;
-    case 'bunch':for(var pl=0;pl<5;pl++)add(C,shine(c,{roughness:.6}),(pl-2)*.13,0,0,.09,.95,.11,.3,0,.3-(pl*.14));break;
-    case 'cobs':for(var cb=0;cb<3;cb++){add(C,shine(c,{roughness:.5}),(cb-1)*.28,0,0,.13,.8,.13,0,0,(cb-1)*.15);add(new THREE.ConeGeometry(.16,.5,6),std(0x9DB848,{side:THREE.DoubleSide}),(cb-1)*.28,-.45,0,1,1,1,Math.PI,0,(cb-1)*.15);}break;
-    case 'eggs':[[0,0,0],[.28,0,.08],[-.28,0,.08],[0,.2,0],[.14,0,-.25],[-.14,0,-.25]].forEach(function(p){add(S,shine(c,{roughness:.4}),p[0],p[1],p[2],.17,.22,.17);});break;
-    case 'can':add(C,shine(c,{roughness:.1}),0,0,0,.2,.85,.2);add(C,shine(0xD62A2A),0,.05,0,.21,.26,.21);add(C,shine(c),0,.55,0,.09,.26,.09);add(C,M.chrome,0,.72,0,.1,.06,.1);break;
-    case 'box':add(new THREE.BoxGeometry(.7,.45,.45),shine(c));add(new THREE.BoxGeometry(.72,.14,.47),shine(0xD62A2A),0,.06,0);break;
-  }
-  g.traverse(function(o){if(o.isMesh)o.castShadow=true;});
-  return g;
-}
-function labelSprite(name,price,kind){
-  var t=ctex(640,150,function(x,w,h){
-    var bg=kind==='need'?'rgba(22,92,48,.94)':kind==='junk'?'rgba(110,30,20,.92)':'rgba(16,24,18,.9)';
-    var r=64;x.fillStyle=bg;x.beginPath();x.moveTo(r,10);x.arcTo(w-10,10,w-10,h-10,r);x.arcTo(w-10,h-10,10,h-10,r);x.arcTo(10,h-10,10,10,r);x.arcTo(10,10,w-10,10,r);x.fill();
-    x.lineWidth=5;x.strokeStyle=kind==='need'?'#7CF09A':kind==='junk'?'#FF8A73':'#F6C445';x.stroke();
-    var left=46;
-    if(kind==='need'){x.fillStyle='#7CF09A';x.beginPath();x.arc(66,h/2,22,0,7);x.fill();x.strokeStyle='#0F3A1E';x.lineWidth=7;x.lineCap='round';x.beginPath();x.moveTo(55,h/2+1);x.lineTo(63,h/2+9);x.lineTo(78,h/2-9);x.stroke();left=104;}
-    x.fillStyle='#fff';var fs=name.length>14?44:52;x.font='700 '+fs+'px Figtree, Arial, sans-serif';x.textBaseline='middle';x.fillText(name,left,h/2+3);
-    x.fillStyle='#F6C445';x.textAlign='right';x.font='700 50px Figtree, Arial, sans-serif';x.fillText(fmt(price),w-44,h/2+3);});
-  var s=new THREE.Sprite(new THREE.SpriteMaterial({map:t,depthWrite:false,depthTest:true,toneMapped:false,fog:kind!=='need',transparent:true}));s.scale.set(3.4,.8,1);s.renderOrder=10;return s;
-}
-var beamG=new THREE.CylinderGeometry(.06,.42,8,16,1,true);beamG.translate(0,4,0);
-var haloG=new THREE.SphereGeometry(1,20,14);
-var pickups=[];
-function clearPickups(){pickups.forEach(function(p){scene.remove(p.g);});pickups=[];}
-function seeded(seed){return function(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646;};}
-function placePickups(dishKey,seed){
-  clearPickups(); var d=DISHES[dishKey], rnd=seeded(seed||(Date.now()%100000+7));
-  var need=d.items.slice(), bonus=Object.keys(ITEMS).filter(function(k){return ITEMS[k].veg&&need.indexOf(k)<0;}), other=Object.keys(ITEMS).filter(function(k){return !ITEMS[k].veg&&need.indexOf(k)<0;});
-  var waves=[]; for(var z=-34; z>-462; z-=13.5){ if(STOPS.some(function(s){return Math.abs(z-s.z)<8;}))continue; waves.push(z);}
-  var bag=[]; need.forEach(function(k){bag.push(k,k,k);}); for(var i=0;i<7;i++)bag.push(bonus[Math.floor(rnd()*bonus.length)]);
-  var slots=waves.length*2; while(bag.length<slots)bag.push(other[Math.floor(rnd()*other.length)]);
-  for(var j=bag.length-1;j>0;j--){var r=Math.floor(rnd()*(j+1));var tmp=bag[j];bag[j]=bag[r];bag[r]=tmp;}
-  // make sure every needed item shows up in the first third of the route
-  need.forEach(function(k,ni){var at=bag.indexOf(k);var target=2+ni*3;if(at>target){var t=bag[target];bag[target]=k;bag[at]=t;}});
-  var bi=0;
-  waves.forEach(function(z,wi){
-    var lanes=[0,1,2]; for(var a=2;a>0;a--){var b=Math.floor(rnd()*(a+1));var t=lanes[a];lanes[a]=lanes[b];lanes[b]=t;}
-    var n=wi<2?1:2;
-    for(var q=0;q<n && bi<bag.length;q++){var k=bag[bi++];var lane=lanes[q];
-      var g=new THREE.Group();g.position.set(LANES[lane],0,z);
-      var it=ITEMS[k], kind=need.indexOf(k)>-1?'need':it.junk?'junk':it.veg?'bonus':'other';
-      var col=kind==='need'?0x5BE07F:kind==='junk'?0xFF5A3D:kind==='bonus'?0xF6C445:0xF2E6CF;
-      var add=new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.95,fog:false});
-      var ring=new THREE.Mesh(ringG,add);ring.rotation.x=Math.PI/2;ring.position.y=.08;g.add(ring);
-      var disc=new THREE.Mesh(discG,new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.28,depthWrite:false,fog:false}));disc.rotation.x=-Math.PI/2;disc.position.y=.06;g.add(disc);
-      var beam=new THREE.Mesh(beamG,new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:kind==='need'?.3:.12,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending,fog:kind!=='need'}));g.add(beam);
-      var halo=new THREE.Mesh(haloG,new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.1,depthWrite:false,blending:THREE.AdditiveBlending,fog:kind!=='need'}));halo.position.y=1.7;halo.scale.setScalar(1.1);g.add(halo);
-      var m=itemMesh(k);m.position.y=1.7;m.scale.setScalar(1.55);g.add(m);
-      var lb=labelSprite(it.n,it.p,kind);lb.position.y=3.3;g.add(lb);
-      scene.add(g); pickups.push({g:g,item:m,halo:halo,beam:beam,label:lb,k:k,kind:kind,lane:lane,z:z,taken:false,ph:rnd()*6});
-    }
-  });
-}
-
-/* ------------------------------------------------ state */
-var state={mode:'intro',dish:'jollof',z:6,v:0,throttle:0,lane:1,x:0,spent:0,got:{},extras:[],junk:[],stopsSeen:{},t:0,orbit:0};
-var MAXV=17, REVV=-5;
-
-/* ------------------------------------------------ UI */
-var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-var dishesEl=$('#dishes'), tabsEl=$('#tabs'), selEl=$('#sel'), curRegion='all', autoOn=true;
-function stopAuto(){autoOn=false;}
-function renderTabs(){var keys=['all'].concat(Object.keys(REGIONS));tabsEl.innerHTML=keys.map(function(r){var n=r==='all'?Object.keys(DISHES).length:Object.keys(DISHES).filter(function(k){return DISHES[k].r===r;}).length;return '<button type="button" data-r="'+r+'" aria-pressed="'+(r===curRegion)+'">'+(r==='all'?'All':REGIONS[r])+' <small>'+n+'</small></button>';}).join('');
-  tabsEl.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){stopAuto();curRegion=b.dataset.r;renderTabs();renderDishes();var first=visibleKeys()[0];if(visibleKeys().indexOf(state.dish)<0&&first)selectDish(first,false);dishesEl.scrollTo({left:0,behavior:'smooth'});});});}
-function visibleKeys(){return Object.keys(DISHES).filter(function(k){return curRegion==='all'||DISHES[k].r===curRegion;});}
-function renderDishes(){dishesEl.innerHTML='';visibleKeys().forEach(function(k,i){var d=DISHES[k];var b=document.createElement('button');b.type='button';b.className='dish';b.dataset.k=k;b.style.animationDelay=(i*40)+'ms';b.setAttribute('aria-pressed',k===state.dish?'true':'false');
-  b.innerHTML='<img src="'+dishImg(k)+'" alt="" loading="lazy"><span><em>'+REGIONS[d.r]+'</em><b>'+d.n+'</b><small class="tnum">'+fmt(d.budget)+' · '+d.items.length+' items</small></span>';
-  b.addEventListener('click',function(){stopAuto();selectDish(k,true);track('select_dish',{dish:k,region:d.r});});dishesEl.appendChild(b);});}
-function selectDish(k,scroll){state.dish=k;dishesEl.querySelectorAll('.dish').forEach(function(o){o.setAttribute('aria-pressed',o.dataset.k===k?'true':'false');});
-  var d=DISHES[k];selEl.innerHTML='<div class="stop"><div><small>'+REGIONS[d.r]+'</small><b>'+d.n+'</b></div><span class="tnum">'+fmt(d.budget)+' budget</span></div><div class="ing">'+d.items.map(function(it,i){return '<span style="animation-delay:'+(i*80)+'ms"><i style="background:'+hex(ITEMS[it].c)+'"></i>'+ITEMS[it].n+'</span>';}).join('')+'</div>';
-  if(scroll){var card=dishesEl.querySelector('[data-k="'+k+'"]');if(card){var l=card.offsetLeft-(dishesEl.clientWidth-card.offsetWidth)/2;dishesEl.scrollTo({left:Math.max(0,l),behavior:reduce?'auto':'smooth'});}}}
-['pointerdown','wheel','touchstart','keydown'].forEach(function(ev){dishesEl.addEventListener(ev,stopAuto,{passive:true});});
-$('#pPrev').addEventListener('click',function(){stopAuto();dishesEl.scrollBy({left:-dishesEl.clientWidth*.8,behavior:'smooth'});});
-$('#pNext').addEventListener('click',function(){stopAuto();dishesEl.scrollBy({left:dishesEl.clientWidth*.8,behavior:'smooth'});});
-renderTabs(); renderDishes(); selectDish(state.dish,false);
-setInterval(function(){if(!autoOn||state.mode!=='intro'||document.hidden)return;var ks=visibleKeys();var i=ks.indexOf(state.dish);selectDish(ks[(i+1)%ks.length],true);},3200);
-
-function renderList(){var d=DISHES[state.dish];var el=$('#hList');el.innerHTML='<h4>Shopping list</h4>'+d.items.map(function(k){return '<div class="li'+(state.got[k]?' got':'')+'"><span class="bx"></span>'+ITEMS[k].n+'<span class="pr tnum">'+fmt(ITEMS[k].p)+'</span></div>';}).join('');}
-function renderWallet(){var d=DISHES[state.dish],left=d.budget-state.spent;var w=$('#hWallet');w.textContent=(left<0?'−':'')+fmt(Math.abs(left));w.classList.toggle('over',left<0);
-  var bar=$('#hBar');bar.style.width=Math.max(0,left/d.budget*100)+'%';bar.style.background=left/d.budget<.2?'var(--red)':'var(--gold)';}
-function toast(text,kind){var t=document.createElement('div');t.className='toast glass '+(kind||'');var c=kind==='good'?'var(--green)':kind==='bad'?'var(--red)':kind==='bonus'?'var(--gold)':'#fff';t.innerHTML='<i style="background:'+c+'"></i>'+text;var box=$('#toasts');box.prepend(t);while(box.children.length>3)box.lastChild.remove();setTimeout(function(){t.style.transition='opacity .4s';t.style.opacity='0';setTimeout(function(){t.remove();},400);},2300);}
-function buildProgress(){var p=document.querySelector('.progress');p.querySelectorAll('.stop').forEach(function(s){s.remove();});STOPS.forEach(function(s,i){var e=document.createElement('span');e.className='stop';e.id='ps'+i;e.style.left=(-s.z/ROUTE*100)+'%';p.appendChild(e);});}
-var stopTimer=null;
-function showStop(i){var s=STOPS[i];$('#scEye').textContent=s.eye;$('#scTitle').textContent=s.t;$('#scText').textContent=s.d;$('#scLink').href=s.href;var c=$('#stopcard');c.hidden=false;var e=$('#ps'+i);if(e)e.classList.add('done');clearTimeout(stopTimer);if(i<3)stopTimer=setTimeout(function(){c.hidden=true;},6000);}
-
-/* audio */
-var actx=null;
-function beep(f,dur,type,vol){if(!actx)return;try{var o=actx.createOscillator(),g=actx.createGain();o.type=type||'sine';o.frequency.setValueAtTime(f,actx.currentTime);o.frequency.exponentialRampToValueAtTime(f*1.6,actx.currentTime+dur);g.gain.setValueAtTime(vol||.12,actx.currentTime);g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+dur);o.connect(g);g.connect(actx.destination);o.start();o.stop(actx.currentTime+dur);}catch(e){}}
-var horn=function(){beep(420,.18,'square',.06);setTimeout(function(){beep(420,.22,'square',.06);},220);};
-
-function setThrottle(t){state.throttle=t;$('#bGo').setAttribute('aria-pressed',t===1?'true':'false');$('#bStop').setAttribute('aria-pressed',t===0?'true':'false');$('#bRev').setAttribute('aria-pressed',t===-1?'true':'false');}
-function laneShift(dir){if(state.mode!=='ride')return;var n=Math.max(0,Math.min(2,state.lane+dir));if(n!==state.lane){state.lane=n;beep(660,.06,'triangle',.05);}}
-
-function track(n,p){try{(window.__mq=window.__mq||[]).push([n,p||{}]);if(window.meuroFlush)window.meuroFlush();}catch(e){}}
-function startRide(opts){
-  track('ride_start',{dish:state.dish,race:!!(opts&&opts.race)});
-  opts=(opts&&opts.seed)?opts:{};
-  if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}
-  var d=DISHES[state.dish];
-  state.mode='ride';state.z=6;state.v=0;state.lane=1;state.x=0;state.spent=0;state.got={};state.extras=[];state.junk=[];state.stopsSeen={};state.race=!!opts.race;state.locked=false;
-  setThrottle(0); placePickups(state.dish,opts.seed); buildProgress(); renderList(); renderWallet();
-  $('#hDish').textContent=d.n; $('#hThumb').src=dishImg(state.dish); $('#stopcard').hidden=true; $('#toasts').innerHTML='';
-  $('#intro').classList.add('gone'); setTimeout(function(){$('#intro').hidden=true;},600);
-  $('#result').hidden=true; var h=$('#hud');h.hidden=false;requestAnimationFrame(function(){h.classList.add('on');});
-  if(!opts.race){toast('Tap Go to ride. Collect your list.','');horn();if(LIVE&&LIVE.race)leaveRace(true);}
-  if(LIVE&&LIVE.room)lobbyPresence();
-  setTimeout(function(){$('#bGo').focus({preventScroll:true});},300);
-}
-$('#startBtn').addEventListener('click',function(){startRide();});
-$('#againBtn').addEventListener('click',function(){if(LIVE&&LIVE.race){$('#raceAgain').click();}else startRide();});
-$('#pickBtn').addEventListener('click',function(){if(LIVE&&LIVE.race)leaveRace(true);setTimeout(lobbyPresence,50);$('#result').hidden=true;$('#hud').classList.remove('on');$('#hud').hidden=true;var i=$('#intro');i.hidden=false;requestAnimationFrame(function(){i.classList.remove('gone');});state.mode='intro';state.z=6;state.v=0;clearPickups();});
-$('#exitBtn').addEventListener('click',function(){if(state.mode==='ride')finish();});
-$('#bGo').addEventListener('click',function(){setThrottle(1);});
-$('#bStop').addEventListener('click',function(){setThrottle(0);});
-$('#bRev').addEventListener('click',function(){setThrottle(-1);});
-$('#bLeft').addEventListener('click',function(){laneShift(-1);});
-$('#bRight').addEventListener('click',function(){laneShift(1);});
-addEventListener('keydown',function(e){
-  if(state.mode==='intro'&&e.key==='Enter'&&document.activeElement===document.body){startRide();return;}
-  if(state.mode!=='ride')return;
-  var k=e.key;
-  if(k==='ArrowUp'||k==='w'||k==='W'){setThrottle(1);e.preventDefault();}
-  else if(k===' '||k==='s'||k==='S'){setThrottle(0);e.preventDefault();}
-  else if(k==='ArrowDown'||k==='r'||k==='R'){setThrottle(-1);e.preventDefault();}
-  else if(k==='ArrowLeft'||k==='a'||k==='A'){laneShift(-1);e.preventDefault();}
-  else if(k==='ArrowRight'||k==='d'||k==='D'){laneShift(1);e.preventDefault();}
-  else if(k==='h'||k==='H'){horn();}
-});
-var sx=null,sy=null;
-canvas.addEventListener('pointerdown',function(e){sx=e.clientX;sy=e.clientY;});
-canvas.addEventListener('pointerup',function(e){if(sx==null)return;var dx=e.clientX-sx,dy=e.clientY-sy;if(Math.abs(dx)>36&&Math.abs(dx)>Math.abs(dy))laneShift(dx>0?1:-1);else if(dy<-50)setThrottle(1);else if(dy>50)setThrottle(0);sx=null;});
-
-function collect(p){
-  p.taken=true; var it=ITEMS[p.k], d=DISHES[state.dish];
-  if(d.items.indexOf(p.k)>-1){
-    if(state.got[p.k]){toast(it.n+' already in your basket','');p.taken=true;p.skip=true;return;}
-    state.got[p.k]=true;state.spent+=it.p;toast('+ '+it.n+' · '+fmt(it.p),'good');beep(880,.12,'sine',.12);renderList();
-    if(d.items.every(function(k){return state.got[k];}))setTimeout(function(){toast('List complete. Ride to Meuro Kitchen.','bonus');horn();},500);
-  } else if(it.veg){state.extras.push(p.k);state.spent+=it.p;toast('Bonus veg: '+it.n+' · '+fmt(it.p),'bonus');beep(990,.14,'sine',.1);}
-  else {state.junk.push(p.k);state.spent+=it.p;toast(it.n+' is not on your list · −'+fmt(it.p),'bad');beep(220,.18,'sawtooth',.06);}
-  renderWallet();
-}
-
-function finish(){
-  state.mode='result'; setThrottle(0);
-  var d=DISHES[state.dish], need=d.items, gotN=need.filter(function(k){return state.got[k];}).length;
-  var comp=gotN/need.length*60, over=Math.max(0,state.spent-d.budget);
-  var budgetPts=over?Math.max(0,25-over/d.budget*100):25;
-  var extrasU=state.extras.filter(function(k,i,a){return a.indexOf(k)===i;});
-  var bonus=Math.min(15,extrasU.length*5), waste=state.junk.length*4;
-  var score=Math.max(0,Math.min(100,Math.round(comp+budgetPts+bonus-waste)));
-  var stars=score>=85?3:score>=65?2:score>=40?1:0;
-  $('#rImg').src=dishImg(state.dish); $('#rImg').alt=d.n;
-  $('#rTitle').textContent=gotN===need.length?(score>=85?'Balanced '+d.n.toLowerCase():'Your '+d.n.toLowerCase()+' is ready'):'Missing '+(need.length-gotN)+' ingredient'+(need.length-gotN>1?'s':'');
-  $('#rStars').textContent='★★★'.slice(0,stars)+'☆☆☆'.slice(0,3-stars); $('#rStars').setAttribute('aria-label',stars+' of 3 stars');
-  var vegBoost=extrasU.length*35, protBoost=0;
-  $('#rKcal').textContent=Math.round(d.kcal*(gotN/need.length*.4+.6)+vegBoost); $('#rProt').textContent=Math.round(d.prot*(gotN/need.length*.5+.5))+' g';
-  $('#rSpent').textContent=fmt(state.spent); $('#rSpentL').textContent=over?'spent · '+fmt(over)+' over':'spent of '+fmt(d.budget);
-  var tags=[d.n, gotN+'/'+need.length+' ingredients']; if(extrasU.length)tags.push('+'+extrasU.length+' bonus veg');
-  $('#rTags').innerHTML=tags.map(function(t){return '<span>'+t+'</span>';}).join('');
-  var notes=[];
-  var missing=need.filter(function(k){return !state.got[k];}).map(function(k){return ITEMS[k].n;});
-  if(missing.length)notes.push(['var(--red)','You missed '+missing.join(', ')+'. Slow down near the stalls and switch lanes early.']);
-  else notes.push(['var(--green)','Every ingredient collected. Nice shopping.']);
-  if(over)notes.push(['var(--red)','You went '+fmt(over)+' over budget. Skip items that are not on your list.']);
-  else notes.push(['var(--green)','You stayed within budget with '+fmt(d.budget-state.spent)+' to spare.']);
-  if(extrasU.length)notes.push(['var(--gold)','Extra '+extrasU.map(function(k){return ITEMS[k].n.toLowerCase();}).join(' and ')+' adds fibre and vitamins to the pot.']);
-  else notes.push(['var(--gold)','Smart swap: add a handful of ugu or carrots for more fibre at little cost.']);
-  if(state.junk.length)notes.push(['var(--orange)',state.junk.length+' item'+(state.junk.length>1?'s':'')+' you did not need went into the basket.']);
-  $('#rNotes').innerHTML=notes.map(function(n){return '<li><i style="background:'+n[0]+'"></i><span>'+n[1]+'</span></li>';}).join('');
-  $('#rScore').textContent='0'; $('#rArc').style.strokeDashoffset='276.5';
-  $('#hud').classList.remove('on'); setTimeout(function(){$('#hud').hidden=true;},400);
-  var r=$('#result'); r.hidden=false;
-  requestAnimationFrame(function(){$('#rArc').style.strokeDashoffset=String(276.5*(1-score/100));var s0=performance.now();(function tick(t){var p=Math.min(1,(t-s0)/1200);$('#rScore').textContent=Math.round(score*p);if(p<1)requestAnimationFrame(tick);})(s0);});
-  beep(523,.15,'sine',.1);setTimeout(function(){beep(659,.15,'sine',.1);},160);setTimeout(function(){beep(784,.25,'sine',.1);},320);
-  track('ride_finish',{dish:state.dish,score:score,stars:stars,race:!!state.race,items:gotN});
-  prepareSave({score:score,stars:stars,dish:state.dish,dishName:d.n,spent:state.spent});
-  if(LIVE&&LIVE.onFinish)LIVE.onFinish(score,stars);
-}
-
-/* ------------------------------------------------ loop */
-function resize(){var w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.fov=w<h?72:58;camera.updateProjectionMatrix();}
-addEventListener('resize',resize); resize();
-var clock=new THREE.Clock(), camPos=new THREE.Vector3(9,4,14), camLook=new THREE.Vector3(0,1.2,0), vTmp=new THREE.Vector3(), lTmp=new THREE.Vector3();
-camera.position.copy(camPos);
-function loop(){
-  requestAnimationFrame(loop);
-  var dt=Math.min(.05,clock.getDelta()); state.t+=dt;
-  if(state.mode==='ride'){
-    var target=state.locked?0:(state.throttle===1?MAXV:state.throttle===-1?REVV:0);
-    var acc=state.throttle===0?14:(Math.sign(target-state.v)===Math.sign(state.v)||state.v===0?6:12);
-    var diff=target-state.v; state.v+=Math.sign(diff)*Math.min(Math.abs(diff),acc*dt);
-    state.z-=state.v*dt; if(state.z>8){state.z=8;state.v=0;}
-    state.x+=(LANES[state.lane]-state.x)*Math.min(1,dt*7);
-    // pickups
-    pickups.forEach(function(p){ if(p.taken)return; if(Math.abs(p.z-state.z)<1.3 && Math.abs(LANES[p.lane]-state.x)<1.4) collect(p); });
-    // stops
-    STOPS.forEach(function(s,i){if(!state.stopsSeen[i]&&state.z<s.z+2){state.stopsSeen[i]=true;showStop(i);if(i<3)beep(740,.12,'triangle',.07);}});
-    if(state.z<STOPS[3].z-4){finish();}
-    $('#hProg').style.width=Math.max(0,Math.min(100,-state.z/ROUTE*100))+'%';
-    $('#hSpeed').textContent=Math.round(Math.abs(state.v)*3.6);
-  } else if(state.mode==='intro'){ state.orbit+=dt*(reduce?0:.12); }
-  // keke
-  keke.position.set(state.x,0,state.z);
-  var lean=(LANES[state.lane]-state.x)*-.09; keke.rotation.z=lean; keke.rotation.y=(LANES[state.lane]-state.x)*-.06;
-  keke.position.y=Math.abs(state.v)>.5?Math.sin(state.t*14)*.025:0;
-  keke.userData.wheels.forEach(function(w){w.rotation.x-=state.v*dt/0.33;});
-  // pickups animate
-  pickups.forEach(function(p){ if(p.taken){ if(!p.gone){p.g.scale.multiplyScalar(p.skip?1:0.86);p.g.position.y+=dt*(p.skip?0:6);if(p.g.scale.x<.05||p.skip){scene.remove(p.g);p.gone=true;}} return;}
-    var dz=state.z-p.z; if(dz<-3||dz>(isSmall?150:185)){p.g.visible=false;return;} p.g.visible=true;
-    var near=dz<7; p.label.visible=!near; p.halo.visible=dz>3; p.beam.visible=dz>3;
-    p.item.rotation.y+=dt*1.4; p.item.position.y=1.7+Math.sin(state.t*2+p.ph)*.14; p.halo.scale.setScalar(1.1+Math.sin(state.t*3+p.ph)*.08); p.beam.material.opacity=(p.kind==='need'?.26:.1)+Math.sin(state.t*4+p.ph)*.04; });
-  // traders sway (only near)
-  for(var i=0;i<traders.length;i++){var tr=traders[i];if(Math.abs(tr.position.z-state.z)<60)tr.rotation.x=Math.sin(state.t*1.5+tr.userData.ph)*.04;}
-  // camera
-  if(state.mode==='intro'){
-    var sw=Math.sin(state.orbit*.5), wide=innerWidth>760; vTmp.set(state.x+(wide?-1.6:1.4)+sw*1.2,3.3+Math.sin(state.orbit*.35)*.3,state.z+(wide?7.5:9.5)); lTmp.set(state.x+(wide?-3.2:0),1.7,state.z-16);
-  } else {
-    var tall=innerHeight>innerWidth; var back=state.v<-.5?-7.5:(tall?9.5:8.5); vTmp.set(state.x*.7,tall?4.8:4.0,state.z+back); lTmp.set(state.x*.85,1.4,state.z-(state.v<-.5?-6:7));
-    if(state.mode==='result'){vTmp.set(state.x+5,3.4,state.z+6);lTmp.set(state.x,1.2,state.z-2);}
-  }
-  camPos.lerp(vTmp,Math.min(1,dt*3)); camLook.lerp(lTmp,Math.min(1,dt*4));
-  camera.position.copy(camPos); camera.lookAt(camLook);
-  // lights + sky follow
-  sunL.position.set(state.x-30,40,state.z-40); sunL.target.position.set(state.x,0,state.z-10);
-  scene.userData.sky.position.set(0,0,state.z); scene.userData.sun.position.set(-60*(SKYR-6)/306.7,28*(SKYR-6)/306.7,state.z-300*(SKYR-6)/306.7);
-  if(LIVE&&LIVE.frame)LIVE.frame(dt);
-  renderer.render(scene,camera);
-}
-loop();
-document.addEventListener('visibilitychange',function(){if(document.hidden&&state.mode==='ride')setThrottle(0);});
-
-/* ------------------------------------------------ sign-up, saved scores, leaderboard */
-var LB={db:null,uid:null,owner:false,rows:[],signups:[],last:null,writable:true};
-var player=null; // {name,via,contact,consent}
-function loadLocal(){try{var v=JSON.parse(localStorage.getItem('meuro.player')||'null');if(v&&v.name)player=v;}catch(e){}}
-function saveLocal(){try{localStorage.setItem('meuro.player',JSON.stringify(player));}catch(e){}}
-function localBest(){try{return JSON.parse(localStorage.getItem('meuro.best')||'[]');}catch(e){return [];}}
-function pushLocalBest(r){try{var a=localBest();a.push(r);a.sort(function(x,y){return y.best-x.best;});localStorage.setItem('meuro.best',JSON.stringify(a.slice(0,10)));}catch(e){}}
-loadLocal();player=null;
-var via='whatsapp';
-function setVia(v){via=v;$('#sbVia').querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.v===v));});
-  var c=$('#sbContact');$('#sbContactL').textContent=v==='email'?'Email address':'WhatsApp number';c.type=v==='email'?'email':'tel';c.inputMode=v==='email'?'email':'tel';c.autocomplete=v==='email'?'email':'tel';c.placeholder=v==='email'?'you@example.com':'0803 000 0000';c.removeAttribute('aria-invalid');}
-$('#sbVia').querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){setVia(b.dataset.v);$('#sbContact').value='';$('#sbContact').focus();});});
-function showFields(on){$('#sbFields').hidden=true;$('#sbMe').hidden=!player;if(player)$('#sbMeName').textContent=player.name;}
-$('#sbEdit').addEventListener('click',function(){showFields(true);if(player){$('#sbName').value=player.name;setVia(player.via||'whatsapp');$('#sbContact').value=player.contact||'';$('#sbConsent').checked=!!player.consent;}$('#sbName').focus();});
-function msg(t,kind){var m=$('#sbMsg');m.textContent=t;m.className='sb-msg'+(kind?' '+kind:'');}
-function prepareSave(r){LB.last=r;LB.savedThis=false;msg('');$('#sbRank').hidden=true;$('#sbSave').disabled=false;$('#sbSave').textContent='Save my score';
-  $('#sbTitle').textContent=player?'Save this score':'Save your score';
-  $('#sbSub').textContent=player?'Add it to the leaderboard and see where you rank.':'Join the Meuro leaderboard and get free weekly meal plans from Meuro AI.';
-  showFields(!player);$('#sbSave').textContent=player?'Save my score':(backend()?'Log in to save':'Save my score');if(!player&&backend())$('#sbSub').textContent='Create a free account or log in to save your score, join the leaderboard and get free weekly meal plans by email.';}
-function cleanName(v){return String(v||'').replace(/[\u0000-\u001f<>]/g,'').replace(/\s+/g,' ').trim().slice(0,20);}
-function cleanContact(v,kind){v=String(v||'').trim();if(kind==='email'){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)?v.toLowerCase():null;}
-  var d=v.replace(/[^\d+]/g,'');var digits=d.replace(/\D/g,'');if(digits.length<10||digits.length>15)return null;if(/^0\d{10}$/.test(digits))return '+234'+digits.slice(1);return (d[0]==='+'?'+':'+')+digits;}
-$('#saveBox').addEventListener('submit',function(e){e.preventDefault();if(!LB.last||LB.savedThis)return;if(!backend()){player=player||{name:'You',via:'email',contact:'',consent:false};doSave();return;}needProfile(function(){doSave();});});
-async function doSave(){var r=LB.last,btn=$('#sbSave');btn.disabled=true;btn.textContent='Saving…';msg('');
-  var now=new Date().toISOString();
-  pushLocalBest({name:player.name,best:r.score,dish:r.dishName,stars:r.stars,at:now});
-  var shared=false;
-  if(LB.db&&LB.uid&&LB.writable){
-    try{
-      if(LB.profileDirty!==false){var su=LB.db.doc('signups/'+LB.uid);var prev=await su.get();
-        await su.set({name:player.name,via:player.via,contact:player.contact,consent:!!player.consent,createdAt:(prev.exists&&prev.data().createdAt)||now,updatedAt:now});LB.profileSaved=true;LB.profileDirty=false;}
-      var ref=LB.db.doc('scores/'+LB.uid);var cur=await ref.get();var c=cur.exists?cur.data():null;
-      var rides=((c&&c.rides)||0)+1;
-      if(!c||r.score>(c.best||0)){await ref.set({name:player.name,best:r.score,stars:r.stars,dish:r.dishName,rides:rides,crew:(c&&c.crew)||null,updatedAt:now});}
-      else{await ref.update({name:player.name,rides:rides,updatedAt:now});}
-      shared=true;
-    }catch(err){if(err&&(err.code==='invalid_argument'||err.code==='not_granted'||err.code==='revoked'))LB.writable=false;}
-  }
-  LB.savedThis=true;btn.textContent='Saved';showFields(false);
-  track('score_saved',{score:r.score,shared:shared});
-  if(shared){msg('Score saved to the leaderboard.','ok');setTimeout(showRank,700);}
-  else{msg('Score saved on this device. Your best plates show in the leaderboard.','ok');renderBoard();}
-}
-function showRank(){if(!LB.uid)return;var i=-1;for(var k=0;k<LB.rows.length;k++)if(LB.rows[k].id===LB.uid){i=k;break;}
-  var box=$('#sbRank');if(i<0){box.hidden=true;return;}box.hidden=false;$('#sbRankN').textContent='#'+(i+1);
-  var best=LB.rows[i].best;$('#sbRankT').textContent=i===0?'Top of the leaderboard with '+best+' points. Nice cooking.':'Your best is '+best+' points. '+(LB.rows[i-1].best-best+1)+' more to climb a spot.';}
-function starStr(n){n=Math.max(0,Math.min(3,n||0));return '★★★'.slice(0,n)+'☆☆☆'.slice(0,3-n);}
-function renderBoard(){var list=$('#bdList');list.innerHTML='';var rows=LB.rows,local=false;
-  if(!LB.db){rows=localBest().map(function(x,i){return {id:'l'+i,name:x.name,best:x.best,dish:x.dish,stars:x.stars};});local=true;}
-  $('#bdEmpty').hidden=rows.length>0;$('#bdSub').textContent=local?'Your best plates on this device':'Top Market Run plates';
-  rows.forEach(function(r,i){var row=document.createElement('div');row.className='bd-row'+(r.id===LB.uid?' me':'');
-    var pos=document.createElement('span');pos.className='pos tnum';pos.textContent=i+1;
-    var mid=document.createElement('div');var nm=document.createElement('div');nm.className='nm';nm.textContent=(r.name||'Player')+(r.id===LB.uid?' (you)':'');var ds=document.createElement('div');ds.className='ds';ds.textContent=r.dish||'';mid.appendChild(nm);mid.appendChild(ds);
-    var sc=document.createElement('div');sc.className='sc tnum';sc.textContent=r.best;var st=document.createElement('small');st.textContent=starStr(r.stars);sc.appendChild(st);
-    row.appendChild(pos);row.appendChild(mid);row.appendChild(sc);
-    if(LB.owner&&!local&&r.id!==LB.uid){var rm=document.createElement('button');rm.type='button';rm.className='rm';rm.textContent='Remove from board';rm.addEventListener('click',function(){if(rm.dataset.sure){LB.db.doc('scores/'+r.id).delete().catch(function(){});}else{rm.dataset.sure='1';rm.textContent='Tap again to remove';}});row.appendChild(rm);}
-    list.appendChild(row);});
-  if(LB.savedThis)showRank();}
-function csvCell(v){v=String(v==null?'':v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
-function renderOwner(){var box=$('#bdOwner');box.hidden=false;var l=$('#suList');l.innerHTML='';
-  if(!LB.signups.length){var p=document.createElement('p');p.className='bd-note';p.textContent='No sign-ups yet. They appear here as players save scores.';l.appendChild(p);}
-  LB.signups.forEach(function(s){var d=document.createElement('div');d.className='su';var a=document.createElement('b');a.textContent=s.name||'';var em=document.createElement('em');em.textContent=s.consent?'Opted in':'No marketing';if(!s.consent)em.className='no';var c=document.createElement('span');c.textContent=(s.via==='email'?'Email · ':'WhatsApp · ')+(s.contact||'');var t=document.createElement('span');t.textContent=(s.updatedAt||'').slice(0,10);d.appendChild(a);d.appendChild(em);d.appendChild(c);d.appendChild(t);l.appendChild(d);});
-  $('#suCopy').textContent='Copy '+LB.signups.length+' sign-ups as CSV';}
-$('#suCopy').addEventListener('click',function(){var rows=[['name','via','contact','marketing_consent','created','updated']].concat(LB.signups.map(function(s){return [s.name,s.via,s.contact,s.consent?'yes':'no',s.createdAt,s.updatedAt];}));
-  var csv=rows.map(function(r){return r.map(csvCell).join(',');}).join('\n');var ta=$('#suCsv');ta.value=csv;
-  var done=function(){$('#suCopy').textContent='Copied';setTimeout(function(){$('#suCopy').textContent='Copy '+LB.signups.length+' sign-ups as CSV';},1800);};
-  try{navigator.clipboard.writeText(csv).then(done,function(){ta.hidden=false;ta.select();});}catch(e){ta.hidden=false;ta.select();}});
-var board=$('#board');
-function openBoard(){renderBoard();board.hidden=false;$('#bdClose').focus();}
-function closeBoard(){board.hidden=true;}
-document.querySelectorAll('[data-board]').forEach(function(b){b.addEventListener('click',openBoard);});
-$('#bdClose').addEventListener('click',closeBoard);
-addEventListener('keydown',function(e){if(e.key==='Escape'&&!board.hidden)closeBoard();});
-(async function initCloud(){
-  if(!window.claude||typeof window.claude.use!=='function'){renderBoard();return;}
-  try{
-    var u=await window.claude.use('user');
-    if(u){LB.uid=await u.id();LB.owner=await u.isOwner();}
-    if(!backend()&&LB.uid){AUTH={uid:LB.uid};setTimeout(renderMe,0);}
-    var db=await window.claude.use('db');
-    if(!db){renderBoard();return;}
-    LB.db=db;
-    db.collection('scores').orderBy('best','desc').limit(300).onSnapshot(function(s){LB.allRows=s.docs.map(function(d){var x=d.data()||{};return {id:d.id,name:x.name,best:x.best||0,dish:x.dish,stars:x.stars,crew:x.crew||null};});LB.rows=LB.allRows.filter(function(r){return r.best>0;}).slice(0,50);if(!board.hidden||LB.savedThis)renderBoard();if(!$('#tabCrews').hidden)renderCrews();renderMe();},function(){});
-    db.collection('crews').limit(200).onSnapshot(function(s){LIVE.crews=s.docs.map(function(d){var x=d.data()||{};return {id:d.id,name:cleanName(x.name).slice(0,24)||'Crew'};});if(!$('#tabCrews').hidden)renderCrews();renderMe();},function(){});
-    if(LB.uid){var me=await db.doc('signups/'+LB.uid).get();if(me.exists){var d=me.data();player={name:d.name,via:d.via,contact:d.contact,consent:!!d.consent};saveLocal();LB.profileSaved=true;LB.profileDirty=false;if(state.mode==='result'&&!LB.savedThis)prepareSave(LB.last);}}
-    else{LB.writable=false;}
-    if(LB.owner)subscribeSignups();
-  }catch(e){renderBoard();}
-})();
-
-/* ================================================ LIVE: shared market, races, shouts, crews */
-var LIVE={room:null,race:null,code:null,host:false,lobby:[],racers:[],ghosts:{},lastSend:0,crews:[],ready:false,raceStart:0};
-var KCOLORS=['#F2C230','#4FA866','#2F7FD6','#E5533D','#9B59D0','#16B5A6','#E84393','#F27B2B'];
-var myColor=(function(){try{var c=localStorage.getItem('meuro.color');if(c&&KCOLORS.indexOf(c)>-1)return c;c=KCOLORS[Math.floor(Math.random()*KCOLORS.length)];localStorage.setItem('meuro.color',c);return c;}catch(e){return KCOLORS[Math.floor(Math.random()*KCOLORS.length)];}})();
-var SHOUTS=['Oya, follow me!','Market dey hot!','I don pass you!','Who get pepper?','Jollof na life','Gbam!','Wait for me o','Na me go win'];
-function nick(){return (player&&player.name)||'Rider';}
-function safeName(v){return String(v==null?'':v).replace(/[\u0000-\u001f<>]/g,'').slice(0,20)||'Rider';}
-function safeColor(c){return KCOLORS.indexOf(c)>-1?c:'#F4F6EF';}
-
-/* -------- accounts: create account / log in / log out (email only) */
-var AUTH=null, pendingAfterJoin=null, jmode='signup';
-function backend(){return window.__meuroBackend||null;}
-var AUTH_MSG={'auth/email-already-in-use':'That email already has an account. Log in instead.','auth/invalid-email':'Enter a valid email address, like you@example.com.','auth/weak-password':'Use a password of at least 6 characters.','auth/invalid-credential':'That email and password do not match. Try again or reset your password.','auth/wrong-password':'That email and password do not match. Try again or reset your password.','auth/user-not-found':'No account uses that email yet. Create one instead.','auth/too-many-requests':'Too many tries. Wait a minute, then try again.','auth/network-request-failed':'No internet connection. Check it and try again.','auth/missing-email':'Enter your email address first.'};
-function authMsg(code){return AUTH_MSG[code]||'Something went wrong. Try again.';}
-function setJMode(m){jmode=m;$('#jTabs').querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.m===m));});
-  $('#jNameRow').hidden=m!=='signup';$('#jConsentRow').hidden=m!=='signup';$('#jForgot').hidden=m!=='login';
-  $('#jSave').textContent=m==='signup'?'Create account':'Log in';$('#jPass').autocomplete=m==='signup'?'new-password':'current-password';
-  $('#jTitle').textContent=m==='signup'?'Join the market':'Welcome back';$('#jSub').textContent=m==='signup'?'Create a free account to race friends, join crews and save your scores.':'Log in with the email you signed up with.';
-  $('#jMsg').textContent='';$('#jMsg').className='err';}
-$('#jTabs').querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){setJMode(b.dataset.m);});});
-function platformMode(){return !backend()&&!!LB.uid;}
-function needProfile(cb){if(AUTH&&AUTH.uid&&player){cb();return;}if(platformMode()){pendingAfterJoin=cb;openJoin('profile');return;}if(!backend()){toast('Live play is not switched on for this copy of the site yet.','bad');return;}pendingAfterJoin=cb;openJoin();}
-function openJoin(mode){if(platformMode()||mode==='profile'){if(!platformMode())return;$('#joinModal').hidden=false;jmode='profile';$('#jTabs').hidden=true;$('#jNameRow').hidden=false;$('#jConsentRow').hidden=false;$('#jForgot').hidden=true;$('#jPass').closest('label').hidden=true;$('#jTitle').textContent='Create your rider';$('#jSub').textContent='Pick the name your friends will see and the email for your free weekly meal plans.';$('#jSave').textContent='Join the market';$('#jMsg').textContent='';if(player){$('#jName').value=player.name;$('#jEmail').value=player.contact||'';}setTimeout(function(){$('#jName').focus();},60);return;}
-  if(!backend()){toast('Live play is not switched on for this copy of the site yet.','bad');return;}$('#joinModal').hidden=false;setJMode(typeof mode==='string'?mode:jmode);setTimeout(function(){(jmode==='signup'?$('#jName'):$('#jEmail')).focus();},60);}
-function closeJoin(){$('#joinModal').hidden=true;pendingAfterJoin=null;}
-$('#jClose').addEventListener('click',closeJoin);
-$('#joinForm').addEventListener('submit',async function(e){e.preventDefault();var b=backend();
-  if(!b&&jmode==='profile'&&platformMode()){var msg=$('#jMsg');msg.className='err';var n=cleanName($('#jName').value),em=String($('#jEmail').value||'').trim().toLowerCase();
-    if(!n||n.length<2){msg.textContent='Add a rider name of at least 2 letters.';$('#jName').focus();return;}
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)){msg.textContent=authMsg('auth/invalid-email');$('#jEmail').focus();return;}
-    player={name:n,via:'email',contact:em,consent:$('#jConsent').checked};saveLocal();
-    if(LB.db){try{var su=LB.db.doc('signups/'+LB.uid);var prev=await su.get();var t=new Date().toISOString();await su.set({name:n,via:'email',contact:em,consent:!!player.consent,createdAt:(prev.exists&&prev.data().createdAt)||t,updatedAt:t});LB.profileSaved=true;LB.profileDirty=false;}catch(x){}}
-    AUTH={uid:LB.uid};renderMe();if(LIVE&&LIVE.room)lobbyPresence();if(LIVE.race)LIVE.race.presence({nick:nick(),color:myColor}).catch(function(){});
-    var c=pendingAfterJoin;pendingAfterJoin=null;$('#joinModal').hidden=true;if(state.mode==='result'&&LB.last&&!LB.savedThis)prepareSave(LB.last);if(c)c();return;}
-  if(!b)return;
-  var email=String($('#jEmail').value||'').trim().toLowerCase(),pw=String($('#jPass').value||''),msg=$('#jMsg');msg.className='err';
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){msg.textContent=authMsg('auth/invalid-email');$('#jEmail').focus();return;}
-  if(pw.length<6){msg.textContent=authMsg('auth/weak-password');$('#jPass').focus();return;}
-  var btn=$('#jSave');btn.disabled=true;var label=btn.textContent;btn.textContent=jmode==='signup'?'Creating account…':'Logging in…';
-  var r;
-  if(jmode==='signup'){var n=cleanName($('#jName').value);if(!n||n.length<2){msg.textContent='Add a rider name of at least 2 letters.';btn.disabled=false;btn.textContent=label;$('#jName').focus();return;}
-    r=await b.auth.signUp(n,email,pw,$('#jConsent').checked);}
-  else r=await b.auth.logIn(email,pw);
-  btn.disabled=false;btn.textContent=label;
-  if(!r.ok){msg.textContent=authMsg(r.code);return;}
-  track(jmode==='signup'?'sign_up':'login',{method:'email'});
-  $('#jPass').value='';msg.className='sb-msg ok';msg.textContent=jmode==='signup'?'Account created. Welcome to the market!':'Logged in.';});
-$('#jForgot').addEventListener('click',async function(){var b=backend();var email=String($('#jEmail').value||'').trim().toLowerCase();var msg=$('#jMsg');
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){msg.className='err';msg.textContent='Enter your email above, then tap Forgot password again.';$('#jEmail').focus();return;}
-  var r=await b.auth.reset(email);if(r.ok){msg.className='sb-msg ok';msg.textContent='Check your inbox for a link to reset your password.';}else{msg.className='err';msg.textContent=authMsg(r.code);}});
-var signupsSub=false;
-function subscribeSignups(){if(signupsSub||!LB.db)return;signupsSub=true;LB.db.collection('signups').orderBy('updatedAt','desc').limit(500).onSnapshot(function(s){LB.signups=s.docs.map(function(d){return d.data()||{};});renderOwner();},function(){signupsSub=false;});}
-window.addEventListener('meuro-auth',async function(e){var d=e.detail||{};await window.__meuroReady;
-  AUTH=d.uid?d:null;LB.uid=d.uid||null;LB.owner=!!d.isAdmin;LB.writable=!!d.uid;
-  if(d.uid){var p=null;try{var db=LB.db||await window.claude.use('db');if(db){LB.db=LB.db||db;var s=await db.doc('signups/'+d.uid).get();if(s.exists)p=s.data();}}catch(x){}
-    player={name:cleanName((p&&p.name)||d.name||String(d.email||'').split('@')[0])||'Rider',via:'email',contact:d.email||'',consent:!!(p&&p.consent)};saveLocal();LB.profileSaved=true;LB.profileDirty=false;
-    if(LB.owner)subscribeSignups();}
-  else{player=null;try{localStorage.removeItem('meuro.player');}catch(x){}if(LIVE&&LIVE.race)leaveRace(true);$('#bdOwner').hidden=true;}
-  renderMe();if(LIVE&&LIVE.room)lobbyPresence();if(state.mode==='result'&&LB.last&&!LB.savedThis)prepareSave(LB.last);if(!board.hidden)renderBoard();
-  if(AUTH&&pendingAfterJoin){var c=pendingAfterJoin;pendingAfterJoin=null;setTimeout(function(){$('#joinModal').hidden=true;c();},500);}
-  else if(AUTH&&!$('#joinModal').hidden){setTimeout(function(){$('#joinModal').hidden=true;},700);}});
-function renderMe(){var b=$('#meChip');$('#meEdit').textContent=platformMode()?'Edit':'Log out';$('#authBtn').hidden=!!AUTH||!backend();if(!b)return;if(AUTH&&player){b.hidden=false;$('#meName').textContent=player.name;$('#meDot').style.background=myColor;var cr=myCrew();$('#meCrew').textContent=cr?(' · '+cr.name):'';}else b.hidden=true;}
-$('#authBtn').addEventListener('click',function(){openJoin('login');});
-
-/* -------- ghosts (other riders' kekes) */
-function labelFor(name,color){return ctex(512,128,function(x,w,h){x.fillStyle='rgba(10,16,12,.86)';var r=50;x.beginPath();x.moveTo(r,10);x.arcTo(w-10,10,w-10,h-10,r);x.arcTo(w-10,h-10,10,h-10,r);x.arcTo(10,h-10,10,10,r);x.arcTo(10,10,w-10,10,r);x.fill();
-  x.fillStyle=color;x.beginPath();x.arc(58,h/2,20,0,7);x.fill();x.fillStyle='#fff';x.font='700 50px Figtree, Arial, sans-serif';x.textBaseline='middle';x.fillText(name,96,h/2+3);});}
-function makeGhost(name,color){
-  var keep=keke.userData;keke.userData={};var g=keke.clone(true);keke.userData=keep;
-  var rm=[];g.traverse(function(o){if(o.isLight)rm.push(o);});rm.forEach(function(o){o.parent.remove(o);});
-  var mat=M.keke.clone();mat.color.set(color);
-  var wheels=[];g.traverse(function(o){if(o.isMesh){if(o.material===M.keke)o.material=mat;o.castShadow=false;if(o.geometry.type==='CylinderGeometry'&&o.material===M.black&&Math.abs(o.position.y-.33)<.01)wheels.push(o);}});
-  var lb=new THREE.Sprite(new THREE.SpriteMaterial({map:labelFor(name,color),depthTest:false,depthWrite:false,fog:false,toneMapped:false,transparent:true}));lb.scale.set(3.4,.85,1);lb.position.y=3.25;lb.renderOrder=11;g.add(lb);
-  g.userData={wheels:wheels,label:lb,name:name,color:color,tz:6,tx:0,v:0,bubble:null,bubbleT:0};scene.add(g);return g;}
-function bubble(obj,text){if(obj.userData.bubble){obj.remove(obj.userData.bubble);}
-  var t=ctex(640,150,function(x,w,h){x.fillStyle='#FFFFFF';var r=60;x.beginPath();x.moveTo(r,10);x.arcTo(w-10,10,w-10,h-30,r);x.arcTo(w-10,h-30,10,h-30,r);x.arcTo(10,h-30,10,10,r);x.arcTo(10,10,w-10,10,r);x.fill();x.beginPath();x.moveTo(w/2-18,h-32);x.lineTo(w/2,h-4);x.lineTo(w/2+18,h-32);x.fill();
-    x.fillStyle='#15231A';x.font='700 50px Figtree, Arial, sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText(text,w/2,(h-30)/2+3);});
-  var s=new THREE.Sprite(new THREE.SpriteMaterial({map:t,depthTest:false,depthWrite:false,fog:false,toneMapped:false,transparent:true}));s.scale.set(4,.94,1);s.position.y=4.5;s.renderOrder=12;obj.add(s);obj.userData.bubble=s;obj.userData.bubbleT=2.8;}
-function ridersToShow(){
-  var list=[];
-  if(LIVE.race){LIVE.racers.forEach(function(p){if(!p.sameTab&&p.presence&&p.presence.mode==='ride')list.push(p);});}
-  else{LIVE.lobby.forEach(function(p){if(!p.sameTab&&p.presence&&p.presence.mode==='ride'&&!p.presence.racing)list.push(p);});}
-  return list.slice(0,16);}
-function syncGhosts(){var want={};
-  ridersToShow().forEach(function(p){var pr=p.presence;want[p.peer]=1;var gh=LIVE.ghosts[p.peer];var nm=safeName(pr.nick),col=safeColor(pr.color);
-    if(!gh||gh.userData.name!==nm||gh.userData.color!==col){if(gh)scene.remove(gh);gh=makeGhost(nm,col);LIVE.ghosts[p.peer]=gh;gh.position.set(+pr.x||0,0,+pr.z||6);}
-    gh.userData.tz=isFinite(+pr.z)?+pr.z:6;gh.userData.tx=isFinite(+pr.x)?Math.max(-4,Math.min(4,+pr.x)):0;gh.userData.v=+pr.v||0;});
-  Object.keys(LIVE.ghosts).forEach(function(k){if(!want[k]){scene.remove(LIVE.ghosts[k]);delete LIVE.ghosts[k];}});
-  $('#hRiders').textContent=Object.keys(LIVE.ghosts).length?('+'+Object.keys(LIVE.ghosts).length+' riding with you'):'';}
-function clearGhosts(){Object.keys(LIVE.ghosts).forEach(function(k){scene.remove(LIVE.ghosts[k]);});LIVE.ghosts={};}
-LIVE.frame=function(dt){
-  Object.keys(LIVE.ghosts).forEach(function(k){var g=LIVE.ghosts[k],u=g.userData;var dz=u.tz-g.position.z;
-    g.position.z+= Math.abs(dz)>25?dz:dz*Math.min(1,dt*6);g.position.x+=(u.tx-g.position.x)*Math.min(1,dt*6);
-    g.position.y=Math.abs(u.v)>.5?Math.sin(state.t*14+k.length)*.025:0;u.wheels.forEach(function(w){w.rotation.x-=u.v*dt/0.33;});
-    g.visible=Math.abs(g.position.z-state.z)<160;
-    if(u.bubble){u.bubbleT-=dt;if(u.bubbleT<=0){g.remove(u.bubble);u.bubble=null;}}});
-  var ku=keke.userData;if(ku.bubble){ku.bubbleT-=dt;if(ku.bubbleT<=0){keke.remove(ku.bubble);ku.bubble=null;}}
-  if(state.mode==='ride'&&LIVE.room){var now=performance.now();if(now-LIVE.lastSend>220){LIVE.lastSend=now;
-    var got=Object.keys(state.got).length;var patch={mode:'ride',z:Math.round(state.z*10)/10,x:Math.round(state.x*100)/100,v:Math.round(state.v*10)/10,got:got,need:DISHES[state.dish].items.length};
-    (LIVE.race||LIVE.room).presence(patch).catch(function(){});}}
-};
-
-/* -------- lobby presence + online list */
-function lobbyPresence(){if(!LIVE.room)return;var cr=myCrew();
-  LIVE.room.presence({nick:nick(),color:myColor,mode:state.mode,racing:!!LIVE.race,dish:state.dish,crew:cr?cr.name.slice(0,24):null}).catch(function(){});}
-function modeText(pr){if(pr.racing)return 'Racing with friends';if(pr.mode==='ride')return 'Riding · '+((DISHES[pr.dish]&&DISHES[pr.dish].n)||'');if(pr.mode==='result')return 'Checking their plate';return 'Picking a dish';}
-function renderOnline(){var others=LIVE.lobby.filter(function(p){return !p.isMe;});var n=LIVE.lobby.length;
-  $('#onlineN').textContent=n<=1?'Only you in the market':n+' riders in the market';
-  var av=$('#onlineAv');av.innerHTML='';LIVE.lobby.slice(0,5).forEach(function(p){var s=document.createElement('span');s.style.background=safeColor(p.presence&&p.presence.color);s.textContent=safeName(p.presence&&p.presence.nick).charAt(0).toUpperCase();av.appendChild(s);});
-  var list=$('#bdOnline');list.innerHTML='';
-  LIVE.lobby.forEach(function(p){var pr=p.presence||{};var row=document.createElement('div');row.className='bd-row'+(p.isMe?' me':'');
-    var dot=document.createElement('span');dot.className='pos';var d=document.createElement('i');d.className='odot';d.style.background=safeColor(pr.color);dot.appendChild(d);
-    var mid=document.createElement('div');var nm=document.createElement('div');nm.className='nm';nm.textContent=safeName(pr.nick)+(p.isMe?' (you)':'');var ds=document.createElement('div');ds.className='ds';ds.textContent=modeText(pr)+(pr.crew?' · '+String(pr.crew).slice(0,24):'');mid.appendChild(nm);mid.appendChild(ds);
-    row.appendChild(dot);row.appendChild(mid);row.appendChild(document.createElement('span'));list.appendChild(row);});
-  if(!LIVE.lobby.length){list.innerHTML='<p class="bd-empty">Nobody else is online right now. Share Market Run with friends to ride together.</p>';}}
-
-/* -------- shouts */
-function shout(text){if(!LIVE.room)return;needProfile(function(){track('shout',{in_race:!!LIVE.race});var target=LIVE.race||LIVE.room;target.emit('shout',{t:SHOUTS.indexOf(text),n:nick(),c:myColor}).catch(function(){});$('#shoutBar').hidden=true;});}
-function onShout(m){var d=m.data||{};var text=SHOUTS[d.t];if(!text)return;var name=safeName(d.n);
-  if(m.isMe&&m.sameTab){bubble(keke,text);toast('You: '+text,'');return;}
-  var g=LIVE.ghosts[m.peer];if(g)bubble(g,text);toast(name+': '+text,'bonus');beep(560,.08,'triangle',.05);}
-(function(){var bar=$('#shoutBar');SHOUTS.forEach(function(s){var b=document.createElement('button');b.type='button';b.className='glass';b.textContent=s;b.addEventListener('click',function(){shout(s);});bar.appendChild(b);});
-  $('#bShout').addEventListener('click',function(){bar.hidden=!bar.hidden;});})();
-
-/* -------- races with friends */
-var WORDS=['jollof','egusi','suya','amala','waakye','banku','amiwo','okra','dodo','kenkey','efo','moimoi'];
-function newCode(){return WORDS[Math.floor(Math.random()*WORDS.length)]+'-'+(100+Math.floor(Math.random()*900));}
-function normCode(v){v=String(v||'').toLowerCase().replace(/[^a-z0-9-]/g,'').replace(/^-+|-+$/g,'');return /^[a-z0-9][a-z0-9-]{2,30}$/.test(v)?v:null;}
-function showRace(view){var p=$('#race');p.hidden=false;$('#rcStart').hidden=view!=='start';$('#rcLobby').hidden=view!=='lobby';}
-function hideRace(){$('#race').hidden=true;}
-$('#bRace').addEventListener('click',function(){if(LIVE.race)showRace('lobby');else showRace('start');});
-$('#rcClose').addEventListener('click',hideRace);
-$('#rcCreate').addEventListener('click',function(){needProfile(function(){joinRace(newCode(),true);});});
-$('#rcJoinForm').addEventListener('submit',function(e){e.preventDefault();var c=normCode($('#rcCode').value);if(!c){$('#rcErr').textContent='Enter the code your friend shared, like jollof-482.';return;}needProfile(function(){joinRace(c,false);});});
-async function joinRace(code,host){
-  if(!LIVE.room){$('#rcErr').textContent='Live races are not available on this connection.';return;}
-  $('#rcErr').textContent='';$('#rcCreate').disabled=true;
-  try{var r=await LIVE.room.join('race-'+code);}catch(err){$('#rcCreate').disabled=false;$('#rcErr').textContent=err&&err.code==='limit_reached'?'Too many races open on this device. Leave one and try again.':'Could not open that race. Check the code and try again.';return;}
-  $('#rcCreate').disabled=false;
-  track(host?'race_create':'race_join',{});
-  LIVE.race=r;LIVE.code=code;LIVE.host=!!host;LIVE.racers=r.peers();
-  r.presence({nick:nick(),color:myColor,host:!!host,mode:'lobby',dish:state.dish,done:false,score:null}).catch(function(){});
-  r.onPeers(function(ch){LIVE.racers=ch.peers;renderRaceLobby();renderRaceMini();renderRaceResults();syncGhosts();
-    ch.joined.forEach(function(p){if(!p.isMe&&LIVE.ready)toast(safeName(p.presence&&p.presence.nick)+' joined the race','good');});},function(){toast('The race connection ended.','bad');leaveRace(true);});
-  r.on('start',function(m){var d=m.data||{};if(!DISHES[d.dish]||!isFinite(+d.seed))return;beginRace(d.dish,+d.seed,safeName(d.n));});
-  r.on('shout',onShout);
-  LIVE.ready=true;$('#rcCodeBig').textContent=code.toUpperCase();updateInvite();showRace('lobby');renderRaceLobby();lobbyPresence();
-  $('#bRace').classList.add('on');$('#bRaceT').textContent='Race '+code.toUpperCase();}
-async function leaveRace(silent){var r=LIVE.race;LIVE.race=null;LIVE.code=null;LIVE.host=false;LIVE.racers=[];LIVE.ready=false;if(r)try{await r.leave();}catch(e){}
-  clearGhosts();syncGhosts();hideRace();$('#raceMini').hidden=true;$('#raceRes').hidden=true;$('#bRace').classList.remove('on');$('#bRaceT').textContent='Race friends';lobbyPresence();if(!silent)toast('You left the race.','');}
-$('#rcLeave').addEventListener('click',function(){leaveRace(false);});
-var ARTIFACT_URL='';
-function raceLink(){if(platformMode()&&ARTIFACT_URL)return ARTIFACT_URL+'#race-'+LIVE.code;return location.href.split(/[?#]/)[0]+'?race='+LIVE.code;}
-function inviteText(){return 'Race me on Meuro Market Run! Tap to join my race (code '+LIVE.code.toUpperCase()+'): '+raceLink();}
-function updateInvite(){var a=$('#rcWa');a.href='https://wa.me/?text='+encodeURIComponent(inviteText());}
-$('#rcWa').addEventListener('click',function(e){track('share',{method:'whatsapp',content_type:'race_invite'});if(navigator.share){e.preventDefault();navigator.share({title:'Meuro Market Run',text:'Race me on Meuro Market Run! Code '+LIVE.code.toUpperCase(),url:raceLink()}).catch(function(){window.open($('#rcWa').href,'_blank','noopener');});}});
-$('#rcCopy').addEventListener('click',function(){track('share',{method:'copy_link',content_type:'race_invite'});var t=raceLink();var b=$('#rcCopy');
-  var ok=function(){b.textContent='Link copied';setTimeout(function(){b.textContent='Copy link';},1800);};var fb=function(){$('#rcInvite').hidden=false;$('#rcInvite').value=inviteText();$('#rcInvite').select();};
-  try{navigator.clipboard.writeText(t).then(ok,fb);}catch(e){fb();}});
-function hostPeer(){var h=LIVE.racers.filter(function(p){return p.presence&&p.presence.host;});return h[0]||null;}
-function renderRaceLobby(){if(!LIVE.race)return;var list=$('#rcRiders');list.innerHTML='';var hp=hostPeer();
-  LIVE.racers.forEach(function(p){var pr=p.presence||{};var li=document.createElement('div');li.className='rc-rider';var dot=document.createElement('i');dot.style.background=safeColor(pr.color);var nm=document.createElement('b');nm.textContent=safeName(pr.nick)+(p.isMe?' (you)':'');li.appendChild(dot);li.appendChild(nm);
-    var tag=document.createElement('span');tag.textContent=pr.host?'Host':(pr.mode==='ride'?'Riding':pr.mode==='done'?'Finished':'Ready');li.appendChild(tag);list.appendChild(li);});
-  var dk=(hp&&hp.presence&&DISHES[hp.presence.dish])?hp.presence.dish:state.dish;var d=DISHES[dk];
-  $('#rcDishImg').src=dishImg(dk);$('#rcDishName').textContent=d.n;$('#rcDishInfo').textContent=fmt(d.budget)+' budget · '+d.items.length+' ingredients';
-  var amHost=LIVE.host||!hp;if(amHost&&$('#rcPick').value!==dk)$('#rcPick').value=dk;$('#rcStartBtn').hidden=!amHost;$('#rcPick').hidden=!amHost;$('#rcWait').hidden=amHost;
-  $('#rcCount').textContent=LIVE.racers.length+(LIVE.racers.length===1?' rider':' riders');}
-(function(){var sel=$('#rcPick');Object.keys(DISHES).forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=DISHES[k].n+' · '+REGIONS[DISHES[k].r];sel.appendChild(o);});
-  sel.addEventListener('change',function(){state.dish=sel.value;if(LIVE.race)LIVE.race.presence({dish:sel.value}).catch(function(){});renderRaceLobby();});})();
-$('#rcStartBtn').addEventListener('click',function(){if(!LIVE.race)return;var dk=$('#rcPick').value||state.dish;var seed=1+Math.floor(Math.random()*2000000000);
-  LIVE.race.emit('start',{dish:dk,seed:seed,n:nick()}).catch(function(err){toast(err&&err.code==='not_permitted'?'You cannot start races in this space.':'Could not start the race. Try again.','bad');});});
-function beginRace(dish,seed,by){hideRace();closeBoard();$('#result').hidden=true;$('#shoutBar').hidden=true;
-  state.dish=dish;selectDish(dish,false);startRide({seed:seed,race:true});state.locked=true;
-  LIVE.race.presence({mode:'ride',done:false,score:null,dish:dish}).catch(function(){});lobbyPresence();
-  $('#raceMini').hidden=false;renderRaceMini();
-  var cd=$('#countdown'),n=3;cd.hidden=false;cd.textContent=n;beep(440,.15,'sine',.12);
-  var iv=setInterval(function(){n--;if(n>0){cd.textContent=n;beep(440,.15,'sine',.12);}else{clearInterval(iv);cd.textContent='GO!';beep(880,.3,'sine',.14);horn();state.locked=false;setThrottle(1);setTimeout(function(){cd.hidden=true;},700);}},900);
-  toast((by||'The host')+' started the race: '+DISHES[dish].n,'bonus');}
-function raceRank(){return LIVE.racers.map(function(p){var pr=p.presence||{};return {p:p,pr:pr,done:pr.mode==='done',score:+pr.score||0,prog:-(+pr.z||6),got:+pr.got||0,need:+pr.need||5};})
-  .sort(function(a,b){if(a.done!==b.done)return a.done?-1:1;if(a.done)return b.score-a.score;return b.prog-a.prog;});}
-function renderRaceMini(){if(!LIVE.race){$('#raceMini').hidden=true;return;}var l=$('#raceMiniList');l.innerHTML='';
-  raceRank().slice(0,5).forEach(function(r,i){var d=document.createElement('div');d.className='rm-row'+(r.p.isMe?' me':'');var a=document.createElement('span');a.textContent=(i+1)+'.';var dot=document.createElement('i');dot.style.background=safeColor(r.pr.color);var b=document.createElement('b');b.textContent=safeName(r.pr.nick);var c=document.createElement('em');c.textContent=r.done?(r.score+' pts'):(r.got+'/'+r.need);d.appendChild(a);d.appendChild(dot);d.appendChild(b);d.appendChild(c);l.appendChild(d);});}
-function renderRaceResults(){var box=$('#raceRes');if(!LIVE.race||state.mode!=='result'){box.hidden=true;return;}box.hidden=false;var l=$('#raceResList');l.innerHTML='';var rank=raceRank();
-  rank.forEach(function(r,i){var d=document.createElement('div');d.className='bd-row'+(r.p.isMe?' me':'');var pos=document.createElement('span');pos.className='pos tnum';pos.textContent=r.done?(i+1):'·';
-    var mid=document.createElement('div');var nm=document.createElement('div');nm.className='nm';nm.textContent=safeName(r.pr.nick)+(r.p.isMe?' (you)':'')+(r.done&&i===0?' · Winner':'');var ds=document.createElement('div');ds.className='ds';ds.textContent=r.done?starStr(r.pr.stars):'Still riding · '+r.got+'/'+r.need+' items';mid.appendChild(nm);mid.appendChild(ds);
-    var sc=document.createElement('div');sc.className='sc tnum';sc.textContent=r.done?r.score:'…';d.appendChild(pos);d.appendChild(mid);d.appendChild(sc);l.appendChild(d);});
-  var amHost=LIVE.host||!hostPeer();$('#raceAgain').textContent=amHost?'Start a rematch':'Back to race lobby';}
-$('#raceAgain').addEventListener('click',function(){$('#result').hidden=true;var i=$('#intro');i.hidden=false;i.classList.remove('gone');state.mode='intro';clearPickups();state.z=6;state.v=0;
-  if(LIVE.race)LIVE.race.presence({mode:'lobby',done:false,score:null}).catch(function(){});lobbyPresence();showRace('lobby');renderRaceLobby();});
-LIVE.onFinish=function(score,stars){lobbyPresence();if(LIVE.race){LIVE.race.presence({mode:'done',done:true,score:score,stars:stars,z:state.z}).catch(function(){});$('#raceMini').hidden=true;renderRaceResults();}};
-
-/* -------- crews */
-function myCrewId(){var me=LB.allRows&&LB.allRows.filter(function(r){return r.id===LB.uid;})[0];return me&&me.crew||null;}
-function myCrew(){var id=myCrewId();return id?LIVE.crews.filter(function(c){return c.id===id;})[0]||null:null;}
-function crewStats(){var by={};(LB.allRows||[]).forEach(function(r){if(!r.crew)return;(by[r.crew]=by[r.crew]||[]).push(r);});
-  return LIVE.crews.map(function(c){var m=(by[c.id]||[]).sort(function(a,b){return b.best-a.best;});var pts=m.slice(0,5).reduce(function(a,r){return a+(r.best||0);},0);return {c:c,members:m.length,pts:pts};})
-  .sort(function(a,b){return b.pts-a.pts||b.members-a.members;});}
-function renderCrews(){var l=$('#bdCrews');l.innerHTML='';var mine=myCrewId();
-  var head=$('#crewMine');if(mine&&myCrew()){head.innerHTML='';var t=document.createElement('span');t.textContent='Your crew: ';var b=document.createElement('b');b.textContent=myCrew().name;var lv=document.createElement('button');lv.type='button';lv.className='linkbtn';lv.textContent='Leave';lv.addEventListener('click',function(){setCrew(null);});head.appendChild(t);head.appendChild(b);head.appendChild(document.createTextNode(' '));head.appendChild(lv);}else{head.textContent='Join a crew or start one with your friends. A crew\'s score is its top 5 riders\' best plates.';}
-  var st=crewStats();if(!st.length){l.innerHTML='<p class="bd-empty">No crews yet. Start the first one.</p>';}
-  st.forEach(function(s,i){var row=document.createElement('div');row.className='bd-row'+(s.c.id===mine?' me':'');var pos=document.createElement('span');pos.className='pos tnum';pos.textContent=i+1;
-    var mid=document.createElement('div');var nm=document.createElement('div');nm.className='nm';nm.textContent=s.c.name;var ds=document.createElement('div');ds.className='ds';ds.textContent=s.members+(s.members===1?' rider':' riders');mid.appendChild(nm);mid.appendChild(ds);
-    var right=document.createElement('div');right.className='sc tnum';right.textContent=s.pts;
-    if(s.c.id!==mine){var jb=document.createElement('button');jb.type='button';jb.className='rm';jb.style.color='var(--gold)';jb.textContent='Join this crew';jb.addEventListener('click',function(){setCrew(s.c.id);});row.appendChild(pos);row.appendChild(mid);row.appendChild(right);row.appendChild(jb);}
-    else{row.appendChild(pos);row.appendChild(mid);row.appendChild(right);}
-    l.appendChild(row);});
-  renderMe();}
-async function setCrew(id){needProfile(async function(){if(!LB.db||!LB.uid||!LB.writable){toast('Crews need you to be signed in to Meuro.','bad');return;}
-  try{var ref=LB.db.doc('scores/'+LB.uid);var cur=await ref.get();var now=new Date().toISOString();
-    if(cur.exists)await ref.update({crew:id,name:nick(),updatedAt:now});else await ref.set({name:nick(),best:0,stars:0,dish:'',rides:0,crew:id,updatedAt:now});
-    track(id?'crew_join':'crew_leave',{});toast(id?'You joined '+((LIVE.crews.filter(function(c){return c.id===id;})[0]||{}).name||'the crew'):'You left your crew.','good');lobbyPresence();
-  }catch(err){toast('Could not update your crew. Try again.','bad');}});}
-$('#crewForm').addEventListener('submit',function(e){e.preventDefault();var n=cleanName($('#crewName').value).slice(0,24);if(!n||n.length<3){$('#crewErr').textContent='Give your crew a name of at least 3 letters.';return;}$('#crewErr').textContent='';
-  needProfile(async function(){if(!LB.db||!LB.uid||!LB.writable){$('#crewErr').textContent='Crews need you to be signed in to Meuro.';return;}
-    try{track('crew_create',{});await LB.db.doc('crews/'+LB.uid).set({name:n,createdAt:new Date().toISOString()});$('#crewName').value='';await setCrew(LB.uid);}catch(err){$('#crewErr').textContent='Could not create the crew. Try again.';}});});
-$('#bCrew').addEventListener('click',function(){openBoard();boardTab('crews');});
-
-/* -------- board tabs */
-function boardTab(t){document.querySelectorAll('#bdTabs button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.t===t));});
-  $('#tabPlayers').hidden=t!=='players';$('#tabCrews').hidden=t!=='crews';$('#tabOnline').hidden=t!=='online';
-  if(t==='crews')renderCrews();if(t==='online')renderOnline();}
-document.querySelectorAll('#bdTabs button').forEach(function(b){b.addEventListener('click',function(){boardTab(b.dataset.t);});});
-$('#onlinePill').addEventListener('click',function(){openBoard();boardTab('online');});
-
-/* -------- connect */
-(async function initLive(){
-  renderMe();
-  if(!window.claude||typeof window.claude.use!=='function'){document.body.classList.add('live-off');return;}
-  var room=null;try{room=await window.claude.use('room');}catch(e){}
-  if(!room){document.body.classList.add('live-off');return;}
-  LIVE.room=room;document.body.classList.add('live-on');
-  room.onPeers(function(ch){LIVE.lobby=ch.peers.filter(function(p){return p.kind==='viewer';});renderOnline();syncGhosts();
-    ch.joined.forEach(function(p){if(!p.isMe&&LIVE.lobbyReady)toast(safeName(p.presence&&p.presence.nick)+' entered the market','');});},function(){document.body.classList.add('live-off');});
-  room.on('shout',onShout);
-  lobbyPresence();setTimeout(function(){LIVE.lobbyReady=true;},2500);
-  var q='';try{q=new URLSearchParams(location.search).get('race')||'';}catch(x){}var h=(location.hash||'').replace('#','');if(!q&&/^race-/.test(h))q=h.slice(5);var c=normCode(q);if(c){showRace('start');$('#rcCode').value=c.toUpperCase();needProfile(function(){joinRace(c,false);});}
-})();
-
-$('#meEdit').addEventListener('click',function(){if(platformMode()){openJoin('profile');return;}var b=backend();if(b)b.auth.logOut();toast('You logged out.','');});
-setVia('whatsapp');
-})();
-</script>
+<script src="market-data.js"></script>
+<script src="game.js"></script>
 
 </body>
 </html>
