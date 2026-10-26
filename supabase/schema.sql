@@ -1,5 +1,5 @@
 -- =====================================================================
--- Meuro Market Run: Supabase database setup (Version 9)
+-- Meuro Market Run: Supabase database setup (Version 8)
 -- Paste all of this into Supabase: SQL Editor > New query > Run.
 -- It is safe to run more than once.
 --
@@ -52,13 +52,9 @@ create table if not exists public.profiles (
   challenges_done int not null default 0 check (challenges_done >= 0),
   badges          text[] not null default '{}',
   countries       text[] not null default '{}',
-  progress        jsonb not null default '{}'::jsonb,
-  progress_at     timestamptz,
   created_at      timestamptz not null default now(),
   updated_at      timestamptz not null default now()
 );
-alter table public.profiles add column if not exists progress jsonb not null default '{}'::jsonb;
-alter table public.profiles add column if not exists progress_at timestamptz;
 alter table public.profiles enable row level security;
 drop policy if exists "read own profile" on public.profiles;
 create policy "read own profile" on public.profiles
@@ -132,23 +128,6 @@ alter table public.daily_scores enable row level security;
 drop policy if exists "daily scores are public" on public.daily_scores;
 create policy "daily scores are public" on public.daily_scores for select to anon, authenticated using (not hidden);
 
--- ---------------------------------------------------------------- Market Rush (endless mode) best scores
-create table if not exists public.rush_scores (
-  user_id    uuid primary key references auth.users(id) on delete cascade,
-  name       text not null,
-  best       int  not null default 0 check (best between 0 and 5000000),
-  meters     int  not null default 0 check (meters between 0 and 200000),
-  orders     int  not null default 0 check (orders between 0 and 2000),
-  runs       int  not null default 0,
-  last_at    timestamptz,
-  hidden     boolean not null default false,
-  updated_at timestamptz not null default now()
-);
-create index if not exists rush_scores_best_idx on public.rush_scores (best desc, updated_at);
-alter table public.rush_scores enable row level security;
-drop policy if exists "rush scores are public" on public.rush_scores;
-create policy "rush scores are public" on public.rush_scores for select to anon, authenticated using (not hidden);
-
 -- ---------------------------------------------------------------- price reports (players report real prices)
 create table if not exists public.price_reports (
   id         bigint generated always as identity primary key,
@@ -169,8 +148,8 @@ create policy "read own price reports" on public.price_reports
   for select to authenticated using (user_id = auth.uid() or public.is_admin());
 
 -- ---------------------------------------------------------------- lock down direct access
-revoke all on public.admins, public.profiles, public.crews, public.scores, public.daily_scores, public.price_reports, public.rush_scores from anon, authenticated;
-grant select on public.crews, public.scores, public.daily_scores, public.rush_scores to anon, authenticated;
+revoke all on public.admins, public.profiles, public.crews, public.scores, public.daily_scores, public.price_reports from anon, authenticated;
+grant select on public.crews, public.scores, public.daily_scores to anon, authenticated;
 grant select on public.profiles, public.price_reports to authenticated;
 
 -- =====================================================================
@@ -191,7 +170,6 @@ begin
          keke_color = coalesce(upper(p_keke), keke_color), updated_at = now()
    where id = v_uid;
   update public.scores set name = v_name where user_id = v_uid;
-  update public.rush_scores set name = v_name where user_id = v_uid;
   update public.daily_scores set name = v_name where user_id = v_uid and day = public.utc_today();
 end $$;
 
@@ -208,9 +186,7 @@ begin
   if v_uid is null then raise exception 'not_signed_in'; end if;
   if p_dish !~ '^[a-z0-9_-]{2,30}$' or p_country !~ '^[a-z]{2}$' then raise exception 'bad_input'; end if;
   if p_score is null or p_score < 0 or p_score > 100 then raise exception 'bad_score'; end if;
-  -- Stars only when every item on the list was bought (same rule as the game).
-  v_expected_stars := case when not coalesce(p_all_items, false) then 0
-                           when p_score >= 88 then 3 when p_score >= 70 then 2 else 1 end;
+  v_expected_stars := case when p_score >= 85 then 3 when p_score >= 65 then 2 when p_score >= 40 then 1 else 0 end;
   if p_stars is distinct from v_expected_stars then raise exception 'bad_stars'; end if;
   if coalesce(p_veg, 0) not between 0 and 10 or coalesce(p_junk, 0) not between 0 and 40
      or coalesce(p_budget_left, 0) < -10 or coalesce(p_budget_left, 0) > 1 then raise exception 'bad_input'; end if;
@@ -263,47 +239,6 @@ begin
 
   return jsonb_build_object('streak', p.streak, 'best_streak', p.best_streak, 'badges', p.badges,
     'countries', p.countries, 'rides', p.rides, 'challenges_done', p.challenges_done);
-end $$;
-
--- Market Rush: endless runs. A run of p_seconds can only score so much
--- (top speed, coins and orders per second are capped), and one run per 10 seconds.
-create or replace function public.record_rush(p_score int, p_meters int, p_orders int, p_seconds int)
-returns jsonb language plpgsql security definer set search_path = public as $$
-declare v_uid uuid := auth.uid(); p public.profiles; r public.rush_scores;
-begin
-  if v_uid is null then raise exception 'not_signed_in'; end if;
-  if p_seconds is null or p_seconds < 5 or p_seconds > 7200 then raise exception 'bad_input'; end if;
-  if p_meters is null or p_meters < 0 or p_meters > p_seconds * 32 then raise exception 'bad_input'; end if;
-  if p_orders is null or p_orders < 0 or p_orders > p_seconds / 6 + 1 then raise exception 'bad_input'; end if;
-  if p_score is null or p_score < 0 or p_score > (p_meters + p_orders * 250 + p_seconds * 10) * 10 then raise exception 'bad_score'; end if;
-  select * into p from public.profiles where id = v_uid;
-  if not found then raise exception 'no_profile'; end if;
-  select * into r from public.rush_scores where user_id = v_uid for update;
-  if found and r.last_at is not null and r.last_at > now() - interval '10 seconds' then raise exception 'too_fast'; end if;
-  insert into public.rush_scores as s (user_id, name, best, meters, orders, runs, last_at, updated_at)
-  values (v_uid, p.name, p_score, p_meters, p_orders, 1, now(), now())
-  on conflict (user_id) do update set
-    name = excluded.name, runs = s.runs + 1, last_at = now(),
-    updated_at = case when excluded.best > s.best then now() else s.updated_at end,
-    meters = case when excluded.best > s.best then excluded.meters else s.meters end,
-    orders = case when excluded.best > s.best then excluded.orders else s.orders end,
-    best = greatest(s.best, excluded.best)
-  returning * into r;
-  return jsonb_build_object('best', r.best, 'runs', r.runs);
-end $$;
-
--- Cloud save for journey progress (stars, coins, upgrades...). Only your own row,
--- at most 16 KB, at most once every 3 seconds. Leaderboards never read this.
-create or replace function public.save_progress(p jsonb)
-returns void language plpgsql security definer set search_path = public as $$
-declare v_uid uuid := auth.uid(); v_at timestamptz;
-begin
-  if v_uid is null then raise exception 'not_signed_in'; end if;
-  if p is null or jsonb_typeof(p) <> 'object' or octet_length(p::text) > 16384 then raise exception 'bad_input'; end if;
-  select progress_at into v_at from public.profiles where id = v_uid for update;
-  if not found then raise exception 'no_profile'; end if;
-  if v_at is not null and v_at > now() - interval '3 seconds' then raise exception 'too_fast'; end if;
-  update public.profiles set progress = p, progress_at = now() where id = v_uid;
 end $$;
 
 create or replace function public.create_crew(p_name text)
@@ -399,7 +334,6 @@ begin
   if not public.is_admin() then raise exception 'not_admin'; end if;
   update public.scores set hidden = true where user_id = p_user;
   update public.daily_scores set hidden = true where user_id = p_user;
-  update public.rush_scores set hidden = true where user_id = p_user;
 end $$;
 
 create or replace function public.admin_pending_prices()
@@ -424,7 +358,6 @@ grant execute on function public.crew_board(), public.approved_prices() to anon,
 grant execute on function
   public.is_admin(), public.update_profile(text, boolean, text),
   public.record_ride(text, text, int, int, boolean, boolean, numeric, int, int, boolean),
-  public.record_rush(int, int, int, int), public.save_progress(jsonb),
   public.create_crew(text), public.set_crew(uuid),
   public.report_price(text, text, numeric, text, text), public.delete_my_account(),
   public.admin_signups(int), public.admin_hide_score(uuid), public.admin_pending_prices(),

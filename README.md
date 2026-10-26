@@ -22,4 +22,4 @@ Security: every page sends a strict Content Security Policy; all database tables
 security; players can only change data through checked, rate-limited database functions; emails
 are visible only to the player and to admins.
 
-Earlier versions: Version 8 is on branch `v8-backup`; the Firebase version (before Version 8) is on branch `v7-backup`.
+Previous version (Firebase, before Version 8): branch `v7-backup`.
