@@ -4,448 +4,238 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://www.googletagmanager.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://*.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://cdn.jsdelivr.net https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0B120D">
+<meta name="description" content="Meuro Market Run: ride a keke through Africa's markets, shop real recipes on a real budget and deliver every order.">
 <link rel="icon" href="img/logo.png">
-<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Meuro Market Run</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&display=swap">
-<style>
-/* Layout: full-bleed WebGL market at golden hour; glass HUD at the edges; intro and result cards float over the scene. Single dusk look. */
-:root{
-  --bg:#0B120D; --panel:rgba(12,20,15,.74); --panel-solid:#111B14; --line:rgba(255,255,255,.14);
-  --fg:#F4F6EF; --muted:#B8C3BA; --green:#4FA866; --green-deep:#3B8C50; --orange:#F27B2B; --gold:#F6C445; --red:#E5533D;
-  --f-display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
-  --f-body:"Figtree","Helvetica Neue",Arial,system-ui,sans-serif;
-  color-scheme:dark;
-}
-html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);overflow:hidden;-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none}
-*{box-sizing:border-box}
-[hidden]{display:none!important}
-#c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
-button{font:inherit;color:inherit}
-a{color:inherit}
-:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
-.glass{background:var(--panel);backdrop-filter:blur(16px) saturate(1.3);-webkit-backdrop-filter:blur(16px) saturate(1.3);border:1px solid var(--line)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:52px;padding:0 26px;border-radius:999px;border:1px solid transparent;font-weight:600;font-size:16px;cursor:pointer;text-decoration:none;transition:transform .15s,background .2s}
-.btn:active{transform:scale(.97)}
-.btn-orange{background:var(--orange);color:#fff}
-.btn-ghost{background:rgba(255,255,255,.06);border-color:var(--line);color:var(--fg)}
-.btn-ghost:hover{background:rgba(255,255,255,.12)}
-.brand{height:24px;width:auto;filter:brightness(0) invert(1)}
-.eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
-.tnum{font-variant-numeric:tabular-nums}
-
-/* intro */
-#intro{position:fixed;inset:0;display:flex;flex-direction:column;overflow-y:auto;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(20px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:linear-gradient(90deg,rgba(6,10,7,.82) 0%,rgba(6,10,7,.45) 42%,rgba(6,10,7,0) 70%),linear-gradient(0deg,rgba(6,10,7,.7),rgba(6,10,7,0) 45%);transition:opacity .6s}
-#intro.gone{opacity:0;pointer-events:none}
-.intro-top{position:fixed;z-index:2;top:max(18px,env(safe-area-inset-top,0px));left:max(20px,env(safe-area-inset-left,0px));right:max(20px,env(safe-area-inset-right,0px));display:flex;justify-content:space-between;align-items:center;gap:12px}
-.intro-top a{font-size:15px;font-weight:600;text-decoration:none;padding:10px 16px;border-radius:999px}
-.intro-card{margin-top:auto;padding-top:64px;width:min(680px,100%);display:grid;gap:16px;padding-bottom:6px;min-width:0}
-.intro-card h1{font-family:var(--f-display);font-size:clamp(46px,7.5vw,92px);line-height:.9;letter-spacing:-.045em;margin:0;font-weight:700}
-.intro-card h1 em{font-style:normal;color:var(--orange)}
-.intro-card p{margin:0;color:var(--muted);font-size:17.5px;line-height:1.55;max-width:46ch}
-.picker{display:grid;gap:10px;min-width:0}
-.phead{display:flex;justify-content:space-between;align-items:center;gap:10px;min-width:0}
-.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;min-width:0}
-.tabs::-webkit-scrollbar{display:none}
-.tabs button{flex:none;border:1px solid var(--line);background:rgba(255,255,255,.06);border-radius:999px;padding:7px 13px;font-size:13.5px;font-weight:600;cursor:pointer;white-space:nowrap}
-.tabs button small{opacity:.6;font-weight:500;margin-left:2px}
-.tabs button[aria-pressed="true"]{background:var(--fg);color:#111;border-color:var(--fg)}
-.parrows{display:flex;gap:6px;flex:none}
-.parrows button{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.06);display:grid;place-items:center;cursor:pointer}
-.parrows svg{width:18px;height:18px}
-.dishes{position:relative;display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x proximity;padding:4px 2px 6px;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent);min-width:0}
-.dishes::-webkit-scrollbar{display:none}
-.dish{flex:0 0 128px;position:relative;border-radius:16px;overflow:hidden;border:2px solid transparent;padding:0;cursor:pointer;background:#000;aspect-ratio:3/3.8;text-align:left;scroll-snap-align:start;animation:pop .45s cubic-bezier(.3,1.5,.5,1) both;transition:transform .25s}
-.dish img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.88;transition:transform .5s,opacity .3s}
-.dish:hover img{transform:scale(1.06);opacity:1}
-.dish::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.88))}
-.dish span{position:absolute;left:10px;right:8px;bottom:9px;z-index:1;display:grid;gap:1px}
-.dish em{font-style:normal;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
-.dish b{font-family:var(--f-display);font-size:16px;font-weight:600;line-height:1.1}
-.dish small{font-size:11.5px;color:var(--muted)}
-.dish[aria-pressed="true"]{border-color:var(--orange);transform:translateY(-4px)}
-.dish[aria-pressed="true"]::before{content:"";position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:50%;z-index:2;background:var(--orange) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M6 10.5l2.6 2.5L14 7.5' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat}
-.sel{border-radius:18px;padding:12px 14px;display:grid;gap:10px}
-.sel .stop{display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
-.sel .stop small{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
-.sel .stop b{display:block;font-family:var(--f-display);font-size:22px;letter-spacing:-.02em;line-height:1.1}
-.sel .stop span{font-size:14px;font-weight:600;color:var(--muted)}
-.ing{display:flex;flex-wrap:wrap;gap:6px}
-.ing span{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.09);border:1px solid var(--line);font-size:13.5px;font-weight:600;animation:pop .45s cubic-bezier(.3,1.6,.5,1) both}
-.ing span i{width:10px;height:10px;border-radius:50%;box-shadow:0 0 0 2px rgba(255,255,255,.15)}
-@keyframes pop{from{opacity:0;transform:scale(.5) translateY(8px)}}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.keys{font-size:13.5px;color:var(--muted)}
-.keys kbd{font-family:inherit;font-size:12px;border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:1px 6px;color:var(--fg)}
-
-/* hud */
-#hud{position:fixed;inset:0;pointer-events:none;opacity:0;transition:opacity .5s}
-#hud.on{opacity:1}
-#hud>*{pointer-events:auto}
-.hud-top{position:absolute;top:max(12px,env(safe-area-inset-top,0px));left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-.chip{display:flex;align-items:center;gap:10px;border-radius:18px;padding:8px 14px 8px 8px}
-.chip img.th{width:40px;height:40px;border-radius:12px;object-fit:cover}
-.chip b{font-family:var(--f-display);font-size:17px;display:block;line-height:1.1}
-.chip small{font-size:12.5px;color:var(--muted)}
-.wallet{border-radius:18px;padding:10px 14px;min-width:150px;text-align:right}
-.wallet b{font-family:var(--f-display);font-size:22px;letter-spacing:-.02em;display:block;line-height:1.1}
-.wallet b.over{color:var(--red)}
-.wallet .bar{height:5px;border-radius:5px;background:rgba(255,255,255,.14);margin-top:7px;overflow:hidden}
-.wallet .bar i{display:block;height:100%;background:var(--gold);transition:width .4s,background .3s}
-.progress{position:absolute;top:calc(max(12px,env(safe-area-inset-top,0px)) + 66px);left:50%;transform:translateX(-50%);width:min(420px,calc(100% - 32px));height:6px;border-radius:6px;background:rgba(255,255,255,.18)}
-.progress i{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:var(--orange)}
-.progress .stop{position:absolute;top:50%;width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid var(--green-deep);transform:translate(-50%,-50%)}
-.progress .stop.done{background:var(--green)}
-.list{position:absolute;left:max(12px,env(safe-area-inset-left,0px));top:calc(max(12px,env(safe-area-inset-top,0px)) + 66px);border-radius:18px;padding:12px 14px;display:grid;gap:7px;min-width:170px}
-.list h4{margin:0 0 2px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
-.li{display:flex;align-items:center;gap:9px;font-size:14.5px;font-weight:500}
-.li .bx{width:18px;height:18px;border-radius:6px;border:1.6px solid rgba(255,255,255,.4);flex:none;display:grid;place-items:center;transition:.25s}
-.li.got{color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(255,255,255,.4)}
-.li.got .bx{background:var(--green);border-color:var(--green)}
-.li.got .bx::after{content:"";width:8px;height:4px;border:2px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translateY(-1px)}
-.li span.pr{margin-left:auto;font-size:12.5px;color:var(--muted)}
-.toasts{position:absolute;top:calc(max(12px,env(safe-area-inset-top,0px)) + 88px);left:50%;transform:translateX(-50%);display:grid;gap:8px;justify-items:center;width:min(380px,calc(100% - 32px));pointer-events:none}
-.toast{border-radius:999px;padding:9px 16px;font-size:14.5px;font-weight:600;display:flex;gap:8px;align-items:center;animation:tin .35s ease-out}
-.toast.good{border-color:rgba(79,168,102,.6)}
-.toast.bad{border-color:rgba(229,83,61,.6)}
-.toast.bonus{border-color:rgba(246,196,69,.7)}
-.toast i{width:9px;height:9px;border-radius:50%;flex:none}
-@keyframes tin{from{opacity:0;transform:translateY(-8px) scale(.96)}}
-.stopcard{position:absolute;right:max(12px,env(safe-area-inset-right,0px));top:calc(max(12px,env(safe-area-inset-top,0px)) + 92px);width:min(300px,calc(100% - 24px));border-radius:20px;padding:16px;display:grid;gap:8px;transition:opacity .4s,transform .4s}
-.stopcard[hidden]{display:none!important}
-.stopcard b{font-family:var(--f-display);font-size:20px}
-.stopcard p{margin:0;font-size:14.5px;color:var(--muted);line-height:1.45}
-.stopcard a{font-size:14px;font-weight:600;color:var(--gold);text-decoration:none}
-.controls{position:absolute;left:0;right:0;bottom:max(14px,env(safe-area-inset-bottom,0px));display:flex;justify-content:center;align-items:center;gap:10px;padding:0 max(12px,env(safe-area-inset-left,0px)) 0 max(12px,env(safe-area-inset-right,0px))}
-.cbtn{height:62px;min-width:62px;border-radius:20px;display:grid;place-items:center;cursor:pointer;font-weight:700;font-size:13.5px;letter-spacing:.06em;text-transform:uppercase;touch-action:manipulation}
-.cbtn svg{width:24px;height:24px}
-.cbtn.go{min-width:104px;background:var(--orange);border-color:var(--orange);color:#fff}
-.cbtn.stop{min-width:84px}
-.cbtn.rev{min-width:84px}
-.cbtn[aria-pressed="true"]{box-shadow:0 0 0 3px var(--gold) inset}
-.cbtn:active{transform:scale(.95)}
-.speed{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 76px);text-align:right;font-family:var(--f-display)}
-.speed b{font-size:34px;letter-spacing:-.03em;display:block;line-height:1}
-.speed small{font-family:var(--f-body);font-size:12px;color:var(--muted)}
-.exit{position:absolute;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 140px)}
-
-/* result */
-#result{position:fixed;inset:0;display:flex;flex-direction:column;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:rgba(5,9,6,.55);overflow-y:auto}
-.rcard{margin:auto;flex:none;width:min(860px,100%);border-radius:28px;overflow:hidden;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);background:var(--panel-solid);border:1px solid var(--line);animation:tin .5s ease-out}
-.rphoto{position:relative;min-height:320px}
-.rphoto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.rphoto .scanline{position:absolute;left:0;right:0;height:3px;background:var(--orange);box-shadow:0 0 22px 6px var(--orange);animation:scan 1.6s ease-in-out 2}
-@keyframes scan{0%{top:0}100%{top:100%}}
-.rphoto .tag{position:absolute;left:14px;bottom:14px;right:14px;display:flex;gap:8px;flex-wrap:wrap}
-.rphoto .tag span{background:rgba(0,0,0,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600}
-.rbody{padding:clamp(22px,3.5vw,36px);display:grid;gap:18px;align-content:start}
-.rhead{display:flex;gap:18px;align-items:center}
-.ring{position:relative;width:96px;height:96px;flex:none}
-.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
-.ring b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-display);font-size:30px;letter-spacing:-.03em}
-.rhead h2{font-family:var(--f-display);font-size:clamp(26px,3.4vw,36px);margin:4px 0 0;letter-spacing:-.03em;line-height:1.05}
-.stars{color:var(--gold);font-size:20px;letter-spacing:3px}
-.rstats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.rstats div{border:1px solid var(--line);border-radius:14px;padding:10px 12px}
-.rstats b{display:block;font-family:var(--f-display);font-size:21px;letter-spacing:-.02em}
-.rstats span{font-size:12.5px;color:var(--muted)}
-.rnotes{display:grid;gap:8px;margin:0;padding:0;list-style:none}
-.rnotes li{display:flex;gap:10px;font-size:15px;line-height:1.45;color:var(--muted)}
-.rnotes li i{width:8px;height:8px;border-radius:50%;margin-top:7px;flex:none}
-.disc{font-size:12.5px;color:var(--muted)}
-
-/* save + leaderboard */
-.intro-top .tops{display:flex;gap:8px;align-items:center}
-.intro-top button.glass{font-size:15px;font-weight:600;padding:10px 16px;border-radius:999px;cursor:pointer;display:inline-flex;gap:8px;align-items:center}
-.intro-top button.glass svg,.btn svg.ic{width:16px;height:16px}
-.savebox{border:1px solid rgba(246,196,69,.35);background:linear-gradient(160deg,rgba(246,196,69,.1),rgba(255,255,255,.02));border-radius:20px;padding:16px;display:grid;gap:14px}
-.sb-head{display:grid;gap:4px}
-.sb-head b{font-family:var(--f-display);font-size:21px;letter-spacing:-.02em}
-.sb-head span{font-size:14.5px;color:var(--muted);line-height:1.45}
-.sb-fields{display:grid;gap:12px}
-.sb-two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
-.fl{display:grid;gap:6px;min-width:0}
-.fl>span{font-size:13px;font-weight:600;color:var(--muted)}
-.fl input{width:100%;height:46px;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--fg);padding:0 14px;font:16px var(--f-body);user-select:text;-webkit-user-select:text}
-.fl input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(246,196,69,.18)}
-.fl input[aria-invalid="true"]{border-color:var(--red)}
-.via{display:flex;gap:6px}
-.via button{flex:1;height:46px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.05);font-weight:600;font-size:14.5px;cursor:pointer}
-.via button[aria-pressed="true"]{background:var(--fg);color:#111;border-color:var(--fg)}
-.consent{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--muted);line-height:1.45;cursor:pointer}
-.consent input{width:18px;height:18px;margin-top:2px;accent-color:#F27B2B;flex:none}
-.consent a{color:var(--gold)}
-.sb-me{display:flex;align-items:center;gap:10px;font-size:14.5px;color:var(--muted)}
-.sb-me b{color:var(--fg)}
-.linkbtn{background:none;border:0;color:var(--gold);font-weight:600;cursor:pointer;padding:0;font-size:14px}
-.sb-msg{margin:0;font-size:14.5px;font-weight:600;min-height:1em}
-.sb-msg.ok{color:#7CF09A}.sb-msg.err{color:#FF8A73}
-.rank{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:rgba(124,240,154,.1);border:1px solid rgba(124,240,154,.35)}
-.rank b{font-family:var(--f-display);font-size:30px;letter-spacing:-.03em;color:#7CF09A}
-.rank span{font-size:14px;color:var(--muted);line-height:1.4}
-#board{position:fixed;z-index:30;top:max(12px,env(safe-area-inset-top,0px));right:max(12px,env(safe-area-inset-right,0px));bottom:max(12px,env(safe-area-inset-bottom,0px));width:min(400px,calc(100% - 24px));border-radius:24px;display:flex;flex-direction:column;overflow:hidden;background:rgba(12,20,15,.92);animation:slidein .35s ease-out}
-@keyframes slidein{from{opacity:0;transform:translateX(24px)}}
-.bd-head{display:flex;justify-content:space-between;align-items:center;padding:18px 18px 10px}
-.bd-head b{font-family:var(--f-display);font-size:26px;letter-spacing:-.02em}
-.bd-head small{display:block;font-size:13px;color:var(--muted)}
-.bd-close{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.06);cursor:pointer;font-size:20px;line-height:1}
-.bd-body{overflow-y:auto;padding:0 12px 16px;display:grid;gap:6px;align-content:start}
-.bd-row{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04)}
-.bd-row.me{background:rgba(246,196,69,.14);outline:1px solid rgba(246,196,69,.5)}
-.bd-row .pos{font-family:var(--f-display);font-weight:700;font-size:18px;text-align:center;color:var(--muted)}
-.bd-row:nth-child(1) .pos{color:#F6C445}.bd-row:nth-child(2) .pos{color:#D7DDE2}.bd-row:nth-child(3) .pos{color:#E09A62}
-.bd-row .nm{font-weight:700;font-size:15.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.bd-row .ds{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.bd-row .sc{text-align:right;font-family:var(--f-display);font-size:20px;font-weight:700}
-.bd-row .sc small{display:block;font-family:var(--f-body);font-size:11px;color:var(--gold);letter-spacing:2px}
-.bd-row .rm{grid-column:1/-1;justify-self:end;font-size:12px;color:#FF8A73;background:none;border:0;cursor:pointer;padding:0}
-.bd-empty{color:var(--muted);font-size:14.5px;padding:24px 8px;text-align:center;line-height:1.5}
-.bd-note{font-size:12.5px;color:var(--muted);padding:0 6px}
-.owner{margin-top:14px;border-top:1px solid var(--line);padding-top:14px;display:grid;gap:8px}
-.owner h5{margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
-.owner .su{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;font-size:13.5px;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.04)}
-.owner .su span{color:var(--muted);font-size:12.5px;user-select:text;-webkit-user-select:text}
-.owner .su em{font-style:normal;font-size:11.5px;font-weight:700;color:#7CF09A}
-.owner .su em.no{color:var(--muted)}
-.owner textarea{width:100%;height:90px;background:rgba(0,0,0,.3);color:var(--fg);border:1px solid var(--line);border-radius:10px;font:12px ui-monospace,monospace;user-select:text;-webkit-user-select:text}
-@media (max-width:760px){
-  #board{top:auto;left:max(8px,env(safe-area-inset-left,0px));right:max(8px,env(safe-area-inset-right,0px));width:auto;height:min(78vh,640px);border-radius:24px 24px 18px 18px}
-  .sb-two{grid-template-columns:minmax(0,1fr)}
-  .intro-top button.glass span.t{display:none}
-}
-
-/* community */
-.community{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.cbtn2{height:44px;padding:0 16px;border-radius:999px;font-weight:600;font-size:14.5px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
-.cbtn2 svg{width:17px;height:17px}
-.cbtn2.on{border-color:var(--gold);color:var(--gold)}
-.online{height:44px;padding:0 14px 0 8px;border-radius:999px;display:inline-flex;align-items:center;gap:10px;font-size:13.5px;font-weight:600;cursor:pointer;color:var(--muted)}
-.online .av{display:flex}
-.online .av span{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;color:#111;margin-left:-7px;border:2px solid #111B14}
-.online .av span:first-child{margin-left:0}
-.online::before{content:"";width:8px;height:8px;border-radius:50%;background:#7CF09A;box-shadow:0 0 0 4px rgba(124,240,154,.18);margin-left:6px;animation:blink 1.6s infinite}
-@keyframes blink{50%{opacity:.35}}
-.me{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
-.me i{width:12px;height:12px;border-radius:50%;display:inline-block}
-.me b{color:var(--fg)}
-.live-off #authBtn,.live-off #bRace,.live-off #onlinePill,.live-off #bShout,.live-off [data-t="online"]{display:none!important}
-#hRiders{position:absolute;top:calc(max(12px,env(safe-area-inset-top,0px)) + 76px);left:50%;transform:translateX(-50%);font-size:12.5px;font-weight:700;color:#7CF09A;text-shadow:0 1px 3px rgba(0,0,0,.6);white-space:nowrap}
-#bShout{position:absolute;left:max(12px,env(safe-area-inset-left,0px));bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 76px);height:42px;padding:0 16px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer}
-#shoutBar{position:absolute;left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 126px);display:flex;flex-wrap:wrap;gap:6px;max-width:520px}
-#shoutBar button{height:38px;padding:0 14px;border-radius:999px;font-weight:600;font-size:14px;cursor:pointer}
-#raceMini{position:absolute;right:max(12px,env(safe-area-inset-right,0px));top:calc(max(12px,env(safe-area-inset-top,0px)) + 92px);width:210px;border-radius:18px;padding:12px;display:grid;gap:6px}
-#raceMini h4{margin:0;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
-.rm-row{display:grid;grid-template-columns:20px 10px minmax(0,1fr) auto;gap:7px;align-items:center;font-size:13.5px}
-.rm-row span{color:var(--muted);font-weight:700}
-.rm-row i{width:10px;height:10px;border-radius:50%}
-.rm-row b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.rm-row em{font-style:normal;font-weight:700;font-size:12.5px;color:var(--muted)}
-.rm-row.me b{color:var(--gold)}
-#countdown{position:fixed;inset:0;display:grid;place-items:center;font-family:var(--f-display);font-weight:700;font-size:clamp(120px,28vw,260px);letter-spacing:-.06em;color:#fff;text-shadow:0 10px 40px rgba(0,0,0,.6);pointer-events:none;z-index:20;animation:tin .3s}
-.modal{position:fixed;inset:0;z-index:35;display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:rgba(5,9,6,.55);overflow-y:auto}
-.mcard{margin:auto;width:min(460px,100%);border-radius:26px;padding:22px;display:grid;gap:16px;background:rgba(14,22,17,.96);animation:tin .35s ease-out}
-.mhead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-.mhead h3{margin:4px 0 0;font-family:var(--f-display);font-size:28px;letter-spacing:-.03em;line-height:1.05}
-.mhead p{margin:6px 0 0;color:var(--muted);font-size:14.5px;line-height:1.45}
-.codebig{font-family:var(--f-display);font-size:40px;font-weight:700;letter-spacing:.02em;color:var(--gold);text-align:center;padding:10px;border:1px dashed rgba(246,196,69,.5);border-radius:16px;user-select:text;-webkit-user-select:text}
-.rc-riders{display:grid;gap:6px;max-height:200px;overflow-y:auto}
-.rc-rider{display:grid;grid-template-columns:12px minmax(0,1fr) auto;gap:10px;align-items:center;padding:9px 12px;border-radius:12px;background:rgba(255,255,255,.05);font-size:14.5px}
-.rc-rider i{width:12px;height:12px;border-radius:50%}
-.rc-rider b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.rc-rider span{font-size:12px;font-weight:700;color:var(--gold)}
-.rc-dish{display:flex;gap:12px;align-items:center;padding:10px;border-radius:16px;background:rgba(255,255,255,.05)}
-.rc-dish img{width:58px;height:58px;border-radius:12px;object-fit:cover}
-.rc-dish b{font-family:var(--f-display);font-size:19px;display:block}
-.rc-dish span{font-size:13px;color:var(--muted)}
-.rc-select{width:100%;height:46px;border-radius:12px;border:1px solid var(--line);background:#0B120D;color:var(--fg);padding:0 12px;font:15px var(--f-body)}
-.rc-or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px}
-.rc-or::before,.rc-or::after{content:"";flex:1;height:1px;background:var(--line)}
-.joinrow{display:flex;gap:8px}
-.joinrow input{flex:1;min-width:0;height:50px;border-radius:14px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--fg);padding:0 14px;font:600 17px var(--f-body);text-transform:uppercase;letter-spacing:.06em;user-select:text;-webkit-user-select:text}
-.err{color:#FF8A73;font-size:14px;font-weight:600;margin:0;min-height:1em}
-.bd-tabs{display:flex;gap:6px;padding:0 18px 12px}
-.bd-tabs button{flex:1;height:38px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.05);font-weight:700;font-size:13.5px;cursor:pointer}
-.bd-tabs button[aria-pressed="true"]{background:var(--fg);color:#111;border-color:var(--fg)}
-.crewform{display:flex;gap:8px;margin:4px 0}
-.crewform input{flex:1;min-width:0;height:44px;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--fg);padding:0 12px;font:15px var(--f-body);user-select:text;-webkit-user-select:text}
-.crewform .btn{height:44px;padding:0 16px;font-size:14px}
-.odot{width:14px;height:14px;border-radius:50%;display:inline-block}
-.raceres{display:grid;gap:8px;padding:14px;border-radius:18px;border:1px solid rgba(124,240,154,.35);background:rgba(124,240,154,.06)}
-.raceres h4{margin:0;font-family:var(--f-display);font-size:20px}
-@media (max-width:760px){
-  #raceMini{top:auto;bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 128px);width:min(190px,48%);padding:10px}
-  .stopcard{display:none!important}
-  #bShout{bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 76px);left:auto;right:max(12px,env(safe-area-inset-right,0px));height:38px;padding:0 12px;font-size:13px}
-  .exit{bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 76px)!important;right:auto!important;left:calc(max(12px,env(safe-area-inset-left,0px)) + 0px)}
-  .list{bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 124px)}
-  #shoutBar{bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 124px)}
-  .codebig{font-size:32px}
-}
-
-.intro-top a.glass,.intro-top button.glass{white-space:nowrap}
-@media (max-width:420px){.intro-top .tops{gap:6px}.intro-top a.glass,.intro-top button.glass{padding:9px 12px;font-size:14px}.intro-top .brand{height:20px}}
-@media (max-width:760px){#hud .exit{top:calc(max(12px,env(safe-area-inset-top,0px)) + 96px)!important;bottom:auto!important;left:auto!important;right:max(12px,env(safe-area-inset-right,0px))!important}#hud .toasts{top:calc(max(12px,env(safe-area-inset-top,0px)) + 142px)}#hRiders{top:calc(max(12px,env(safe-area-inset-top,0px)) + 88px)}}
-@media (max-width:760px){#intro{background:linear-gradient(0deg,rgba(6,10,7,.94) 0%,rgba(6,10,7,.82) 52%,rgba(6,10,7,.35) 78%,rgba(6,10,7,.1) 100%)}}
-
-/* v8: daily market, portions, profile, reports */
-.daily{border-radius:20px;padding:14px 16px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 14px;align-items:center;border:1px solid rgba(246,196,69,.35);background:linear-gradient(135deg,rgba(242,123,43,.22),rgba(14,22,17,.72))}
-.dl-main{display:grid;gap:2px;min-width:0}
-.dl-main b{font-family:var(--f-display);font-size:22px;letter-spacing:-.02em;line-height:1.1}
-.dl-main small{color:var(--muted);font-size:13.5px}
-.dl-play{height:46px;padding:0 18px}
-.dl-meta{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:13.5px;color:var(--muted)}
-.streak{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--gold)}
-.streak{gap:0!important}.streak svg{width:16px;height:16px;color:var(--orange);margin-right:6px}
-.streak b{font-size:15px}
-.chal{display:inline-flex;align-items:center;gap:6px}
-.chal::before{content:"";width:8px;height:8px;border-radius:50%;background:#7CF09A}
-.chal.done::before{background:var(--gold)}
-.portions{display:flex;gap:6px;flex-wrap:wrap}
-.portions button{height:34px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);font-size:13px;font-weight:600;cursor:pointer}
-.portions button[aria-pressed="true"]{background:var(--fg);color:#111;border-color:var(--fg)}
-.ing span em{font-style:normal;font-weight:500;color:var(--muted);font-size:12px;margin-left:2px}
-.src{margin:0;font-size:12px;color:var(--muted);line-height:1.4}
-.li .lin{display:grid;line-height:1.15}
-.li .lin small{font-size:11px;color:var(--muted);font-weight:500}
-.lite{justify-self:start;font-size:13px}
-.me-name{font-weight:700;color:var(--fg);text-decoration:underline;text-underline-offset:3px;font-size:14px}
-.ractions{display:flex;flex-wrap:wrap;gap:8px}
-.ractions .btn{height:46px;padding:0 16px;font-size:14.5px}
-.ractions .ic{width:16px;height:16px}
-.rprog{display:grid;gap:8px;padding:12px 14px;border-radius:16px;border:1px solid rgba(246,196,69,.35);background:rgba(246,196,69,.07);font-size:14.5px}
-.rprog .row{gap:8px}
-.pill{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;background:rgba(255,255,255,.08);font-size:13px;font-weight:600}
-.pill.new{background:rgba(246,196,69,.2);color:var(--gold)}
-.pf-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-.pf-stats div{border:1px solid var(--line);border-radius:14px;padding:10px;display:grid;gap:2px}
-.pf-stats b{font-family:var(--f-display);font-size:22px}
-.pf-stats span{font-size:12px;color:var(--muted)}
-.swatches{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.swatches button{width:38px;height:38px;border-radius:50%;border:3px solid transparent;cursor:pointer;position:relative}
-.swatches button[aria-pressed="true"]{border-color:#fff}
-.swatches button:disabled{opacity:.3;cursor:not-allowed}
-.badges{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px}
-.badge{border:1px solid var(--line);border-radius:14px;padding:10px;display:grid;gap:2px;font-size:12px;color:var(--muted)}
-.badge b{font-size:13.5px;color:var(--fg)}
-.badge.on{border-color:rgba(246,196,69,.55);background:rgba(246,196,69,.08)}
-.badge:not(.on) b{color:var(--muted)}
-.danger{color:#FF8A73!important}
-.captcha:empty{display:none}
-.pr-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:6px;align-items:center;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.04);font-size:13px}
-.pr-row button{height:30px;padding:0 10px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);font-weight:700;font-size:12px;cursor:pointer}
-#profile .mcard,#reportModal .mcard{width:min(520px,100%)}
-@media (max-width:760px){.pf-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.badges{grid-template-columns:repeat(2,minmax(0,1fr))}.dl-main b{font-size:19px}.daily{padding:12px}}
-#rotate{display:none}
-@media (max-width:760px){
-  .dish{flex-basis:108px}
-  .dish b{font-size:14px}.dish small{font-size:10.5px}
-  .parrows{display:none}
-  .sel .stop b{font-size:19px}.ing span{font-size:12.5px;padding:5px 9px}
-  .intro-card p{font-size:16px}
-  .list{top:auto;bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 76px);padding:10px 12px;min-width:0;gap:5px}
-  .list h4{display:none}
-  .li{font-size:13px}.li span.pr{display:none}
-  .wallet{min-width:0}
-  .wallet b{font-size:18px}
-  .chip b{font-size:15px}.chip img.th{width:34px;height:34px}
-  .progress{top:calc(max(12px,env(safe-area-inset-top,0px)) + 76px)}
-  .toasts{top:calc(max(12px,env(safe-area-inset-top,0px)) + 92px)}
-  .keys{display:none}
-  .stopcard{top:auto;bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 128px);right:max(12px,env(safe-area-inset-right,0px));width:min(210px,52%);padding:12px}
-  .stopcard b{font-size:16px}.stopcard p{font-size:13px}
-  .speed{display:none}
-  .exit{bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 76px);right:max(12px,env(safe-area-inset-right,0px))}
-  .cbtn{height:56px;min-width:52px;border-radius:18px}
-  .cbtn.go{min-width:84px}.cbtn.stop,.cbtn.rev{min-width:64px;font-size:12px}
-  .rcard{grid-template-columns:minmax(0,1fr)}
-  .rphoto{min-height:200px}
-  .ring{width:76px;height:76px}.ring b{font-size:24px}
-}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="game.css">
 </head>
-<body>
+<body class="live-off">
 
+<canvas id="c" aria-label="3D market"></canvas>
 
-<canvas id="c" aria-label="3D market ride"></canvas>
+<!-- ================= HOME ================= -->
+<section id="home" class="screen" aria-labelledby="hmTitle">
+  <header class="topbar">
+    <a class="brandlink" href="home.html" aria-label="Meuro website"><img class="brand" src="img/logo.png" alt="Meuro"></a>
+    <div class="pills">
+      <button class="pill glass" id="coinPill" type="button" aria-label="Coins. Open the shop"><i class="coin-ic" aria-hidden="true"></i><b class="tnum" id="coinN">0</b></button>
+      <button class="pill glass" id="platePill" type="button" aria-label="Plates (lives)"><i class="plate-ic" aria-hidden="true"></i><b class="tnum" id="plateN">5</b><small class="tnum" id="plateT"></small></button>
+      <button class="pill glass pill-acct" id="authBtn" type="button">Log in</button>
+      <button class="pill glass pill-acct" id="meBtn" type="button" hidden><i class="me-dot" id="meDot"></i><span id="meName">Rider</span></button>
+    </div>
+  </header>
 
-<section id="intro" aria-labelledby="t">
-  <div class="intro-top">
-    <img class="brand" src="img/logo.png" alt="Meuro">
-    <div class="tops"><button class="glass" type="button" id="authBtn" hidden>Log in</button><button class="glass" type="button" data-board><svg class="ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 4h8v5a4 4 0 01-8 0V4zM5 5h3v3a3 3 0 01-3-3zM19 5h-3v3a3 3 0 003-3zM12 13v4M8.5 20h7M10 17h4v3h-4z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="t">Leaderboard</span></button><a class="glass" href="home.html">Website →</a></div>
-  </div>
-  <div class="intro-card">
-    <span class="eyebrow">Meuro Market Run</span>
-    <h1 id="t">Ride the <em>market.</em></h1>
-    <p>Scroll through dishes from across Africa, pick one, then ride the keke and grab every ingredient within your budget. Meuro AI scans your plate at the end.</p>
-    <div class="daily glass" id="daily">
-      <div class="dl-main"><span class="eyebrow">Market of the Day</span><b id="dlDish">Loading…</b><small id="dlInfo"></small></div>
-      <button class="btn btn-orange dl-play" id="dlPlay" type="button">Play today</button>
-      <div class="dl-meta"><span class="streak" id="dlStreak"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 3.5-1.5 5-1.5 7.5 0 1.4 1 2.5 2.3 2.5 1.6 0 2.4-1.4 2.2-3.2C17.6 10.6 19 13 19 15.5 19 19.1 15.9 22 12 22s-7-2.9-7-6.5C5 10.7 9.8 8.6 12 2z" fill="currentColor"/></svg><b class="tnum">0</b>-day streak</span><span class="chal" id="dlChallenge"></span></div>
+  <div class="home-sheet">
+    <span class="eyebrow" id="hmEp">Market 1 · Mile 12 Market, Lagos</span>
+    <h1 id="hmTitle">Market <em>Run</em></h1>
+    <p class="hm-sub">Ride the keke through Africa's markets. Shop real recipes on a real budget, dodge the danfos and deliver every order.</p>
+
+    <button class="order glass" id="hmOrder" type="button">
+      <img id="hmImg" src="img/jollof.webp" alt="">
+      <span class="order-t"><small id="hmLvl">Level 1 · New order</small><b id="hmDish">Yam & egg sauce for 2</b><em id="hmBudget"></em></span>
+      <span class="order-s" id="hmStars" aria-hidden="true"></span>
+    </button>
+    <button class="btn btn-orange btn-play" id="playBtn" type="button"><span id="playT">Play level 1</span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></button>
+
+    <div class="tiles">
+      <button class="tile glass" id="tMap" type="button"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><b>Map</b><small id="tMapS">0 ★</small></button>
+      <button class="tile glass" id="tRush" type="button"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><b>Rush</b><small id="tRushS">Endless</small></button>
+      <button class="tile glass" id="tDaily" type="button"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><b>Today</b><small id="tDailyS">Market of the Day</small></button>
+      <button class="tile glass live-only" id="bRace" type="button"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg><b id="bRaceT">Race</b><small>With friends</small></button>
     </div>
-    <div class="picker">
-      <div class="phead"><div class="tabs" id="tabs" role="group" aria-label="Filter by country"></div>
-        <div class="parrows"><button type="button" id="pPrev" aria-label="Previous dishes"><svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" id="pNext" aria-label="More dishes"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></div>
-      <div class="dishes" id="dishes" role="group" aria-label="Choose a dish"></div>
-      <div class="sel glass" id="sel" aria-live="polite"></div>
+
+    <div class="hm-row">
+      <button class="chipbtn glass" id="tMissions" type="button">Missions <b id="tMisN">0/3</b><span class="mult" id="tMult">×1</span></button>
+      <button class="chipbtn glass" id="tShop" type="button">Shop</button>
+      <button class="chipbtn glass" id="tRecipes" type="button">Recipes <b id="tRecN">0</b></button>
+      <button class="chipbtn glass" type="button" data-board>Leaderboard</button>
+      <button class="chipbtn glass live-only" id="bCrew" type="button">Crews</button>
+      <button class="online glass live-only" id="onlinePill" type="button"><span class="av" id="onlineAv"></span><span id="onlineN">Connecting…</span></button>
     </div>
-    <div class="row">
-      <button class="btn btn-orange" id="startBtn" type="button">Start the ride
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      <a class="btn btn-ghost" href="home.html">Skip to website</a>
+
+    <div class="hm-foot">
+      <span class="streak" id="dlStreak"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 3.5-1.5 5-1.5 7.5 0 1.4 1 2.5 2.3 2.5 1.6 0 2.4-1.4 2.2-3.2C17.6 10.6 19 13 19 15.5 19 19.1 15.9 22 12 22s-7-2.9-7-6.5C5 10.7 9.8 8.6 12 2z" fill="currentColor"/></svg><b class="tnum">0</b>&nbsp;day streak</span>
+      <span class="chal" id="dlChallenge"></span>
+      <span class="saved" id="savedNote">Progress saves on this phone</span>
     </div>
-    <div class="community">
-      <button class="cbtn2 glass" id="bRace" type="button"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="bRaceT">Race friends</span></button>
-      <button class="cbtn2 glass" id="bCrew" type="button"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="3.2" stroke="currentColor" stroke-width="1.8"/><path d="M3 19c.6-3.3 3-5 6-5s5.4 1.7 6 5M17 6.5a2.6 2.6 0 010 5M17.5 14c2 .4 3.2 2 3.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Crews</button>
-      <button class="online glass" id="onlinePill" type="button"><span class="av" id="onlineAv"></span><span id="onlineN">Connecting to the market…</span></button>
+    <div class="hm-foot">
+      <button class="linkbtn" id="soundBtn" type="button">Sound: on</button>
+      <button class="linkbtn" id="liteBtn" type="button" aria-pressed="false">Lite mode: off</button>
+      <button class="linkbtn" id="howBtn" type="button">How to play</button>
+      <a class="linkbtn" href="home.html">Meuro website →</a>
     </div>
-    <div class="me" id="meChip" hidden><i id="meDot"></i>Riding as <button class="linkbtn me-name" type="button" id="meName" aria-label="Open your profile"></button><span id="meCrew"></span><button class="linkbtn" type="button" id="meEdit">Log out</button></div>
-    <div class="keys"><kbd>↑</kbd> go &nbsp; <kbd>Space</kbd> stop &nbsp; <kbd>↓</kbd> reverse &nbsp; <kbd>←</kbd> <kbd>→</kbd> change lane &nbsp;·&nbsp; swipe on phones</div>
-    <button class="linkbtn lite" id="liteBtn" type="button" aria-pressed="false">Lite mode: off</button>
   </div>
 </section>
 
-<section id="hud" aria-label="Ride controls" hidden>
+<!-- ================= MAP ================= -->
+<section id="map" class="screen" hidden aria-label="Journey map">
+  <header class="mapbar">
+    <button class="iconbtn glass" id="mapBack" type="button" aria-label="Back"><svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="mapbar-t"><b>Journey across Africa</b><small id="mapStars">0 stars</small></div>
+    <span class="pill glass"><i class="plate-ic" aria-hidden="true"></i><b class="tnum" id="mapPlates">5</b><small class="tnum" id="mapPlateT"></small></span>
+  </header>
+  <div class="mapscroll" id="mapScroll"></div>
+</section>
+
+<!-- ================= RIDE HUD ================= -->
+<section id="hud" aria-label="Ride" hidden>
   <div class="hud-top">
-    <div class="chip glass"><img class="th" id="hThumb" src="img/jollof.webp" alt=""><div><small>Cooking</small><b id="hDish">Jollof rice</b></div></div>
-    <div class="wallet glass"><small style="font-size:12.5px;color:var(--muted)">Budget left</small><b class="tnum" id="hWallet">₦6,000</b><div class="bar"><i id="hBar" style="width:100%"></i></div></div>
+    <button class="iconbtn glass" id="pauseBtn" type="button" aria-label="Pause"><svg viewBox="0 0 24 24"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor"/></svg></button>
+    <div class="hud-dish glass"><img class="th" id="hThumb" src="img/jollof.webp" alt=""><div class="hud-dish-t"><b id="hDish">Jollof rice</b><div class="need" id="hNeed"></div></div></div>
+    <div class="hud-right">
+      <div class="wallet glass" id="hWalletBox"><small id="hWalletL">Budget left</small><b class="tnum" id="hWallet">₦0</b><div class="bar"><i id="hBar"></i></div></div>
+      <div class="hud-mini"><span class="coins glass"><i class="coin-ic" aria-hidden="true"></i><b class="tnum" id="hCoins">0</b></span><span class="hearts" id="hHearts" aria-label="Lives"></span></div>
+    </div>
   </div>
-  <div class="progress" aria-hidden="true"><i id="hProg"></i></div>
-  <div class="list glass" id="hList"><h4>Shopping list</h4></div>
+  <div class="progress" id="hProgBox" aria-hidden="true"><i id="hProg"></i><span class="pflag"></span></div>
+  <div class="rushscore tnum" id="hScore" hidden>0</div>
+  <div class="pups" id="hPups"></div>
+  <div class="combo" id="hCombo" aria-live="polite"></div>
   <div class="toasts" id="toasts" aria-live="polite"></div>
   <div id="hRiders" aria-live="polite"></div>
-  <div class="glass" id="raceMini" hidden><h4>Race standings</h4><div id="raceMiniList" style="display:grid;gap:6px"></div></div>
+  <div class="glass" id="raceMini" hidden><h4>Race standings</h4><div id="raceMiniList"></div></div>
   <div id="shoutBar" hidden></div>
-  <button class="glass" id="bShout" type="button">Shout</button>
-  <div class="stopcard glass" id="stopcard" hidden><span class="eyebrow" id="scEye">Tour stop</span><b id="scTitle"></b><p id="scText"></p><a id="scLink" href="home.html">Visit page →</a></div>
-  <div class="speed"><b class="tnum" id="hSpeed">0</b><small>km/h</small></div>
-  <button class="btn btn-ghost exit" id="exitBtn" type="button" style="height:40px;padding:0 14px;font-size:14px">Finish</button>
+  <button class="glass live-only" id="bShout" type="button">Shout</button>
+  <div class="tut" id="tut" hidden></div>
   <div class="controls">
-    <button class="cbtn glass" id="bLeft" type="button" aria-label="Move left"><svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-    <button class="cbtn glass rev" id="bRev" type="button" aria-pressed="false">Reverse</button>
-    <button class="cbtn glass stop" id="bStop" type="button" aria-pressed="true">Stop</button>
-    <button class="cbtn glass go" id="bGo" type="button" aria-pressed="false">Go</button>
-    <button class="cbtn glass" id="bRight" type="button" aria-label="Move right"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="cbtn glass" id="bLeft" type="button" aria-label="Move left"><svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="cbtn glass jump" id="bJump" type="button" aria-label="Jump"><svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5M6 11l6-6 6 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Jump</span></button>
+    <button class="cbtn glass" id="bRight" type="button" aria-label="Move right"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </div>
+</section>
+<div id="countdown" hidden aria-live="assertive"></div>
+<div id="flash" aria-hidden="true"></div>
+
+<!-- ================= RESULT ================= -->
+<section id="result" hidden aria-live="polite">
+  <div class="rcard">
+    <div class="rphoto"><img id="rImg" src="img/jollof.webp" alt=""><span class="scanline"></span><div class="tag" id="rTags"></div></div>
+    <div class="rbody">
+      <div class="rhead">
+        <div class="ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="9"/><circle id="rArc" cx="50" cy="50" r="44" fill="none" stroke="#F27B2B" stroke-width="9" stroke-linecap="round" stroke-dasharray="276.5" stroke-dashoffset="276.5" style="transition:stroke-dashoffset 1.2s ease-out"/></svg><b class="tnum" id="rScore">0</b></div>
+        <div class="rhead-t"><span class="eyebrow" id="rEye">Order delivered</span><h2 id="rTitle">Well done</h2><div class="bigstars" id="rStars" aria-label="Stars"><i></i><i></i><i></i></div></div>
+      </div>
+      <div class="rstats" id="rStats"></div>
+      <ul class="rnotes" id="rNotes"></ul>
+      <div class="rprog" id="rProg" hidden></div>
+      <div class="rsave" id="rSave"></div>
+      <div class="raceres" id="raceRes" hidden><h4>Race results</h4><div id="raceResList" style="display:grid;gap:6px"></div><button class="btn btn-orange" type="button" id="raceAgain">Start a rematch</button></div>
+      <div class="row rbtns">
+        <button class="btn btn-orange" id="nextBtn" type="button">Next level</button>
+        <button class="btn btn-ghost" id="againBtn" type="button">Play again</button>
+        <button class="btn btn-ghost" id="mapBtn" type="button">Map</button>
+      </div>
+      <div class="ractions">
+        <button class="btn btn-ghost" type="button" id="shareBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5M5 13v6a2 2 0 002 2h10a2 2 0 002-2v-6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>Share to status</button>
+        <button class="btn btn-ghost" type="button" id="listBtn">Send shopping list</button>
+        <button class="btn btn-ghost" type="button" id="reportBtn">Report a real price</button>
+      </div>
+      <p class="disc">Calories and protein are estimates per plate and vary with portion and cooking. Want a real plan? <a href="ai.html#planner">Try the Meuro AI planner</a>.</p>
+    </div>
   </div>
 </section>
 
+<!-- ================= MODALS ================= -->
+<div class="modal" id="levelModal" hidden>
+  <div class="mcard glass lvcard" role="dialog" aria-labelledby="lvTitle">
+    <div class="lv-photo"><img id="lvImg" src="img/jollof.webp" alt=""><span class="lv-num" id="lvNum">Level 1</span><button class="bd-close" type="button" id="lvClose" aria-label="Close">×</button><div class="lv-stars" id="lvStars"></div></div>
+    <div class="lv-body">
+      <span class="eyebrow" id="lvFrom">Order from Tobi · Yaba</span>
+      <h3 id="lvTitle">Jollof rice for 4</h3>
+      <p class="lv-story" id="lvStory"></p>
+      <div class="lv-money"><div><small>Your budget</small><b class="tnum" id="lvBudget"></b></div><div><small>Market cost</small><b class="tnum" id="lvCost"></b></div><div><small>Per plate</small><b class="tnum" id="lvPlate"></b></div></div>
+      <div class="lv-list" id="lvList"></div>
+      <p class="src" id="lvSrc"></p>
+      <div class="lv-goals" id="lvGoals"></div>
+      <p class="lv-tip" id="lvTip" hidden></p>
+      <div class="row"><button class="btn btn-orange" id="lvPlay" type="button">Play</button><button class="btn btn-ghost" id="lvWa" type="button">Send list to WhatsApp</button></div>
+      <p class="bd-note" id="lvNote"></p>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="pauseModal" hidden>
+  <div class="mcard glass" role="dialog" aria-labelledby="psTitle">
+    <div class="mhead"><div><span class="eyebrow">Paused</span><h3 id="psTitle">Take a breath</h3><p id="psSub"></p></div></div>
+    <button class="btn btn-orange" id="psResume" type="button">Resume</button>
+    <div class="row"><button class="btn btn-ghost" id="psRestart" type="button" style="flex:1">Restart</button><button class="btn btn-ghost" id="psQuit" type="button" style="flex:1">Quit</button></div>
+    <button class="linkbtn" id="psSound" type="button" style="justify-self:center">Sound: on</button>
+  </div>
+</div>
+
+<div class="modal" id="saveMeModal" hidden>
+  <div class="mcard glass center" role="dialog" aria-labelledby="smTitle">
+    <span class="eyebrow">Crash!</span><h3 id="smTitle">Keep riding?</h3>
+    <div class="sm-timer"><b class="tnum" id="smCount">5</b></div>
+    <p id="smSub" class="muted">Spend coins to fix the keke and carry on.</p>
+    <button class="btn btn-orange" id="smYes" type="button"><i class="coin-ic" aria-hidden="true"></i><span id="smCost">100</span>&nbsp;coins: continue</button>
+    <button class="linkbtn" id="smNo" type="button" style="justify-self:center">No thanks, end the run</button>
+  </div>
+</div>
+
+<div class="modal" id="shopModal" hidden>
+  <div class="mcard glass wide" role="dialog" aria-labelledby="shTitle">
+    <div class="mhead"><div><span class="eyebrow">Shop</span><h3 id="shTitle">Spend your coins</h3><p>You have <b class="tnum" id="shCoins">0</b> coins. Earn more in every ride, mission and daily reward.</p></div><button class="bd-close" type="button" id="shClose" aria-label="Close">×</button></div>
+    <div><span class="eyebrow">Power-ups last longer</span><div class="shop-list" id="shUp"></div></div>
+    <div><span class="eyebrow">Plates</span><div class="shop-list" id="shPlates"></div></div>
+    <div><span class="eyebrow">Keke colours</span><div class="swatches" id="shColors" role="group" aria-label="Keke colour"></div><p class="bd-note" id="shColorNote">Tap a colour to ride with it. Locked colours cost 400 coins or come with badges.</p></div>
+  </div>
+</div>
+
+<div class="modal" id="missionModal" hidden>
+  <div class="mcard glass" role="dialog" aria-labelledby="msTitle">
+    <div class="mhead"><div><span class="eyebrow">Missions</span><h3 id="msTitle">Finish all three</h3><p>Complete the set to raise your Market Rush score multiplier and win 200 coins. Your multiplier: <b id="msMult">×1</b></p></div><button class="bd-close" type="button" id="msClose" aria-label="Close">×</button></div>
+    <div class="ms-list" id="msList"></div>
+  </div>
+</div>
+
+<div class="modal" id="rewardModal" hidden>
+  <div class="mcard glass wide" role="dialog" aria-labelledby="rwTitle">
+    <div class="mhead"><div><span class="eyebrow">Daily reward</span><h3 id="rwTitle">Welcome back!</h3><p id="rwSub">Come back every day. Day 7 is the big one.</p></div></div>
+    <div class="rw-days" id="rwDays"></div>
+    <button class="btn btn-orange" id="rwClaim" type="button">Claim</button>
+  </div>
+</div>
+
+<div class="modal" id="recipeModal" hidden>
+  <div class="mcard glass wide" role="dialog" aria-labelledby="rbTitle">
+    <div class="mhead"><div><span class="eyebrow">Recipe book</span><h3 id="rbTitle">Dishes you have cooked</h3><p>Every order you deliver adds its real shopping list, with market prices, to your book.</p></div><button class="bd-close" type="button" id="rbClose" aria-label="Close">×</button></div>
+    <div class="rb-grid" id="rbGrid"></div>
+  </div>
+</div>
+
+<div class="modal" id="howModal" hidden>
+  <div class="mcard glass" role="dialog" aria-labelledby="hwTitle">
+    <div class="mhead"><div><span class="eyebrow">How to play</span><h3 id="hwTitle">Shop smart, ride fast</h3></div><button class="bd-close" type="button" id="hwClose" aria-label="Close">×</button></div>
+    <ul class="how">
+      <li><b>Swipe left or right</b> to change lane. <b>Swipe up</b> or tap Jump to hop over carts and potholes. On a computer use the arrow keys and Space.</li>
+      <li><b>Green rings</b> are on your shopping list. Grab them all to deliver the order.</li>
+      <li><b>Gold rings</b> are bonus vegetables: more points for a healthier pot. <b>Red rings</b> are not on your list and waste money.</li>
+      <li>Danfo buses can't be jumped. Switch lanes! Three hits and the keke breaks down.</li>
+      <li>Power-up crates: <b>Magnet</b> pulls items to you, <b>Haggle</b> halves prices, <b>Spare tyre</b> saves you from one crash, <b>2× coins</b> doubles coins.</li>
+      <li>Fail a level and you lose a plate. Plates refill by one every 20 minutes.</li>
+    </ul>
+    <button class="btn btn-orange" id="hwOk" type="button">Got it</button>
+  </div>
+</div>
+
 <aside id="board" class="glass" hidden aria-label="Leaderboard">
-  <div class="bd-head"><div><b>Leaderboard</b><small id="bdSub">Top Market Run plates</small></div><button class="bd-close" type="button" id="bdClose" aria-label="Close leaderboard">×</button></div>
-  <div class="bd-tabs" id="bdTabs" role="group" aria-label="Leaderboard view"><button type="button" data-t="players" aria-pressed="true">Players</button><button type="button" data-t="today" aria-pressed="false">Today</button><button type="button" data-t="crews" aria-pressed="false">Crews</button><button type="button" data-t="online" aria-pressed="false">Online</button></div>
-  <div class="bd-body"><div id="tabPlayers" style="display:grid;gap:6px"><div id="bdList" style="display:grid;gap:6px"></div><p class="bd-empty" id="bdEmpty">No scores yet. Finish a ride and be the first on the board.</p><p class="bd-note" id="bdNote" hidden></p>
-    <div class="owner" id="bdOwner" hidden><h5>Sign-ups · only you can see this</h5><div id="suList" style="display:grid;gap:6px"></div><button class="btn btn-ghost" type="button" id="suCopy" style="height:42px">Copy as CSV</button><textarea id="suCsv" readonly hidden aria-label="Sign-ups CSV"></textarea><h5 style="margin-top:12px">Price reports to check</h5><div id="prList" style="display:grid;gap:6px"></div></div></div>
+  <div class="bd-head"><div><b>Leaderboard</b><small id="bdSub">Top plates</small></div><button class="bd-close" type="button" id="bdClose" aria-label="Close leaderboard">×</button></div>
+  <div class="bd-tabs" id="bdTabs" role="group" aria-label="Leaderboard view"><button type="button" data-t="rush" aria-pressed="true">Rush</button><button type="button" data-t="players" aria-pressed="false">Plates</button><button type="button" data-t="today" aria-pressed="false">Today</button><button type="button" data-t="crews" aria-pressed="false">Crews</button><button type="button" data-t="online" aria-pressed="false">Online</button></div>
+  <div class="bd-body">
+    <div id="tabRush" style="display:grid;gap:6px"><div id="bdRush" style="display:grid;gap:6px"></div></div>
+    <div id="tabPlayers" hidden style="display:grid;gap:6px"><div id="bdList" style="display:grid;gap:6px"></div><p class="bd-empty" id="bdEmpty">No scores yet. Deliver an order and be the first on the board.</p><p class="bd-note" id="bdNote" hidden></p>
+      <div class="owner" id="bdOwner" hidden><h5>Sign-ups · only you can see this</h5><div id="suList" style="display:grid;gap:6px"></div><button class="btn btn-ghost" type="button" id="suCopy" style="height:42px">Copy as CSV</button><textarea id="suCsv" readonly hidden aria-label="Sign-ups CSV"></textarea><h5 style="margin-top:12px">Price reports to check</h5><div id="prList" style="display:grid;gap:6px"></div></div></div>
     <div id="tabCrews" hidden style="display:grid;gap:8px"><p class="bd-note" id="crewMine"></p><form class="crewform" id="crewForm"><input id="crewName" maxlength="24" placeholder="Crew name, e.g. Yaba Foodies" aria-label="New crew name"><button class="btn btn-orange" type="submit">Start crew</button></form><p class="err" id="crewErr"></p><div id="bdCrews" style="display:grid;gap:6px"></div></div>
     <div id="tabToday" hidden style="display:grid;gap:6px"><p class="bd-note" id="todayHead"></p><div id="bdToday" style="display:grid;gap:6px"></div></div>
     <div id="tabOnline" hidden><div id="bdOnline" style="display:grid;gap:6px"></div></div>
   </div>
 </aside>
-<div id="countdown" hidden aria-live="assertive"></div>
+
 <div class="modal" id="race" hidden>
   <div class="mcard glass" role="dialog" aria-labelledby="rcTitle">
     <div class="mhead"><div><span class="eyebrow">Ride together</span><h3 id="rcTitle">Race your friends</h3><p>Everyone shops the same dish on the same road. Best plate wins.</p></div><button class="bd-close" type="button" id="rcClose" aria-label="Close">×</button></div>
@@ -458,7 +248,7 @@ a{color:inherit}
     <div id="rcLobby" hidden style="display:grid;gap:14px">
       <div><div class="codebig" id="rcCodeBig">JOLLOF-482</div></div>
       <div class="row"><a class="btn btn-orange" id="rcWa" href="https://wa.me/" target="_blank" rel="noopener" style="flex:1">Invite on WhatsApp</a><button class="btn btn-ghost" type="button" id="rcCopy" style="flex:1">Copy link</button></div>
-      <textarea id="rcInvite" readonly hidden aria-label="Invite text" style="width:100%;height:70px;background:rgba(0,0,0,.3);color:var(--fg);border:1px solid var(--line);border-radius:10px;font:13px var(--f-body)"></textarea>
+      <textarea id="rcInvite" readonly hidden aria-label="Invite text"></textarea>
       <div class="rc-dish"><img id="rcDishImg" src="img/jollof.webp" alt=""><div><b id="rcDishName">Jollof rice</b><span id="rcDishInfo"></span></div></div>
       <select class="rc-select" id="rcPick" aria-label="Race dish"></select>
       <div style="display:flex;justify-content:space-between;align-items:center"><span class="eyebrow">Riders</span><span style="font-size:13px;color:var(--muted)" id="rcCount"></span></div>
@@ -469,9 +259,11 @@ a{color:inherit}
     </div>
   </div>
 </div>
+
 <div class="modal" id="joinModal" hidden>
   <div class="mcard glass" role="dialog" aria-labelledby="jTitle">
-    <div class="mhead"><div><span class="eyebrow">Meuro account</span><h3 id="jTitle">Join the market</h3><p id="jSub">Create a free account to race friends, join crews and save your scores.</p></div><button class="bd-close" type="button" id="jClose" aria-label="Close">×</button></div>
+    <div class="mhead"><div><span class="eyebrow">Meuro account</span><h3 id="jTitle">Join the market</h3><p id="jSub">Create a free account to save your progress on any phone, race friends and join the leaderboards.</p></div><button class="bd-close" type="button" id="jClose" aria-label="Close">×</button></div>
+    <div class="notice" id="jOff" hidden><b>Online accounts are being switched on.</b> Until then your coins, stars and streak save on this phone automatically, so nothing is lost.</div>
     <div class="bd-tabs" id="jTabs" style="padding:0" role="group" aria-label="Account"><button type="button" data-m="signup" aria-pressed="true">Create account</button><button type="button" data-m="login" aria-pressed="false">Log in</button></div>
     <form id="joinForm" novalidate style="display:grid;gap:14px">
       <label class="fl" id="jNameRow"><span>Rider name</span><input id="jName" maxlength="20" autocomplete="nickname"></label>
@@ -486,11 +278,11 @@ a{color:inherit}
     </form>
   </div>
 </div>
+
 <div class="modal" id="profile" hidden>
-  <div class="mcard glass" role="dialog" aria-labelledby="pfTitle">
+  <div class="mcard glass wide" role="dialog" aria-labelledby="pfTitle">
     <div class="mhead"><div><span class="eyebrow">Your rider</span><h3 id="pfTitle">Profile</h3><p id="pfSub"></p></div><button class="bd-close" type="button" id="pfClose" aria-label="Close">×</button></div>
     <div class="pf-stats" id="pfStats"></div>
-    <div><span class="eyebrow">Keke colour</span><div class="swatches" id="pfColors" role="group" aria-label="Keke colour"></div><p class="bd-note" id="pfColorNote"></p></div>
     <div><span class="eyebrow">Badges</span><div class="badges" id="pfBadges"></div></div>
     <form id="pfForm" novalidate style="display:grid;gap:12px">
       <label class="fl"><span>Rider name</span><input id="pfName" maxlength="20" autocomplete="nickname"></label>
@@ -501,6 +293,7 @@ a{color:inherit}
     <div class="row" style="justify-content:space-between"><button class="btn btn-ghost" type="button" id="pfLogout">Log out</button><button class="linkbtn danger" type="button" id="pfDelete">Delete my account</button></div>
   </div>
 </div>
+
 <div class="modal" id="reportModal" hidden>
   <form class="mcard glass" id="reportForm" novalidate role="dialog" aria-labelledby="rpTitle">
     <div class="mhead"><div><span class="eyebrow">Help fix prices</span><h3 id="rpTitle">Report a real price</h3><p id="rpSub">Tell us what you paid at the market. Approved reports replace our estimates for everyone.</p></div><button class="bd-close" type="button" id="rpClose" aria-label="Close">×</button></div>
@@ -511,49 +304,6 @@ a{color:inherit}
     <p class="err" id="rpMsg" role="status"></p>
   </form>
 </div>
-<section id="result" hidden aria-live="polite">
-  <div class="rcard">
-    <div class="rphoto"><img id="rImg" src="img/jollof.webp" alt=""><span class="scanline"></span><div class="tag" id="rTags"></div></div>
-    <div class="rbody">
-      <div class="rhead">
-        <div class="ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="9"/><circle id="rArc" cx="50" cy="50" r="44" fill="none" stroke="#F27B2B" stroke-width="9" stroke-linecap="round" stroke-dasharray="276.5" stroke-dashoffset="276.5" style="transition:stroke-dashoffset 1.2s ease-out"/></svg><b class="tnum" id="rScore">0</b></div>
-        <div><span class="eyebrow">Meuro AI plate scan</span><h2 id="rTitle">Balanced plate</h2><div class="stars" id="rStars" aria-label="Stars">★★★</div></div>
-      </div>
-      <div class="rstats">
-        <div><b class="tnum" id="rSpent">₦0</b><span id="rSpentL">spent</span></div>
-        <div><b class="tnum" id="rKcal">0</b><span>kcal / serving</span></div>
-        <div><b class="tnum" id="rProt">0 g</b><span>protein / serving</span></div>
-      </div>
-      <ul class="rnotes" id="rNotes"></ul>
-      <div class="rprog" id="rProg" hidden></div>
-      <div class="ractions">
-        <button class="btn btn-orange" type="button" id="shareBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5M5 13v6a2 2 0 002 2h10a2 2 0 002-2v-6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>Share to status</button>
-        <button class="btn btn-ghost" type="button" id="listBtn">Send shopping list</button>
-        <button class="btn btn-ghost" type="button" id="reportBtn">Report a real price</button>
-      </div>
-      <div class="raceres" id="raceRes" hidden><h4>Race results</h4><div id="raceResList" style="display:grid;gap:6px"></div><button class="btn btn-orange" type="button" id="raceAgain">Start a rematch</button></div>
-      <form class="savebox" id="saveBox" novalidate>
-        <div class="sb-head"><b id="sbTitle">Save your score</b><span id="sbSub">Join the Meuro leaderboard and get free weekly meal plans from Meuro AI.</span></div>
-        <div class="sb-fields" id="sbFields">
-          <label class="fl"><span>Name on the leaderboard</span><input id="sbName" maxlength="20" autocomplete="nickname" required></label>
-          <div class="fl"><span>Send my meal plans by</span><div class="via" id="sbVia" role="group" aria-label="Contact method"><button type="button" data-v="whatsapp" aria-pressed="true">WhatsApp</button><button type="button" data-v="email" aria-pressed="false">Email</button></div></div>
-          <label class="fl"><span id="sbContactL">WhatsApp number</span><input id="sbContact" inputmode="tel" autocomplete="tel" required></label>
-          <label class="consent"><input type="checkbox" id="sbConsent" checked><span>Send me weekly meal plans, tips and offers from Meuro. I can opt out anytime. <a href="faq.html#privacy">How we use your data</a></span></label>
-        </div>
-        <div class="sb-me" id="sbMe" hidden>Saving as <b id="sbMeName"></b> <button type="button" class="linkbtn" id="sbEdit">Change</button></div>
-        <div class="rank" id="sbRank" hidden><b class="tnum" id="sbRankN">#1</b><span id="sbRankT"></span></div>
-        <div class="row"><button class="btn btn-orange" id="sbSave" type="submit">Save my score</button><button class="btn btn-ghost" type="button" data-board><svg class="ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 4h8v5a4 4 0 01-8 0V4zM5 5h3v3a3 3 0 01-3-3zM19 5h-3v3a3 3 0 003-3zM12 13v4M8.5 20h7M10 17h4v3h-4z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Leaderboard</button></div>
-        <p class="sb-msg" id="sbMsg" role="status"></p>
-      </form>
-      <div class="row">
-        <button class="btn btn-orange" id="againBtn" type="button">Ride again</button>
-        <button class="btn btn-ghost" id="pickBtn" type="button">Pick another dish</button>
-        <a class="btn btn-ghost" href="home.html">Enter website</a>
-      </div>
-      <p class="disc">Estimates are informational and vary with ingredients, cooking method and portion size. Want a real plan? <a href="ai.html#planner" style="color:var(--gold)">Try the Meuro AI planner</a>.</p>
-    </div>
-  </div>
-</section>
 
 <script src="boot.js"></script>
 <script type="module" src="backend.js"></script>
@@ -561,6 +311,5 @@ a{color:inherit}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="market-data.js"></script>
 <script src="game.js"></script>
-
 </body>
 </html>

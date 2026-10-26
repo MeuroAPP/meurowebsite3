@@ -42,7 +42,7 @@ async function boot() {
   if (!configured()) throw new Error('not-configured');
   const { createClient } = await import(SDK);
   const sb = createClient(SUPABASE_URL.replace(/\/+$/, ''), SUPABASE_ANON_KEY, {
-    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'pkce' },
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'implicit' },
     realtime: { params: { eventsPerSecond: 8 } }
   });
 
@@ -236,9 +236,12 @@ async function boot() {
     async today(day, n) { return ok(await sb.from('daily_scores').select('user_id,name,score,stars,dish').eq('day', day).order('score', { ascending: false }).order('updated_at', { ascending: true }).limit(n || 50)); },
     async crews() { return ok(await sb.rpc('crew_board')); },
     async myScore() { if (!current) return null; const r = ok(await sb.from('scores').select('best,crew_id').eq('user_id', current.uid).maybeSingle()); return r; },
-    async myProfile() { if (!current) return null; return ok(await sb.from('profiles').select('name,consent,keke_color,rides,streak,best_streak,last_day,badges,countries,challenges_done').eq('id', current.uid).maybeSingle()); },
+    async myProfile() { if (!current) return null; return ok(await sb.from('profiles').select('name,consent,keke_color,rides,streak,best_streak,last_day,badges,countries,challenges_done,progress,progress_at').eq('id', current.uid).maybeSingle()); },
     async updateProfile(name, consent, keke) { return ok(await sb.rpc('update_profile', { p_name: name, p_consent: consent, p_keke: keke || null })); },
     async recordRide(r) { return ok(await sb.rpc('record_ride', { p_dish: r.dish, p_country: r.country, p_score: r.score, p_stars: r.stars, p_daily: !!r.daily, p_all_items: !!r.allItems, p_budget_left: Math.max(-10, Math.min(1, Math.round(r.budgetLeft * 1000) / 1000)), p_veg: r.veg, p_junk: r.junk, p_challenge: !!r.challenge })); },
+    async recordRush(r) { return ok(await sb.rpc('record_rush', { p_score: r.score | 0, p_meters: r.meters | 0, p_orders: r.orders | 0, p_seconds: Math.max(5, Math.round(r.seconds)) })); },
+    async rushBoard(n) { return ok(await sb.from('rush_scores').select('user_id,name,best,meters,orders').gt('best', 0).order('best', { ascending: false }).order('updated_at', { ascending: true }).limit(n || 50)); },
+    async saveProgress(p) { return ok(await sb.rpc('save_progress', { p: p })); },
     async createCrew(name) { return ok(await sb.rpc('create_crew', { p_name: name })); },
     async setCrew(id) { return ok(await sb.rpc('set_crew', { p_crew: id })); },
     async reportPrice(cc, item, amount, currency, place) { return ok(await sb.rpc('report_price', { p_country: cc, p_item: item, p_amount: amount, p_currency: currency, p_place: place || null })); },
