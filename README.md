@@ -22,4 +22,4 @@ Security: every page sends a strict Content Security Policy; all database tables
 security; players can only change data through checked, rate-limited database functions; emails
 are visible only to the player and to admins.
 
-Previous version (Firebase, before Version 8): branch `v7-backup`.
+Flying keke is built on Version 8. Earlier versions: `v8-backup` (Version 8 without flying), `v9`, and `v7-backup` (Firebase).

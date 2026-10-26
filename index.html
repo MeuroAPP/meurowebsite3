@@ -8,7 +8,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0B120D">
 <link rel="icon" href="img/logo.png">
-<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
+/* flying keke */
+.flybtn{position:absolute;right:max(14px,env(safe-area-inset-right,0px));bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 80px);width:86px;height:86px;border-radius:50%;border:3px solid rgba(255,255,255,.9);background:radial-gradient(circle at 35% 28%,#7CC4FF,#1E6FD0 72%);color:#fff;display:grid;place-items:center;align-content:center;gap:0;box-shadow:0 10px 30px rgba(30,111,208,.55);touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:pointer;transition:transform .08s}
+.flybtn svg{width:34px;height:34px}
+.flybtn span{font-weight:800;font-size:13px;letter-spacing:.14em;margin-top:-2px}
+.flybtn.on{transform:scale(.92);box-shadow:0 0 0 7px rgba(124,196,255,.35),0 10px 34px rgba(30,111,208,.7)}
+.gas{position:absolute;right:calc(max(14px,env(safe-area-inset-right,0px)) + 100px);bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 84px);display:grid;justify-items:center;gap:4px}
+.gas small{font-size:10px;font-weight:800;letter-spacing:.12em;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.7)}
+.gtube{width:20px;height:62px;border-radius:11px;padding:3px;background:rgba(10,16,12,.7);border:1px solid rgba(255,255,255,.25);display:flex;align-items:flex-end}
+.gtube i{display:block;width:100%;border-radius:8px;background:linear-gradient(#9AD3FF,#2F7FD6);transition:height .12s}
+.gas.low .gtube i{background:linear-gradient(#FFB199,#E5533D)}
+.alt{position:absolute;right:max(14px,env(safe-area-inset-right,0px));bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 176px);font-family:var(--f-display);font-weight:800;font-size:16px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.7)}
+.speed{right:auto;left:max(16px,env(safe-area-inset-left,0px));text-align:left;bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 130px)}
+.exit{bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 206px)}
+.rfly{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.rfly div{border:1px solid rgba(124,196,255,.35);background:rgba(47,127,214,.12);border-radius:14px;padding:9px 10px}
+.rfly div.pb{border-color:var(--gold);background:rgba(246,196,69,.12)}
+.rfly b{display:block;font-family:var(--f-display);font-size:19px;letter-spacing:-.02em}
+.rfly span{font-size:11.5px;color:var(--muted)}
+#memeImg{width:100%;max-height:58vh;object-fit:contain;border-radius:16px;display:block;background:#000}
+.meme-row{display:flex;gap:8px}.meme-row .btn{flex:1}
+.newfly{display:inline-block;justify-self:start;align-self:start;background:#1E6FD0;color:#fff;font-weight:800;font-size:13px;letter-spacing:.04em;padding:6px 12px;border-radius:999px;margin-bottom:8px;box-shadow:0 6px 20px rgba(30,111,208,.45)}
+@media (max-width:420px){.rfly{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  #bShout{bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 182px)!important}
+  .alt{right:calc(max(14px,env(safe-area-inset-right,0px)) + 96px);bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 166px)}
+  .speed{display:none}
+}
+</style>
 <title>Meuro Market Run</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -381,9 +409,10 @@ a{color:inherit}
     <div class="tops"><button class="glass" type="button" id="authBtn" hidden>Log in</button><button class="glass" type="button" data-board><svg class="ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 4h8v5a4 4 0 01-8 0V4zM5 5h3v3a3 3 0 01-3-3zM19 5h-3v3a3 3 0 003-3zM12 13v4M8.5 20h7M10 17h4v3h-4z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="t">Leaderboard</span></button><a class="glass" href="home.html">Website →</a></div>
   </div>
   <div class="intro-card">
+    <span class="newfly">New · your keke can fly 🚀</span>
     <span class="eyebrow">Meuro Market Run</span>
-    <h1 id="t">Ride the <em>market.</em></h1>
-    <p>Scroll through dishes from across Africa, pick one, then ride the keke and grab every ingredient within your budget. Meuro AI scans your plate at the end.</p>
+    <h1 id="t">Fly the <em>market.</em></h1>
+    <p>Pick a dish from anywhere in Africa, then ride the keke and grab every ingredient within your budget. Go-slow ahead? Hold FLY and go over it.</p>
     <div class="daily glass" id="daily">
       <div class="dl-main"><span class="eyebrow">Market of the Day</span><b id="dlDish">Loading…</b><small id="dlInfo"></small></div>
       <button class="btn btn-orange dl-play" id="dlPlay" type="button">Play today</button>
@@ -425,6 +454,9 @@ a{color:inherit}
   <button class="glass" id="bShout" type="button">Shout</button>
   <div class="stopcard glass" id="stopcard" hidden><span class="eyebrow" id="scEye">Tour stop</span><b id="scTitle"></b><p id="scText"></p><a id="scLink" href="home.html">Visit page →</a></div>
   <div class="speed"><b class="tnum" id="hSpeed">0</b><small>km/h</small></div>
+  <div class="alt" id="hAlt" aria-live="off"></div>
+  <div class="gas" id="hGas" aria-hidden="true"><small>GAS</small><div class="gtube"><i id="hGasBar" style="height:100%"></i></div></div>
+  <button class="flybtn" id="bFly" type="button" aria-label="Fly: press and hold to fire the thrusters"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3c3 2.2 4.5 5.4 4.5 9.2V16h-9v-3.8C7.5 8.4 9 5.2 12 3z" fill="currentColor"/><path d="M7.5 13.5L5 16.5V19l2.5-1.5M16.5 13.5L19 16.5V19l-2.5-1.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 18.5c.4 1.4 1.1 2.4 2 3 .9-.6 1.6-1.6 2-3" stroke="#FFD27A" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="9.5" r="1.6" fill="#1E6FD0"/></svg><span>FLY</span></button>
   <button class="btn btn-ghost exit" id="exitBtn" type="button" style="height:40px;padding:0 14px;font-size:14px">Finish</button>
   <div class="controls">
     <button class="cbtn glass" id="bLeft" type="button" aria-label="Move left"><svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -446,6 +478,13 @@ a{color:inherit}
   </div>
 </aside>
 <div id="countdown" hidden aria-live="assertive"></div>
+<div class="modal" id="memeModal" hidden>
+  <div class="mcard glass" role="dialog" aria-labelledby="memeTitle">
+    <div class="mhead"><div><span class="eyebrow">Flying keke meme</span><h3 id="memeTitle">Post it on your status</h3><p>Made from your best moment in the air. Tap for another caption.</p></div><button class="bd-close" type="button" id="memeClose" aria-label="Close meme maker">×</button></div>
+    <img id="memeImg" alt="Meme of your flying keke">
+    <div class="meme-row"><button class="btn btn-ghost" type="button" id="memeNext">Another caption</button><button class="btn btn-orange" type="button" id="memeShare">Share</button></div>
+  </div>
+</div>
 <div class="modal" id="race" hidden>
   <div class="mcard glass" role="dialog" aria-labelledby="rcTitle">
     <div class="mhead"><div><span class="eyebrow">Ride together</span><h3 id="rcTitle">Race your friends</h3><p>Everyone shops the same dish on the same road. Best plate wins.</p></div><button class="bd-close" type="button" id="rcClose" aria-label="Close">×</button></div>
@@ -524,10 +563,12 @@ a{color:inherit}
         <div><b class="tnum" id="rKcal">0</b><span>kcal / serving</span></div>
         <div><b class="tnum" id="rProt">0 g</b><span>protein / serving</span></div>
       </div>
+      <div class="rfly" id="rFly" hidden></div>
       <ul class="rnotes" id="rNotes"></ul>
       <div class="rprog" id="rProg" hidden></div>
       <div class="ractions">
-        <button class="btn btn-orange" type="button" id="shareBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5M5 13v6a2 2 0 002 2h10a2 2 0 002-2v-6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>Share to status</button>
+        <button class="btn btn-orange" type="button" id="memeBtn" hidden>Make a meme 😂</button>
+        <button class="btn btn-ghost" type="button" id="shareBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5M5 13v6a2 2 0 002 2h10a2 2 0 002-2v-6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>Share to status</button>
         <button class="btn btn-ghost" type="button" id="listBtn">Send shopping list</button>
         <button class="btn btn-ghost" type="button" id="reportBtn">Report a real price</button>
       </div>

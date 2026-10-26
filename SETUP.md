@@ -67,6 +67,7 @@ Guide: https://developers.brevo.com/docs/supabase-smtp-integration
   goes quiet, open the Supabase dashboard and tap **Restore**.
 - Brevo's free plan sends 300 emails a day; move to a paid email plan when daily sign-ups grow past that.
 
-## Undo Version 8
-The previous live site is saved on the `v7-backup` branch. To go back, ask Claude to
-"restore v7-backup to main", or in GitHub open a pull request from `v7-backup` into `main`.
+## Undo the flying keke
+Version 8 without flying is saved on the `v8-backup` branch (Version 9 on `v9`, the Firebase
+site on `v7-backup`). To go back, ask Claude to "restore v8", or in GitHub open a pull request
+from `v8-backup` into `main`. The flying keke needs no database changes.
