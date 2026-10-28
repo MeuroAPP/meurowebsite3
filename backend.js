@@ -6,7 +6,9 @@
 //    a busy market splits into rooms of up to 40 riders.
 import { SUPABASE_URL, SUPABASE_ANON_KEY, TURNSTILE_SITE_KEY } from './meuro-config.js';
 
-const SDK = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm';
+// A recent client understands Supabase's new "sb_publishable_" keys; the older build is a fallback.
+const SDK = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.1/+esm';
+const SDK_FALLBACK = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm';
 const TAB = Math.random().toString(36).slice(2, 8);
 const SHARD_SIZE = 40, MAX_SHARDS = 50;
 
@@ -40,9 +42,11 @@ const rpcErr = e => {
 
 async function boot() {
   if (!configured()) throw new Error('not-configured');
-  const { createClient } = await import(SDK);
+  let mod;
+  try { mod = await import(SDK); } catch (e) { mod = await import(SDK_FALLBACK); }
+  const { createClient } = mod;
   const sb = createClient(SUPABASE_URL.replace(/\/+$/, ''), SUPABASE_ANON_KEY, {
-    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'pkce' },
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'implicit' },
     realtime: { params: { eventsPerSecond: 8 } }
   });
 

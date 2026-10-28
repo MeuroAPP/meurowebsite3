@@ -3,8 +3,8 @@
 // Both values are designed to be public. Your data is protected by the
 // database rules in supabase/schema.sql, not by keeping these secret.
 // NEVER put the "service_role" or "secret" key here.
-export const SUPABASE_URL = "";        // e.g. "https://abcdefghijklmnop.supabase.co"
-export const SUPABASE_ANON_KEY = "";   // the "anon" / "publishable" key
+export const SUPABASE_URL = "https://najycpepfupiqwnawinw.supabase.co";        // e.g. "https://abcdefghijklmnop.supabase.co"
+export const SUPABASE_ANON_KEY = "sb_publishable_JQU6mY0TJgC5drM04jhu2A_AX5TSrbi";   // the "anon" / "publishable" key
 
 // Optional: Google Analytics 4 measurement ID (starts with "G-").
 export const GA_MEASUREMENT_ID = "";
