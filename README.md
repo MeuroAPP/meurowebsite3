@@ -3,7 +3,7 @@
 Multi-page website for Meuro (African food, nutrition and wellness), opening with
 **Meuro Market Run**: a 3D market game with 50 dishes from 13 African countries,
 real Lagos prices, Market of the Day, streaks, badges, races with friends, crews,
-shouts and a leaderboard.
+shouts and a leaderboard. live
 
 | File | What it is |
 |---|---|
