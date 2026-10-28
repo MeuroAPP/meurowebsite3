@@ -20,7 +20,7 @@ Everything below fits Supabase's free plan. No bank card needed to start.
 1. **Authentication > Sign In / Providers > Email**: keep Email on, keep **Confirm email** on,
    and set **Minimum password length** to 8. Save.
 2. **Authentication > URL Configuration**:
-   - **Site URL**: `https://meuroapp.com/`
+   - **Site URL**: `https://www.meuroapp.com/` (the site opens on www)
    - **Redirect URLs**: add `https://meuroapp.com/**` and `https://www.meuroapp.com/**`
      (and `https://treshposh.github.io/meurowebsite2/**` if you still open the GitHub link).
 3. If **Realtime > Settings** shows **Allow public access**, switch it **off**. Only signed-in
