@@ -1,4 +1,6 @@
 (function(){
+  /* Old race invite links (meuroapp.com/?race=code) now open the game at play.html */
+  if(/[?&]race=/.test(location.search)&&!/play\.html$/.test(location.pathname)){location.replace('play.html'+location.search+location.hash);return;}
   var d=document, root=d.documentElement;
   root.classList.add('js');
 
