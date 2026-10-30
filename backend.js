@@ -206,7 +206,7 @@ async function boot() {
       if (needCaptcha() && !captchaToken) return { ok: false, code: 'auth/captcha-needed' };
       const { data, error } = await sb.auth.signUp({ email, password, options: { data: { name, consent: !!consent }, emailRedirectTo: here(), captchaToken: captchaToken || undefined } });
       resetCaptcha();
-      if (error) return { ok: false, code: authCode(error) };
+      if (error) return { ok: false, code: authCode(error), message: error.message || '' };
       if (data && data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) return { ok: false, code: 'auth/email-already-in-use' };
       return { ok: true, confirm: !(data && data.session) };
     },

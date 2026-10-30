@@ -622,6 +622,8 @@ function backend(){return window.__meuroBackend||null;}
 var PROFILE=null;
 var AUTH_MSG={'auth/email-not-confirmed':'Confirm your email first: open the link we sent you (check spam too), then log in.','auth/captcha-needed':'Complete the robot check above first.','auth/captcha':'The robot check failed. Please try it again.','auth/email-already-in-use':'That email already has an account. Log in instead.','auth/invalid-email':'Enter a valid email address, like you@example.com.','auth/weak-password':'Use a password of at least 8 characters, mixing letters and numbers.','auth/invalid-credential':'That email and password do not match. Try again or reset your password.','auth/wrong-password':'That email and password do not match. Try again or reset your password.','auth/user-not-found':'No account uses that email yet. Create one instead.','auth/too-many-requests':'Too many tries. Wait a minute, then try again.','auth/network-request-failed':'No internet connection. Check it and try again.','auth/missing-email':'Enter your email address first.'};
 function authMsg(code){return AUTH_MSG[code]||'Something went wrong. Try again.';}
+/* Supabase may ask for stronger passwords than the site's basic check; say exactly what it wants. */
+function pwRule(m){m=String(m||'');var n=(m.match(/at least (\d+) characters/)||[])[1]||'8';var need=[];if(/ABCDEFGHIJ/.test(m))need.push('a capital letter');if(/abcdefghij/.test(m))need.push('a small letter');if(/0123456789/.test(m))need.push('a number');if(/!@#/.test(m))need.push('a symbol like ! or @');if(/weak and easy to guess|pwned|leaked/i.test(m))return 'That password is too common. Please choose a different one.';return 'Use a password of at least '+n+' characters'+(need.length?' with '+need.join(', ').replace(/, ([^,]*)$/,' and $1'):'')+'.';}
 function setJMode(m){jmode=m;$('#jTabs').hidden=m==='newpass';$('#jEmail').closest('label').hidden=m==='newpass';$('#jResend').hidden=true;if(backend()&&backend().auth.needCaptcha()&&m!=='newpass')backend().auth.renderCaptcha($('#jCaptcha')).catch(function(){});$('#jTabs').querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.m===m));});
   $('#jNameRow').hidden=m!=='signup';$('#jConsentRow').hidden=m!=='signup';$('#jForgot').hidden=m!=='login';
   $('#jSave').textContent=m==='signup'?'Create account':m==='newpass'?'Set new password':'Log in';$('#jPass').autocomplete=m==='login'?'current-password':'new-password';
@@ -653,7 +655,7 @@ $('#joinForm').addEventListener('submit',async function(e){e.preventDefault();va
     r=await b.auth.signUp(n,email,pw,$('#jConsent').checked);}
   else r=await b.auth.logIn(email,pw);
   btn.disabled=false;btn.textContent=label;
-  if(!r.ok){msg.textContent=authMsg(r.code);$('#jResend').hidden=r.code!=='auth/email-not-confirmed';return;}
+  if(!r.ok){msg.textContent=r.code==='auth/weak-password'?pwRule(r.message):authMsg(r.code);$('#jResend').hidden=r.code!=='auth/email-not-confirmed';return;}
   track(jmode==='signup'?'sign_up':'login',{method:'email'});
   $('#jPass').value='';msg.className='sb-msg ok';
   if(jmode==='signup'&&r.confirm){setJMode('login');$('#jEmail').value=email;msg.className='sb-msg ok';msg.textContent='Account created. We sent a confirmation link to '+email+'. Open it on this phone, then you are in.';$('#jResend').hidden=false;return;}
