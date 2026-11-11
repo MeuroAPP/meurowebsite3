@@ -1,0 +1,45 @@
+/* Meuro home: 3D market behind, big auto-flowing carousel of Meuro products across the screen. */
+.lp{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr);width:100%;gap:18px;margin-top:auto;padding-top:76px;min-width:0}
+.lp-copy{display:grid;gap:14px;width:min(640px,100%)}
+.lp-copy h1{font-family:var(--f-display);font-size:clamp(42px,6.6vw,86px);line-height:.92;letter-spacing:-.045em;margin:0;font-weight:700}
+.lp-copy h1 em{font-style:normal;color:var(--orange)}
+.lp-copy p{margin:0;color:var(--muted);font-size:17.5px;line-height:1.55;max-width:48ch}
+.lp-actions{display:flex;flex-wrap:wrap;gap:10px}
+.lp-nav{display:flex;gap:8px;align-items:center}
+.lp-nav a{font-size:15px;font-weight:600;text-decoration:none;padding:10px 16px;border-radius:999px;color:var(--fg)}
+.lp-nav a.solid{background:var(--orange);border-color:transparent}
+.lp-belt{position:relative;-webkit-mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px))) calc(-1 * max(16px,env(safe-area-inset-right,0px)))}
+.lp-head{display:flex;justify-content:space-between;align-items:end;gap:12px}
+.lp-head .eyebrow{display:block}
+.lp-arrows{display:flex;gap:8px}
+.lp-arrows button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:grid;place-items:center;cursor:pointer}
+.lp-arrows svg{width:20px;height:20px}
+.lp-track{display:flex;gap:16px;overflow-x:auto;scrollbar-width:none;padding:6px max(16px,env(safe-area-inset-left,0px)) 10px;cursor:grab;touch-action:pan-x}
+.lp-track::-webkit-scrollbar{display:none}
+.seg{flex:0 0 clamp(220px,19vw,290px);aspect-ratio:3/4;position:relative;border-radius:22px;overflow:hidden;text-decoration:none;color:#fff;background:#111;border:1px solid rgba(255,255,255,.14);box-shadow:0 18px 40px -18px rgba(0,0,0,.8);transition:transform .35s cubic-bezier(.3,1.4,.5,1),border-color .3s;display:block}
+.seg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s}
+.seg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 34%,rgba(0,0,0,.55) 58%,rgba(0,0,0,.92))}
+.seg:hover,.seg:focus-visible{transform:translateY(-6px);border-color:var(--orange)}
+.seg:hover img{transform:scale(1.05)}
+.seg .tx{position:absolute;left:16px;right:14px;bottom:16px;z-index:1;display:grid;gap:4px}
+.seg em{font-style:normal;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.seg b{font-family:var(--f-display);font-size:clamp(22px,2vw,27px);font-weight:600;line-height:1.05;letter-spacing:-.02em}
+.seg small{font-size:13.5px;line-height:1.4;color:#D9DED8}
+.seg .go{margin-top:8px;display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:14px;color:#fff}
+.seg .go svg{width:15px;height:15px;transition:transform .25s}
+.seg:hover .go svg{transform:translateX(3px)}
+.seg .new{position:absolute;top:14px;left:14px;z-index:1;background:var(--orange);color:#fff;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:6px 11px;border-radius:999px}
+.seg.product{background:#EEE9E2}
+.seg.product img{object-position:50% 30%}
+.seg.product::after{background:linear-gradient(180deg,rgba(0,0,0,0) 45%,rgba(30,14,4,.6) 66%,rgba(26,12,4,.94))}
+.lp-dots{display:flex;gap:6px;justify-content:center}
+.lp-dots i{width:6px;height:6px;border-radius:999px;background:rgba(255,255,255,.3);transition:width .3s,background .3s}
+.lp-dots i.on{width:22px;background:var(--orange)}
+@media (max-width:760px){
+  .lp{padding-top:64px;gap:16px}
+  .lp-copy p{font-size:16px}
+  .lp-nav a:not(.solid){display:none}
+  .lp-arrows{display:none}
+  .seg{flex-basis:min(72vw,260px)}
+}
+@media (prefers-reduced-motion:reduce){.seg,.seg img{transition:none}}

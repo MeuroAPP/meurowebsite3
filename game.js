@@ -21,6 +21,7 @@ function dishImg(k){var d=DISHES[k];if(d.img)return 'img/'+d.img+'.webp';if(ART[
   var n=d.items.length;d.items.forEach(function(it,ii){var a0=ii/n*Math.PI*2-Math.PI/2,a1=(ii+1)/n*Math.PI*2-Math.PI/2;x.fillStyle=hex(ITEMS[it].c);x.globalAlpha=.88;x.beginPath();x.moveTo(cx,cy);x.arc(cx,cy,R-10,a0+.04,a1-.04);x.closePath();x.fill();});
   x.globalAlpha=1;x.fillStyle='rgba(255,255,255,.18)';x.beginPath();x.ellipse(cx-34,cy-44,30,10,-.6,0,7);x.fill();
   ART[k]=c.toDataURL('image/png');return ART[k];}
+var LANDING=!!window.MEURO_LANDING; // home page shows the market as a backdrop only
 var LANES=[-3.2,0,3.2], ROUTE=500;
 var STOPS=[
   {z:-120,eye:'Tour stop 1',t:'Meuro AI',d:'Snap any plate for a nutrition estimate and plan meals around your budget.',href:'ai.html',sign:['MEURO AI','Scan any plate']},
@@ -389,6 +390,7 @@ $('#bRev').addEventListener('click',function(){setThrottle(-1);});
 $('#bLeft').addEventListener('click',function(){laneShift(-1);});
 $('#bRight').addEventListener('click',function(){laneShift(1);});
 addEventListener('keydown',function(e){
+  if(LANDING)return;
   if(state.mode==='intro'&&e.key==='Enter'&&document.activeElement===document.body){startRide();return;}
   if(state.mode!=='ride')return;
   var k=e.key;
@@ -489,7 +491,9 @@ function loop(){
   for(var i=0;i<traders.length;i++){var tr=traders[i];if(Math.abs(tr.position.z-state.z)<60)tr.rotation.x=Math.sin(state.t*1.5+tr.userData.ph)*.04;}
   // camera
   if(state.mode==='intro'){
-    var sw=Math.sin(state.orbit*.5), wide=innerWidth>760; vTmp.set(state.x+(wide?-1.6:1.4)+sw*1.2,3.3+Math.sin(state.orbit*.35)*.3,state.z+(wide?7.5:9.5)); lTmp.set(state.x+(wide?-3.2:0),1.7,state.z-16);
+    var sw=Math.sin(state.orbit*.5), wide=innerWidth>760;
+    if(LANDING){vTmp.set(state.x+(wide?1.0:.4)+sw*.9,(wide?3.4:3.6)+Math.sin(state.orbit*.35)*.2,state.z+(wide?7.4:9.5));lTmp.set(state.x+(wide?-7.6:0),(wide?-2.4:-1.2),state.z-14);}
+    else {vTmp.set(state.x+(wide?-1.6:1.4)+sw*1.2,3.3+Math.sin(state.orbit*.35)*.3,state.z+(wide?7.5:9.5)); lTmp.set(state.x+(wide?-3.2:0),1.7,state.z-16);}
   } else {
     var tall=innerHeight>innerWidth; var back=state.v<-.5?-7.5:(tall?9.5:8.5); vTmp.set(state.x*.7,tall?4.8:4.0,state.z+back); lTmp.set(state.x*.85,1.4,state.z-(state.v<-.5?-6:7));
     if(state.mode==='result'){vTmp.set(state.x+5,3.4,state.z+6);lTmp.set(state.x,1.2,state.z-2);}

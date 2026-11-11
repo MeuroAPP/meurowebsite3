@@ -503,3 +503,15 @@ textarea.input{height:auto;min-height:96px;padding:12px 16px;resize:vertical}
 @media (prefers-reduced-motion:reduce){
   .hc-slide,.hc-slide.is-active{transition:none;transform:none}
 }
+
+/* Meuro Foods: Muno product feature */
+.muno{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(24px,5vw,64px);align-items:center;background:#F3EDE4;border-radius:28px;padding:clamp(18px,3vw,36px);overflow:hidden}
+.muno{color:#15231A}.muno .lede{color:#4E5B52}.muno .eyebrow{color:#2F7A46}
+.muno-img img{display:block;width:100%;height:auto;border-radius:20px}
+.muno-copy{display:grid;gap:16px}
+.muno-copy .h-lg{color:#E8661A}
+.muno-facts{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.muno-facts li{background:#fff;border-radius:16px;padding:12px 14px;display:grid;gap:2px}
+.muno-facts b{font-size:15.5px}
+.muno-facts span{font-size:13.5px;color:#5B6A60}
+@media (max-width:760px){.muno{grid-template-columns:1fr}.muno-img{max-width:420px;margin:0 auto}}
