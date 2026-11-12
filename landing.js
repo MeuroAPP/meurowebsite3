@@ -7,16 +7,16 @@ window.MEURO_LANDING=true;
 
 var SEGS=[
   {eye:'Nutritionists',t:'Book a nutritionist',d:'Verified dietitians for diabetes, PCOS, weight and sports goals.',img:'expert.webp',href:'nutritionists.html',go:'Book a consultation'},
-  {eye:'Meuro AI',t:'Scan your plate',d:'Snap any African meal for a nutrition estimate and budget meal plans.',img:'jollof.webp',href:'ai.html',go:'Try Meuro AI'},
-  {eye:'Meuro Foods',t:'Muno',d:'Functional soya drink with soya milk, groundnut flakes and dates.',img:'muno-card.webp',href:'foods.html#muno',go:'Meet Muno',isNew:true,product:true},
-  {eye:'Meuro Kitchen',t:'Catering for your team',d:'Nigerian meals for organisations, communities and events.',img:'amala-stew.webp',href:'kitchen.html',go:'Plan catering'},
+  {eye:'Meuro AI app',t:'Scan, track and plan',d:'Snap your meal, track calories and get 7-day budget meal plans.',img:'app-home.webp',href:'ai.html',go:'Try Meuro AI',kind:'app'},
+  {eye:'Meuro Foods',t:'Muno',d:'Functional soya drink for children. Order on WhatsApp.',img:'muno-card.webp',href:'muno.html',go:'Order Muno',isNew:true,kind:'product'},
+  {eye:'Meuro Kitchen API',t:'Real kitchen data for your platform',d:'Connect POS, caterers and nutrition apps to African food data.',img:'kitchen-api.webp',href:'kitchen.html#api',go:'Explore the API',kind:'light'},
   {eye:'Meuro Foods',t:'African-made foods',d:'Nutrient-dense foods made for everyday African diets.',img:'egusi.webp',href:'foods.html',go:'See Meuro Foods'},
   {eye:'Market Run',t:'Ride the market',d:'Our 3D game: grab every ingredient on budget and race your friends.',img:'market-run.webp',href:'play.html',go:'Play now'},
-  {eye:'About Meuro',t:'Food as a healing tool',d:'Our mission, our values and how we build responsibly.',img:'waakye-special.webp',href:'about.html',go:'Our story'}
+  {eye:'About Meuro',t:'Food as a healing tool',d:'Our mission, our values and the team behind Meuro.',img:'logo.png',href:'about.html',go:'Our story',kind:'brand'}
 ];
 var ARROW='<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-function card(s,i,clone){return '<a class="seg'+(s.product?' product':'')+'" href="'+s.href+'"'+(clone?' tabindex="-1" aria-hidden="true"':'')+' data-i="'+i+'">'+
+function card(s,i,clone){return '<a class="seg'+(s.kind?' '+s.kind:'')+'" href="'+s.href+'"'+(clone?' tabindex="-1" aria-hidden="true"':'')+' data-i="'+i+'">'+
   '<img src="img/'+s.img+'" alt="" loading="'+(i<4&&!clone?'eager':'lazy')+'" draggable="false">'+(s.isNew?'<span class="new">New</span>':'')+
   '<span class="tx"><em>'+esc(s.eye)+'</em><b>'+esc(s.t)+'</b><small>'+esc(s.d)+'</small><span class="go">'+esc(s.go)+' '+ARROW+'</span></span></a>';}
 
