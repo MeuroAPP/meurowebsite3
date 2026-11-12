@@ -32,15 +32,15 @@
 .seg.product{background:#EEE9E2}
 .seg.product img{object-position:50% 30%}
 .seg.product::after{background:linear-gradient(180deg,rgba(0,0,0,0) 45%,rgba(30,14,4,.6) 66%,rgba(26,12,4,.94))}
-.seg.app{background:#0E2A1A}
+.seg.app{background:#2E7342}
 .seg.app img{object-position:50% 0}
-.seg.app::after{background:linear-gradient(180deg,rgba(14,42,26,0) 30%,rgba(14,42,26,.85) 52%,#0E2A1A 66%)}
+.seg.app::after{background:linear-gradient(180deg,rgba(46,115,66,0) 30%,rgba(46,115,66,.88) 52%,#2E7342 66%)}
 .seg.light{background:#fff}
 .seg.light img{object-fit:contain;object-position:50% 4%;padding:6px}
-.seg.light::after{background:linear-gradient(180deg,rgba(14,42,26,0) 44%,rgba(14,42,26,.88) 58%,#0E2A1A 72%)}
-.seg.brand{background:radial-gradient(120% 80% at 80% 0%,#F27B2B 0%,rgba(242,123,43,0) 55%),linear-gradient(165deg,#3A8A4F,#163A22)}
+.seg.light::after{background:linear-gradient(180deg,rgba(46,115,66,0) 44%,rgba(46,115,66,.9) 58%,#2E7342 72%)}
+.seg.brand{background:radial-gradient(120% 80% at 80% 0%,#F27B2B 0%,rgba(242,123,43,0) 55%),linear-gradient(165deg,#47A05E,#2E7342)}
 .seg.brand img{inset:18% 14% auto;width:72%;height:auto;object-fit:contain;filter:brightness(0) invert(1);opacity:.95}
-.seg.brand::after{background:linear-gradient(180deg,rgba(0,0,0,0) 50%,rgba(10,30,18,.55))}
+.seg.brand::after{background:linear-gradient(180deg,rgba(0,0,0,0) 50%,rgba(30,80,46,.5))}
 .lp-dots{display:flex;gap:6px;justify-content:center}
 .lp-dots i{width:6px;height:6px;border-radius:999px;background:rgba(255,255,255,.3);transition:width .3s,background .3s}
 .lp-dots i.on{width:22px;background:var(--orange)}
