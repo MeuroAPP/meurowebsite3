@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <base href="/market/">
 <title>MEURO MARKET</title>
-<meta name="description" content="Walk a 3D African food market: meet vendors, play games and explore MEURO MARKET.">
+<meta name="description" content="Walk a 3D African food market with other shoppers: meet vendors, play games and explore MEURO MARKET.">
 <meta name="theme-color" content="#08301e">
 <style>body{margin:0}[hidden]{display:none!important}</style>
 <script type="module" src="/analytics.js"></script>
@@ -299,6 +299,12 @@ select { font: inherit; width: 100%; padding: 12px 14px; border: 1.5px solid var
 
 .joy-base { display: none; position: fixed; width: 112px; height: 112px; margin: -56px 0 0 -56px; border-radius: 50%; background: rgba(255,255,255,.16); border: 2px solid rgba(255,255,255,.5); pointer-events: none; z-index: 4; }
 .joy-knob { position: absolute; left: 31px; top: 31px; width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,.85); }
+.lv-chat { position: absolute; z-index: 7; left: max(16px, env(safe-area-inset-left, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(max(10px, env(safe-area-inset-bottom, 0px)) + 82px); display: flex; flex-direction: column; align-items: flex-end; gap: 4px; pointer-events: none; }
+.lv-chat > * { pointer-events: auto; }
+.lv-chat p { align-self: flex-start; max-width: 78%; margin: 0; padding: 5px 10px; border-radius: 12px; background: rgba(4, 12, 22, .72); color: #fff; font-size: 13px; }
+.lv-chat form { display: flex; gap: 6px; width: 100%; } .lv-chat form input { margin: 0; flex: 1; min-width: 0; }
+.lv-chatbtn { position: relative; width: 50px; height: 50px; border-radius: 50%; background: rgba(9, 19, 34, .84); border: 1px solid rgba(255,255,255,.28); font-size: 22px; }
+.lv-chatbtn i { position: absolute; top: -4px; right: -4px; min-width: 19px; height: 19px; border-radius: 10px; background: #2fc46a; color: #04200f; font: 700 11px/19px system-ui; font-style: normal; }
 </style>
 </head>
 <body>
