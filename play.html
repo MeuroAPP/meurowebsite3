@@ -12,14 +12,14 @@
 <title>Meuro Market Run</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
 <style>
 /* Layout: full-bleed WebGL market at golden hour; glass HUD at the edges; intro and result cards float over the scene. Single dusk look. */
 :root{
   --bg:#0B120D; --panel:rgba(12,20,15,.74); --panel-solid:#111B14; --line:rgba(255,255,255,.14);
   --fg:#F4F6EF; --muted:#B8C3BA; --green:#4FA866; --green-deep:#3B8C50; --orange:#F27B2B; --gold:#F6C445; --red:#E5533D;
-  --f-display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
-  --f-body:"Figtree","Helvetica Neue",Arial,system-ui,sans-serif;
+  --f-display:"Montserrat","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --f-body:"Montserrat","Helvetica Neue",Arial,system-ui,sans-serif;
   color-scheme:dark;
 }
 html,body{height:100%}
@@ -46,7 +46,7 @@ a{color:inherit}
 .intro-top{position:fixed;z-index:2;top:max(18px,env(safe-area-inset-top,0px));left:max(20px,env(safe-area-inset-left,0px));right:max(20px,env(safe-area-inset-right,0px));display:flex;justify-content:space-between;align-items:center;gap:12px}
 .intro-top a{font-size:15px;font-weight:600;text-decoration:none;padding:10px 16px;border-radius:999px}
 .intro-card{margin-top:auto;padding-top:64px;width:min(680px,100%);display:grid;gap:16px;padding-bottom:6px;min-width:0}
-.intro-card h1{font-family:var(--f-display);font-size:clamp(46px,7.5vw,92px);line-height:.9;letter-spacing:-.045em;margin:0;font-weight:700}
+.intro-card h1{font-family:var(--f-display);font-size:clamp(46px,7.5vw,92px);line-height:.95;letter-spacing:-.03em;margin:0;font-weight:600}
 .intro-card h1 em{font-style:normal;color:var(--orange)}
 .intro-card p{margin:0;color:var(--muted);font-size:17.5px;line-height:1.55;max-width:46ch}
 .picker{display:grid;gap:10px;min-width:0}
