@@ -198,3 +198,33 @@
   a.innerHTML='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1112 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 01-3.3-2.9c-.3-.4.3-.4.7-1.4a.5.5 0 000-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a.9.9 0 00-.7.3 2.8 2.8 0 00-.9 2.1 5 5 0 001 2.6 11.3 11.3 0 004.4 3.9c1.6.7 2.3.8 3.1.6a2.7 2.7 0 001.8-1.2 2.2 2.2 0 00.2-1.2c-.1-.1-.3-.2-.6-.3z"/></svg>';
   document.body.appendChild(a);
 })();
+
+/* Home: rotating dish word in the headline */
+(function(){
+  var el=document.querySelector('[data-rotate]'); if(!el) return;
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var words=el.getAttribute('data-rotate').split(','), i=0;
+  setInterval(function(){ if(document.hidden) return; el.classList.add('out');
+    setTimeout(function(){ i=(i+1)%words.length; el.textContent=words[i]; el.classList.remove('out'); },350); },2400);
+})();
+
+/* Home: live plate-scan demo (example estimates, same data as the Meuro AI page) */
+(function(){
+  var box=document.querySelector('.live'); if(!box) return;
+  var D=[
+    {img:'jollof',n:'Jollof rice & grilled chicken',k:680,pr:36,c:82,f:22,tip:'<b>Smart swap</b> · Add sliced cucumber and tomato, go skin-off on the chicken.'},
+    {img:'efo-riro',n:'Efo riro & fufu',k:640,pr:30,c:70,f:26,tip:'<b>Keep it</b> · Leafy greens bring iron and fibre. A smaller wrap of fufu balances it.'},
+    {img:'okra',n:'Okra soup with chicken',k:420,pr:38,c:14,f:24,tip:'<b>Keep it</b> · High protein, low carb. Watch the palm oil if cutting calories.'}
+  ];
+  var q=function(s){return box.querySelector(s);}, i=0, reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function fill(d){ q('[data-live-name]').textContent=d.n; q('[data-live-k]').textContent=d.k; q('[data-live-tip]').innerHTML=d.tip;
+    [['pr',d.pr,60],['c',d.c,100],['f',d.f,40]].forEach(function(x){ q('[data-live-bar="'+x[0]+'"]').style.width=Math.min(100,x[1]/x[2]*100)+'%'; q('[data-live-v="'+x[0]+'"]').textContent=x[1]+' g'; });
+    q('[data-live-state]').textContent='Estimate ready'; box.classList.remove('scanning'); }
+  function run(){ var d=D[i%D.length]; i++;
+    if(reduce){ q('[data-live-img]').src='img/'+d.img+'.webp'; fill(d); return; }
+    box.classList.add('scanning'); q('[data-live-state]').textContent='Scanning…';
+    box.querySelectorAll('[data-live-bar]').forEach(function(b){b.style.width='0';});
+    q('[data-live-img]').src='img/'+d.img+'.webp';
+    setTimeout(function(){ fill(d); },1700); }
+  run(); if(!reduce) setInterval(function(){ if(!document.hidden) run(); },6000);
+})();
