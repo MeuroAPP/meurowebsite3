@@ -66,7 +66,7 @@ p{margin:0;text-wrap:pretty}
 .dd-ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--green-soft);color:var(--green)}
 .dd-ic.o{background:var(--orange-soft);color:var(--orange)}
 .dd-ic svg{width:22px;height:22px}
-.dd-item b{display:block;font-weight:600;font-size:15.5px}
+.dd-item b{display:block;font-weight:500;font-size:15.5px}
 .dd-item span{font-size:13.5px;color:var(--muted);line-height:1.35}
 .tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.04em;padding:2px 8px;border-radius:999px;background:var(--orange-soft);color:var(--orange);vertical-align:2px;margin-left:6px}
 .head-cta{display:flex;gap:8px;align-items:center}
@@ -87,7 +87,7 @@ p{margin:0;text-wrap:pretty}
 /* mobile drawer */
 .drawer{position:fixed;inset:0;z-index:80;background:var(--bg);padding:calc(env(safe-area-inset-top,0px) + 16px) max(20px,env(safe-area-inset-right,0px)) 32px max(20px,env(safe-area-inset-left,0px));overflow-y:auto;display:flex;flex-direction:column;gap:6px}
 .drawer .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-.drawer a.big{font-family:var(--f-display);font-size:30px;font-weight:600;text-decoration:none;padding:8px 0;border-bottom:1px solid var(--line);letter-spacing:-.02em}
+.drawer a.big{font-family:var(--f-display);font-size:21px;font-weight:400;text-decoration:none;padding:13px 0;border-bottom:1px solid var(--line);letter-spacing:-.02em}
 .drawer .btn{margin-top:20px;justify-content:center}
 
 @media (max-width:980px){.nav,.head-cta .btn{display:none}.menu-btn{display:grid;place-items:center}}
@@ -815,8 +815,8 @@ textarea.input{height:auto;min-height:96px;padding:12px 16px;resize:vertical}
 /* 3. muno */
 .s-muno .stage{background:#F3EDE4;color:#15231A}
 .m-big{position:absolute;top:50%;left:50%;transform:translate(calc(-50% + (0.5 - var(--p)) * 30vw),-50%);font-size:clamp(120px,30vw,460px);font-weight:800;letter-spacing:-.06em;color:#F27B2B;opacity:.14;white-space:nowrap;line-height:1}
-.m-bottle{position:absolute;left:50%;top:54%;width:min(clamp(150px,17vw,250px),calc(72vh * 400 / 1130));transform:translate(calc(-50% - min(1, max(0, var(--p) - .45) * 2.4) * 22vw),calc(-50% + (1 - min(1, var(--p) * 2.2)) * 70vh)) rotate(calc(-14deg + min(1, var(--p) * 2.2) * 14deg)) scale(calc(.8 + min(1, var(--p) * 2.2) * .2))}
-.m-bottle img{width:100%;height:auto;mix-blend-mode:multiply;filter:drop-shadow(0 30px 40px rgba(60,30,10,.25))}
+.m-bottle{position:absolute;left:50%;top:54%;width:min(clamp(120px,12vw,180px),calc(52vh * 400 / 1130));transform:translate(calc(-50% - min(1, max(0, var(--p) - .45) * 2.4) * 22vw),calc(-50% + (1 - min(1, var(--p) * 2.2)) * 70vh)) rotate(calc(-14deg + min(1, var(--p) * 2.2) * 14deg)) scale(calc(.8 + min(1, var(--p) * 2.2) * .2))}
+.m-bottle{mix-blend-mode:multiply}.m-bottle img{width:100%;height:auto;display:block;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 16%,#000 84%,transparent 100%),linear-gradient(180deg,transparent 0,#000 6%,#000 90%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,#000 16%,#000 84%,transparent 100%),linear-gradient(180deg,transparent 0,#000 6%,#000 90%,transparent 100%);mask-composite:intersect}
 .m-tag{position:absolute;display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:999px;background:#fff;font-weight:600;font-size:16px;box-shadow:0 16px 30px -16px rgba(60,30,10,.4)}
 .m-tag i{font-style:normal;font-size:20px}
 .m-tag.t1{left:calc(50% - min(1, max(0, var(--p) - .45) * 2.4) * 22vw - 250px);top:26%;opacity:calc((var(--p) - .3) * 8)}
@@ -848,7 +848,7 @@ textarea.input{height:auto;min-height:96px;padding:12px 16px;resize:vertical}
   .phone{width:52%}
   .chip{padding:9px 12px;min-width:96px}.chip b{font-size:16px}
   .chip.k1{left:0}.chip.k2{right:0}.chip.k3{left:0}.chip.k4{right:0}
-  .m-bottle{top:50%;width:min(120px,calc(38vh * 400 / 1130));transform:translate(-50%,calc(-50% - min(1, max(0, var(--p) - .45) * 2.4) * 18vh + (1 - min(1, var(--p) * 2.2)) * 70vh)) rotate(calc(-14deg + min(1, var(--p) * 2.2) * 14deg))}
+  .m-bottle{top:50%;width:min(96px,calc(30vh * 400 / 1130));transform:translate(-50%,calc(-50% - min(1, max(0, var(--p) - .45) * 2.4) * 18vh + (1 - min(1, var(--p) * 2.2)) * 70vh)) rotate(calc(-14deg + min(1, var(--p) * 2.2) * 14deg))}
   .m-tag{font-size:14px;padding:9px 14px}
   .m-tag.t1{left:5%;top:16%}.m-tag.t2{left:auto;right:5%;top:24%}.m-tag.t3{left:5%;top:34%}
   .chip.swap{bottom:-6%}
