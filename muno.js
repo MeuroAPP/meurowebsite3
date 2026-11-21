@@ -19,7 +19,7 @@ f.addEventListener('submit',function(e){e.preventDefault();
   if(addr.length<5)return err.textContent='Please add your delivery address.';
   var lines=['Hello Meuro, I would like to order Muno.','','*Order*','Muno functional soya drink (35cl) x '+qty,'',
     '*Name:* '+name,'*Phone:* '+phone];
-  if(v('mo-age'))lines.push("*Child's age:* "+v('mo-age'));
+  if(v('mo-age'))lines.push("*For:* "+v('mo-age'));
   lines.push('*City/area:* '+city,'*Delivery address:* '+addr);
   if(v('mo-note'))lines.push('*Note:* '+v('mo-note'));
   lines.push('','Please confirm the price and delivery. Thank you.');
