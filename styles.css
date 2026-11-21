@@ -584,3 +584,28 @@ textarea.input{height:auto;min-height:96px;padding:12px 16px;resize:vertical}
 .statement-text{margin:0;font-family:var(--f-display);font-weight:500;font-size:clamp(25px,3.2vw,42px);line-height:1.25;letter-spacing:-.015em;color:var(--ink);max-width:34ch}
 .statement-text b{font-weight:700;color:var(--green)}
 .statement-text em{font-style:normal;color:var(--orange)}
+
+/* Home hero (single): proof pill, reassurance line, app + Muno visual. Uses the site type scale as is. */
+.hero-one .hc-slide{opacity:1;visibility:visible;transform:none}
+.proof-pill{justify-self:start;display:inline-flex;align-items:center;gap:8px;padding:6px 14px 6px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:14px;color:var(--muted);text-decoration:none;box-shadow:var(--shadow)}
+.proof-pill b{color:var(--ink);font-weight:600}
+.proof-pill .dot{width:8px;height:8px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 4px var(--orange-soft)}
+.reassure{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;color:var(--muted);margin:0}
+.reassure span{display:inline-flex;align-items:center;gap:7px}
+.reassure span::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green)}
+.duo{width:min(100%,520px);aspect-ratio:1/1.02;padding:0}
+.duo figure{position:absolute;margin:0;overflow:hidden;box-shadow:0 30px 60px -28px rgba(21,35,26,.45)}
+.duo-phone{left:6%;top:0;width:50%;border-radius:34px;border:7px solid #15231A;background:#15231A}
+.duo-phone img{width:100%;height:auto;display:block;border-radius:27px}
+.duo-muno{right:0;top:22%;width:50%;aspect-ratio:4/5;border-radius:26px;background:#F3EDE4}
+.duo-muno img{width:100%;height:100%;object-fit:cover;object-position:50% 35%}
+.duo .hc-chip{text-decoration:none}
+.duo-chip-a{left:-6%;top:58%}
+.duo-chip-b{right:4%;bottom:2%}
+.hc-chip .ok.or{background:var(--orange-soft);color:var(--orange)}
+@media (max-width:860px){.hero-one .hc-copy{order:1}.hero-one .hc-visual{order:2}.duo{width:min(100%,380px);margin-top:8px}.duo-chip-a{left:0}.duo-chip-b{right:0}}
+
+/* WhatsApp chat button on every website page */
+.wa-fab{position:fixed;right:max(18px,env(safe-area-inset-right,0px));bottom:max(18px,env(safe-area-inset-bottom,0px));z-index:70;width:56px;height:56px;border-radius:50%;background:#25D366;color:#fff;display:grid;place-items:center;box-shadow:0 10px 28px -8px rgba(0,0,0,.35);transition:transform .2s}
+.wa-fab:hover{transform:translateY(-2px)}
+.wa-fab svg{width:28px;height:28px}
