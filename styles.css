@@ -744,3 +744,13 @@ textarea.input{height:auto;min-height:96px;padding:12px 16px;resize:vertical}
 @media (prefers-reduced-motion:reduce){.ticker-track,.spin-badge svg,.duo .stk{animation:none}}
 
 .how .live-card{color:var(--ink)}
+
+/* Home hero in 3D */
+.hero3d-canvas{position:absolute;inset:-6% -4% -4% -4%;width:108%;height:110%;z-index:1;cursor:grab;display:block}
+.duo.grabbing .hero3d-canvas{cursor:grabbing}
+.duo.is-3d figure,.duo.is-3d .stk{display:none}
+.duo.is-3d .hc-chip,.duo.is-3d .spin-badge{z-index:3}
+.duo.is-3d .duo-chip-a{left:-4%;top:64%}
+.duo.is-3d .duo-chip-b{right:0;bottom:-2%}
+.duo.is-3d .spin-badge{right:40%;top:-8%}
+@media (max-width:860px){.hero3d-canvas{inset:-6% -6% -4% -6%;width:112%;height:110%}.duo.is-3d .spin-badge{right:2%;left:auto;top:-6%}}
